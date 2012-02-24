@@ -19,6 +19,13 @@ namespace WGDGameJam
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        KeyboardState oldState;
+        KeyboardState newState;
+
+        DirectionToMove direction;
+
+        CowPiece head;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -36,6 +43,7 @@ namespace WGDGameJam
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            oldState = Keyboard.GetState();
         }
 
         /// <summary>
@@ -46,7 +54,6 @@ namespace WGDGameJam
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
         }
 
@@ -70,7 +77,15 @@ namespace WGDGameJam
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            newState = Keyboard.GetState();
+
+            if (newState.IsKeyDown(Keys.Right) && oldState.IsKeyUp(Keys.Right)) { direction = DirectionToMove.right; }
+            else if (newState.IsKeyDown(Keys.Left) && oldState.IsKeyUp(Keys.Left)) { direction = DirectionToMove.left; }
+            else if (newState.IsKeyDown(Keys.Up) && oldState.IsKeyUp(Keys.Up)) { direction = DirectionToMove.up; }
+            else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
+            head.Update(gameTime, direction, new Point(-1, -1));
+
+            oldState = newState;
 
             base.Update(gameTime);
         }
@@ -81,9 +96,12 @@ namespace WGDGameJam
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Beige);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
