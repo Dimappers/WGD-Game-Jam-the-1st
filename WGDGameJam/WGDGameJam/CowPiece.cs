@@ -26,7 +26,14 @@ namespace WGDGameJam
         public void Update(GameTime gameTime, DirectionToMove moveDirection, Point newHeadPosition)
         {
             headPosition = newHeadPosition;
-            
+            switch (moveDirection)
+            {
+                case DirectionToMove.down:
+                    {
+
+                    }
+
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
