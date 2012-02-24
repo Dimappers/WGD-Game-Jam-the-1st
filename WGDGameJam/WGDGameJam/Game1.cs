@@ -20,11 +20,20 @@ namespace WGDGameJam
         SpriteBatch spriteBatch;
 
         HeadPiece head;
+        int timeSinceLastJump = 0;
+
+        KeyboardState oldState;
+        KeyboardState newState;
+
+        DirectionToMove direction;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
+            
         }
 
         /// <summary>
@@ -36,7 +45,8 @@ namespace WGDGameJam
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            oldState = Keyboard.GetState();
+            newState = oldState;
             base.Initialize();
             
         }
@@ -54,8 +64,16 @@ namespace WGDGameJam
             Texture2D tailTexture = Content.Load<Texture2D>("drawing//Cow_Bum");
 
             head = new HeadPiece(headTexture, mainTexture);
-            CowPiece tail = new CowPiece(mainTexture, tailTexture, true);
+            CowPiece tail = new CowPiece(mainTexture, tailTexture);
+            CowPiece a = new CowPiece(mainTexture, tailTexture);
+            CowPiece b = new CowPiece(mainTexture, tailTexture);
+            CowPiece c = new CowPiece(mainTexture, tailTexture);
+            CowPiece d = new CowPiece(mainTexture, tailTexture);
             head.AttachPiece(tail);
+            head.AttachPiece(a);
+            /*head.AttachPiece(b);
+            head.AttachPiece(c);
+            head.AttachPiece(d);*/
 
             // TODO: use this.Content to load your game content here
         }
@@ -80,8 +98,22 @@ namespace WGDGameJam
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            head.Update(gameTime);
+            timeSinceLastJump += gameTime.ElapsedGameTime.Milliseconds;
 
+            newState = Keyboard.GetState();
+
+            if (newState.IsKeyDown(Keys.Right) && oldState.IsKeyUp(Keys.Right)) { direction = DirectionToMove.right; }
+            else if (newState.IsKeyDown(Keys.Left) && oldState.IsKeyUp(Keys.Left)) { direction = DirectionToMove.left; }
+            else if (newState.IsKeyDown(Keys.Up) && oldState.IsKeyUp(Keys.Up)) { direction = DirectionToMove.up; }
+            else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
+
+            oldState = newState;
+
+            if (timeSinceLastJump > 500)
+            {
+                head.Update(gameTime, direction, new Point(-1,-1));
+                timeSinceLastJump = 0;
+            }
             base.Update(gameTime);
         }
 

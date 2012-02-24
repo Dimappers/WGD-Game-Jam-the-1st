@@ -9,7 +9,7 @@ namespace WGDGameJam
 {
     class CowPiece
     {
-        Point startPoint = new Point(50, 50);
+        Point startPoint = new Point(5, 5);
         Vector2 squareSize = new Vector2(50, 50);
         Vector2 middle = new Vector2(375, 275);
 
@@ -29,6 +29,7 @@ namespace WGDGameJam
             headPosition = startPoint;
             nextPiece = null;
             isTail = false;
+            location = startPoint;
         }
 
         public CowPiece(Texture2D texture, Texture2D tailTexture, bool isTail)
@@ -42,6 +43,28 @@ namespace WGDGameJam
             if (nextPiece == null)
             {
                 nextPiece = newPiece;
+                Point newLocation = Point.Zero;
+                switch (lastMoveDirection)
+                {
+                    case DirectionToMove.down:
+                        newLocation = new Point(location.X, location.Y - 1);
+                        break;
+
+                    case DirectionToMove.up:
+                        newLocation = new Point(location.X, location.Y + 1);
+                        break;
+
+                    case DirectionToMove.left:
+                        newLocation = new Point(location.X + 1, location.Y);
+                        break;
+
+                    case DirectionToMove.right:
+                        newLocation = new Point(location.X - 1, location.Y);
+                        break;
+                }
+
+                newPiece.Move(newLocation);
+
                 isTail = false;
             }
             else
@@ -50,19 +73,50 @@ namespace WGDGameJam
             }
         }
 
+        public void Move(Point newLocation)
+        {
+            /*location.X += deltaPosition.X;
+            location.Y += deltaPosition.Y;*/
+            location = newLocation;
+        }
+
+        protected bool isDirectionOpposite(DirectionToMove a, DirectionToMove b)
+        {
+            switch (a)
+            {
+                case DirectionToMove.right:
+                    return b == DirectionToMove.left;
+
+                case DirectionToMove.left:
+                    return b == DirectionToMove.right;
+
+                case DirectionToMove.up:
+                    return b == DirectionToMove.down;
+
+                case DirectionToMove.down:
+                    return b == DirectionToMove.up;
+            }
+
+            return false;
+        }
+
         public virtual void Update(GameTime gameTime, DirectionToMove moveDirection, Point newHeadPosition)
         {
+            if (isDirectionOpposite(moveDirection, lastMoveDirection))
+            {
+                moveDirection = lastMoveDirection;
+            }
             switch (moveDirection)
             {
                 case DirectionToMove.down:
                     {
-                        location.Y -= 1;
+                        location.Y += 1;
                         break;
                     }
 
                 case DirectionToMove.up:
                     {
-                        location.Y += 1;
+                        location.Y -= 1;
                         break;
                     }
 
@@ -99,8 +153,11 @@ namespace WGDGameJam
         
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Point offsetFromHead = new Point(location.X - headPosition.X, location.Y - headPosition.Y);
-            Vector2 position = middle + new Vector2(squareSize.X * offsetFromHead.X, squareSize.Y * offsetFromHead.Y);
+            /*Point offsetFromHead = new Point(location.X - headPosition.X, location.Y - headPosition.Y);
+            Vector2 position = middle + new Vector2(squareSize.X * offsetFromHead.X, squareSize.Y * offsetFromHead.Y * -1);*/
+
+            Vector2 position = new Vector2(location.X * 50, location.Y * 50);
+
             Texture2D texToDraw;
             if (isTail)
             {
