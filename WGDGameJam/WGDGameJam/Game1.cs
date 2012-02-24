@@ -19,12 +19,7 @@ namespace WGDGameJam
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        KeyboardState oldState;
-        KeyboardState newState;
-
-        DirectionToMove direction;
-
-        CowPiece head;
+        HeadPiece head;
 
         public Game1()
         {
@@ -43,7 +38,7 @@ namespace WGDGameJam
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            oldState = Keyboard.GetState();
+            
         }
 
         /// <summary>
@@ -54,6 +49,14 @@ namespace WGDGameJam
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            Texture2D headTexture = Content.Load<Texture2D>("drawing//Cow_Head");
+            Texture2D mainTexture = Content.Load<Texture2D>("drawing//Cow_Middle");
+            Texture2D tailTexture = Content.Load<Texture2D>("drawing//Cow_Bum");
+
+            head = new HeadPiece(headTexture, mainTexture);
+            CowPiece tail = new CowPiece(mainTexture, tailTexture, true);
+            head.AttachPiece(tail);
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -77,15 +80,7 @@ namespace WGDGameJam
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            newState = Keyboard.GetState();
-
-            if (newState.IsKeyDown(Keys.Right) && oldState.IsKeyUp(Keys.Right)) { direction = DirectionToMove.right; }
-            else if (newState.IsKeyDown(Keys.Left) && oldState.IsKeyUp(Keys.Left)) { direction = DirectionToMove.left; }
-            else if (newState.IsKeyDown(Keys.Up) && oldState.IsKeyUp(Keys.Up)) { direction = DirectionToMove.up; }
-            else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
-            head.Update(gameTime, direction, new Point(-1, -1));
-
-            oldState = newState;
+            head.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -101,6 +96,9 @@ namespace WGDGameJam
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
+
+            head.Draw(gameTime, spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -9,24 +9,48 @@ namespace WGDGameJam
 {
     class CowPiece
     {
-        const Point startPoint = new Point(50, 50);
-        const Vector2 squareSize = new Vector2(50, 50);
-        const Vector2 middle = new Vector2(375, 275);
+        Point startPoint = new Point(50, 50);
+        Vector2 squareSize = new Vector2(50, 50);
+        Vector2 middle = new Vector2(375, 275);
+
         protected Texture2D texture;
+        protected Texture2D tailTexture;
         protected CowPiece nextPiece;
         protected DirectionToMove lastMoveDirection;
+        protected bool isTail;
 
         Point location;
         Point headPosition;
 
-        public CowPiece(Texture2D texture)
+        public CowPiece(Texture2D texture, Texture2D tailTexture)
         {
             this.texture = texture;
+            this.tailTexture = tailTexture;
             headPosition = startPoint;
             nextPiece = null;
+            isTail = false;
         }
 
-        public void Update(GameTime gameTime, DirectionToMove moveDirection, Point newHeadPosition)
+        public CowPiece(Texture2D texture, Texture2D tailTexture, bool isTail)
+            :this(texture, tailTexture)
+        {
+            this.isTail = isTail;
+        }
+
+        public void AttachPiece(CowPiece newPiece)
+        {
+            if (nextPiece == null)
+            {
+                nextPiece = newPiece;
+                isTail = false;
+            }
+            else
+            {
+                nextPiece.AttachPiece(newPiece);
+            }
+        }
+
+        public virtual void Update(GameTime gameTime, DirectionToMove moveDirection, Point newHeadPosition)
         {
             switch (moveDirection)
             {
@@ -72,11 +96,26 @@ namespace WGDGameJam
             lastMoveDirection = moveDirection;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Point offsetFromHead = new Point(location.X - headPosition.X, location.Y - headPosition.Y);
             Vector2 position = middle + new Vector2(squareSize.X * offsetFromHead.X, squareSize.Y * offsetFromHead.Y);
-            spriteBatch.Draw(texture, position, Color.White);
+            Texture2D texToDraw;
+            if (isTail)
+            {
+                texToDraw = tailTexture;
+            }
+            else
+            {
+                texToDraw = texture;
+            }
+            spriteBatch.Draw(texToDraw, position, Color.White);
+
+            if (nextPiece != null)
+            {
+                nextPiece.Draw(gameTime, spriteBatch);
+            }
         }
     }
 
