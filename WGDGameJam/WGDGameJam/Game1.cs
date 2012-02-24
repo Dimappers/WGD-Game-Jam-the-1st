@@ -71,9 +71,9 @@ namespace WGDGameJam
             CowPiece d = new CowPiece(mainTexture, tailTexture);
             head.AttachPiece(tail);
             head.AttachPiece(a);
-            /*head.AttachPiece(b);
+            head.AttachPiece(b);
             head.AttachPiece(c);
-            head.AttachPiece(d);*/
+            head.AttachPiece(d);
 
             // TODO: use this.Content to load your game content here
         }
