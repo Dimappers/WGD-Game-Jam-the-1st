@@ -129,7 +129,7 @@ namespace WGDGameJam
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Beige);
+            GraphicsDevice.Clear(Color.DarkGreen);
 
             // TODO: Add your drawing code here
 
