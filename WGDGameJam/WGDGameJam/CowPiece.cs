@@ -20,7 +20,7 @@ namespace WGDGameJam
         protected bool isTail;
 
         Point location;
-        Point headPosition;
+        public Point headPosition;
 
         public CowPiece(Texture2D texture, Texture2D tailTexture)
         {

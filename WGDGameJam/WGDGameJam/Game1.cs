@@ -20,6 +20,7 @@ namespace WGDGameJam
         SpriteBatch spriteBatch;
 
         HeadPiece head;
+        MapManager mapManager;
         int timeSinceLastJump = 0;
 
         KeyboardState oldState;
@@ -62,6 +63,9 @@ namespace WGDGameJam
             Texture2D headTexture = Content.Load<Texture2D>("drawing//Cow_Head");
             Texture2D mainTexture = Content.Load<Texture2D>("drawing//Cow_Middle");
             Texture2D tailTexture = Content.Load<Texture2D>("drawing//Cow_Bum");
+            Texture2D grassTexture = Content.Load<Texture2D>("drawing//grass");
+            Texture2D hedgeTexture = Content.Load<Texture2D>("drawing//hedge");
+            Texture2D foodTexture = Content.Load<Texture2D>("drawing//grass");
 
             head = new HeadPiece(headTexture, mainTexture);
             CowPiece tail = new CowPiece(mainTexture, tailTexture);
@@ -74,6 +78,8 @@ namespace WGDGameJam
             head.AttachPiece(b);
             head.AttachPiece(c);
             head.AttachPiece(d);
+
+            mapManager = new MapManager(100, grassTexture, hedgeTexture, foodTexture, head);
 
             // TODO: use this.Content to load your game content here
         }
@@ -128,7 +134,7 @@ namespace WGDGameJam
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
-
+            mapManager.Draw(spriteBatch);
             head.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
