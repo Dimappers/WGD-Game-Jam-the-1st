@@ -64,7 +64,7 @@ namespace WGDGameJam
                 }
 
                 newPiece.Move(newLocation);
-
+                newPiece.SetAsTail();
                 isTail = false;
             }
             else
@@ -75,9 +75,12 @@ namespace WGDGameJam
 
         public void Move(Point newLocation)
         {
-            /*location.X += deltaPosition.X;
-            location.Y += deltaPosition.Y;*/
             location = newLocation;
+        }
+
+        public void SetAsTail()
+        {
+            isTail = true;
         }
 
         protected bool isDirectionOpposite(DirectionToMove a, DirectionToMove b)
