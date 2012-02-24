@@ -110,7 +110,23 @@ namespace WGDGameJam
             {
                 texToDraw = texture;
             }
-            spriteBatch.Draw(texToDraw, position, Color.White);
+            float rotation = 0.0f;
+            switch(lastMoveDirection)
+            {
+                case DirectionToMove.down:
+                    rotation = (float)(3.0f * Math.PI / 2.0f);
+                    break;
+
+                case DirectionToMove.right:
+                    rotation = (float)Math.PI;
+                    break;
+
+                case DirectionToMove.up:
+                    rotation = (float)(Math.PI / 2.0f);
+                    break;
+
+            }
+            spriteBatch.Draw(texToDraw, position, null, Color.White, rotation, new Vector2(texToDraw.Width/2 + 0.5f, texToDraw.Height/2 + 0.5f),1.0f, SpriteEffects.None, 0.0f);
 
             if (nextPiece != null)
             {
