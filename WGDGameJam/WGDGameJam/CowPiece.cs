@@ -156,10 +156,11 @@ namespace WGDGameJam
         
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            /*Point offsetFromHead = new Point(location.X - headPosition.X, location.Y - headPosition.Y);
-            Vector2 position = middle + new Vector2(squareSize.X * offsetFromHead.X, squareSize.Y * offsetFromHead.Y * -1);*/
+            
+            Point offsetFromHead = new Point(location.X - headPosition.X, location.Y - headPosition.Y);
+            Vector2 position = middle + new Vector2(squareSize.X * offsetFromHead.X, squareSize.Y * offsetFromHead.Y);
 
-            Vector2 position = new Vector2(location.X * 50, location.Y * 50);
+            //Vector2 position = new Vector2(location.X * 50, location.Y * 50);
 
             Texture2D texToDraw;
             if (isTail)
