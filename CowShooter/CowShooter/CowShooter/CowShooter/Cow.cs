@@ -59,8 +59,7 @@ namespace CowShooter
         {
             if (otherObject is Ammunition)
             {
-                //manager.
-                Console.WriteLine("Kill me!!!");
+                manager.RemoveCow(this);
             }
         }
 
