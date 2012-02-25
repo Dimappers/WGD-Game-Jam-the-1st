@@ -153,14 +153,7 @@ namespace WGDGameJam
                     Point pointToMakeWall = new Point(lastPoint.X + direction.X * i, lastPoint.Y + direction.Y * i);
                     if (isValid(pointToMakeWall.X,pointToMakeWall.Y) && pointToMakeWall != CowPiece.startPoint)
                     {
-                        if (manager.map[pointToMakeWall.X, pointToMakeWall.Y].isBlocking())
-                        {
-                            manager.map[pointToMakeWall.X, pointToMakeWall.Y] = manager.createHedge(pointToMakeWall.X, pointToMakeWall.Y, MapManager.HedgeType.crisscross);
-                        }
-                        else
-                        {
-                            manager.map[pointToMakeWall.X, pointToMakeWall.Y] = manager.createHedge(pointToMakeWall.X, pointToMakeWall.Y, newWallHedgeType);
-                        }
+                        manager.map[pointToMakeWall.X, pointToMakeWall.Y] = manager.createHedge(pointToMakeWall.X, pointToMakeWall.Y, newWallHedgeType);
                         previous.Attach((WallPiece)manager.map[pointToMakeWall.X, pointToMakeWall.Y]);
                         previous = (WallPiece)manager.map[pointToMakeWall.X, pointToMakeWall.Y];
                     }

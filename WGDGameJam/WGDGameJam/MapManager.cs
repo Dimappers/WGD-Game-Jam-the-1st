@@ -93,12 +93,12 @@ namespace WGDGameJam
                 }
             }
 
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 18; ++i)
             {
                 GenerateFood();
             }
 
-            wallpieces = new WallPiece[15];
+            wallpieces = new WallPiece[25];
             for(int i = 0; i <wallpieces.Length; ++i)
                 wallpieces[i] = GenerateWallShape();   
         }
@@ -129,7 +129,7 @@ namespace WGDGameJam
             int boolean;
             for (int i = 0; i < wallpieces.Length; i++)
             {
-                boolean = random.Next((int)(0/*8*/ / (1 + game.score)));
+                boolean = random.Next((int)(20 / (1 + game.score)));
                 if (boolean == 0)
                 {
                     int directionnumber = random.Next(4);
