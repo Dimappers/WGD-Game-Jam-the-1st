@@ -19,6 +19,8 @@ namespace WGDGameJam
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        GameMode gameMode;
+
         HeadPiece head;
         MapManager mapManager;
         int timeSinceLastJump = 0;
@@ -37,6 +39,8 @@ namespace WGDGameJam
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
+
+            gameMode = GameMode.frontScreen;
         }
 
         /// <summary>
@@ -116,26 +120,37 @@ namespace WGDGameJam
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
-            timeSinceLastJump += gameTime.ElapsedGameTime.Milliseconds;
-
             newState = Keyboard.GetState();
+            if (gameMode == GameMode.frontScreen)
+            {
+                if (newState.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
+                {
+                    gameMode = GameMode.mainGame;
+                }
+            }
+            else if (gameMode == GameMode.mainGame)
+            {
+                timeSinceLastJump += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (newState.IsKeyDown(Keys.Right) && oldState.IsKeyUp(Keys.Right)) { direction = DirectionToMove.right; }
-            else if (newState.IsKeyDown(Keys.Left) && oldState.IsKeyUp(Keys.Left)) { direction = DirectionToMove.left; }
-            else if (newState.IsKeyDown(Keys.Up) && oldState.IsKeyUp(Keys.Up)) { direction = DirectionToMove.up; }
-            else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
+
+                if (newState.IsKeyDown(Keys.Right) && oldState.IsKeyUp(Keys.Right)) { direction = DirectionToMove.right; }
+                else if (newState.IsKeyDown(Keys.Left) && oldState.IsKeyUp(Keys.Left)) { direction = DirectionToMove.left; }
+                else if (newState.IsKeyDown(Keys.Up) && oldState.IsKeyUp(Keys.Up)) { direction = DirectionToMove.up; }
+                else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
+
+                if (timeSinceLastJump > 500)
+                {
+                    head.Update(gameTime, direction, new Point(-1, -1));
+                    timeSinceLastJump = 0;
+                }
+
+                if (head.isDead())
+                {
+                    gameMode = GameMode.endScreen;
+                }
+            }
 
             oldState = newState;
-
-            if (timeSinceLastJump > 500)
-            {
-                head.Update(gameTime, direction, new Point(-1,-1));
-                timeSinceLastJump = 0;
-            }
             base.Update(gameTime);
         }
 
@@ -150,9 +165,23 @@ namespace WGDGameJam
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
-            mapManager.Draw(spriteBatch, this);
-            head.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, 0), Color.Black);
+            if (gameMode == GameMode.frontScreen)
+            {
+                spriteBatch.DrawString(font, "Magic Mooshrooms", new Vector2(50, 200), Color.IndianRed);
+                spriteBatch.DrawString(font, "By Kim, Tom and Mark", new Vector2(50, 300), Color.Indigo);
+            }
+            else if (gameMode == GameMode.mainGame)
+            {
+                mapManager.Draw(spriteBatch, this);
+                head.Draw(gameTime, spriteBatch);
+                spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, 0), Color.Black);
+            }
+            else
+            {
+                GraphicsDevice.Clear(Color.PowderBlue);
+                spriteBatch.DrawString(font, "GAME OVER", new Vector2(200, 200), Color.Red);
+                spriteBatch.DrawString(font, "Score: " + score, new Vector2(200, 300), Color.Red);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -172,5 +201,12 @@ namespace WGDGameJam
         public Texture2D hedgeCornerTexturebr;
         public Texture2D foodTexture;
         public Texture2D hedgeCrossTexture;
+    }
+
+    enum GameMode
+    {
+        frontScreen,
+        mainGame,
+        endScreen
     }
 }

@@ -9,7 +9,7 @@ namespace WGDGameJam
 {
     public class CowPiece
     {
-        Point startPoint = new Point(5, 5);
+        public static Point startPoint = new Point(5, 5);
         Vector2 squareSize = new Vector2(50, 50);
         Vector2 middle = new Vector2(375, 275);
 

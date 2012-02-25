@@ -220,11 +220,11 @@ namespace WGDGameJam
                 for (int i = 1; i < length; ++i)
                 {
                     Point pointToMakeWall = new Point(lastPoint.X + direction.X * i, lastPoint.Y + direction.Y * i);
-                    if (pointToMakeWall.X < 20 && pointToMakeWall.X >= 0 && pointToMakeWall.Y < 20 && pointToMakeWall.Y >= 0)
+                    if (pointToMakeWall.X < 19 && pointToMakeWall.X > 0 && pointToMakeWall.Y < 19 && pointToMakeWall.Y > 0 && pointToMakeWall != CowPiece.startPoint)
                     {
                         if (map[pointToMakeWall.X, pointToMakeWall.Y].isBlocking())
                         {
-                            //TODO: Replace with cross roads wall
+                            map[pointToMakeWall.X, pointToMakeWall.Y] = createHedge(pointToMakeWall.X, pointToMakeWall.Y, HedgeType.crisscross);
                         }
                         else
                         {
@@ -259,6 +259,7 @@ public void Draw(SpriteBatch spriteBatch, Game1 game)
                 case HedgeType.corner_topright : {return new Square(i, j, hedgeCornerTexturetr, Color.White, true);}
                 case HedgeType.corner_bottomleft : {return new Square(i, j, hedgeCornerTexturebl, Color.White, true);}
                 case HedgeType.corner_bottomright: {return new Square(i, j, hedgeCornerTexturebr, Color.White, true); }
+                case HedgeType.crisscross: { return new Square(i, j, hedgeCrossTexture, Color.White, true); }
                 default: return null;
             }
         }
@@ -270,7 +271,8 @@ public void Draw(SpriteBatch spriteBatch, Game1 game)
             corner_topleft,
             corner_bottomleft,
             corner_topright,
-            corner_bottomright
+            corner_bottomright,
+            crisscross
         }
     }
 }
