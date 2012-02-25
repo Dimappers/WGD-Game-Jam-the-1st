@@ -16,19 +16,22 @@ namespace CowShooter
         Rectangle draggablePosition = new Rectangle(648, 51, 32, 32);
         const int widthOfLine = 5;
         const float maxDistance = 150;
+        const float powerScale = 0.05f;
         
         Texture2D catapultTexture;
         Texture2D lineTexture;
+        Texture2D ammoTexture;
         bool isBeingDragged;
         MouseState oldMouseState, newMouseState;
         Vector2 draggedToPoint;
 
         List<Ammunition> ammo;
 
-        public Catapult(Texture2D catapultTexture, Texture2D lineTexture)
+        public Catapult(Texture2D catapultTexture, Texture2D lineTexture, Texture2D ammoTexture)
         {
             this.catapultTexture = catapultTexture;
             this.lineTexture = lineTexture;
+            this.ammoTexture = ammoTexture;
             oldMouseState = Mouse.GetState();
             newMouseState = oldMouseState;
 
@@ -59,12 +62,21 @@ namespace CowShooter
                 }
             }
 
+            foreach (Ammunition a in ammo)
+            {
+                a.Update(gameTime);
+            }
+
             oldMouseState = newMouseState;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(catapultTexture, positionToSpawn, Color.White);
+            foreach (Ammunition a in ammo)
+            {
+                a.Draw(spriteBatch);
+            }
 
             if (isBeingDragged)
             {
@@ -83,13 +95,20 @@ namespace CowShooter
 
         private void onRelease()
         {
-            isBeingDragged = false;
+            if (isBeingDragged)
+            {
+                isBeingDragged = false;
 
 
-            Vector2 fireTrajectory = draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y);
-            Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
+                Vector2 fireTrajectory = (draggedToPoint -
+                            new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y))
+                            * powerScale;
+                Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
 
-            ammo.Add(new Ammunition(this, fireTrajectory));
+                ammo.Add(new Ammunition(this, fireTrajectory,
+                                            new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y),
+                                            ammoTexture));
+            }
         }
 
         private void drawLine(Vector2 endPosition, SpriteBatch spriteBatch)
