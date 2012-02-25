@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WGDGameJam
 {
-    class Square
+    public class Square
     {
         Texture2D texture;
         Color colour;
@@ -30,6 +30,7 @@ namespace WGDGameJam
         {
             return blocking;
         }
+        public void SetBlocking(bool blocking) { this.blocking = blocking; }
         public bool containsFood()
         {
             return food != null;

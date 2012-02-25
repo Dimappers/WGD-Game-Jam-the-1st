@@ -15,7 +15,7 @@ namespace WGDGameJam
         Game1 game;
 
         public HeadPiece(Texture2D headTexture, Texture2D standardPiece, Texture2D tailTexture, Game1 game)
-            :base(headTexture, headTexture)
+            :base(headTexture, headTexture, game)
         {
             standardTexture = standardPiece;
             standardTailTexture = tailTexture;
@@ -25,11 +25,17 @@ namespace WGDGameJam
         public override void Update(GameTime gameTime, DirectionToMove moveDirection, Point newHeadPosition)
         {
             base.Update(gameTime, moveDirection, newHeadPosition);
-            if(game.GetMapManager().containsFood(location))
+            if (game.GetMapManager().getSquare(location.X,location.Y).isBlocking())
             {
-                CowPiece newPiece = new CowPiece(standardTexture, standardTailTexture);
+                //TODO: stop it doing this
+                throw new Exception();
+            }
+            else if (game.GetMapManager().containsFood(location))
+            {
+                CowPiece newPiece = new CowPiece(standardTexture, standardTailTexture, game);
                 AttachPiece(newPiece);
             }
+            game.GetMapManager().getSquare(location.X, location.Y).SetBlocking(true);
         }
     }
 }

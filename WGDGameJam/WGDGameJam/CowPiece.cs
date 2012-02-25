@@ -22,7 +22,9 @@ namespace WGDGameJam
         protected Point location;
         public Point headPosition;
 
-        public CowPiece(Texture2D texture, Texture2D tailTexture)
+        Game1 game;
+
+        public CowPiece(Texture2D texture, Texture2D tailTexture, Game1 game)
         {
             this.texture = texture;
             this.tailTexture = tailTexture;
@@ -30,10 +32,11 @@ namespace WGDGameJam
             nextPiece = null;
             isTail = false;
             location = startPoint;
+            this.game = game;
         }
 
-        public CowPiece(Texture2D texture, Texture2D tailTexture, bool isTail)
-            :this(texture, tailTexture)
+        public CowPiece(Texture2D texture, Texture2D tailTexture, bool isTail, Game1 game)
+            :this(texture, tailTexture, game)
         {
             this.isTail = isTail;
         }
@@ -109,6 +112,7 @@ namespace WGDGameJam
             {
                 moveDirection = lastMoveDirection;
             }
+            if (isTail) { game.GetMapManager().getSquare(location.X, location.Y).SetBlocking(false); }
             switch (moveDirection)
             {
                 case DirectionToMove.down:
@@ -159,8 +163,6 @@ namespace WGDGameJam
             
             Point offsetFromHead = new Point(location.X - headPosition.X, location.Y - headPosition.Y);
             Vector2 position = middle + new Vector2(squareSize.X * offsetFromHead.X, squareSize.Y * offsetFromHead.Y);
-
-            //Vector2 position = new Vector2(location.X * 50, location.Y * 50);
 
             Texture2D texToDraw;
             if (isTail)

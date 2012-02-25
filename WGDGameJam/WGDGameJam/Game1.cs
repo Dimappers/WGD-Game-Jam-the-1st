@@ -74,11 +74,11 @@ namespace WGDGameJam
             mapTexs.foodTexture = Content.Load<Texture2D>("drawing//food");
 
             head = new HeadPiece(headTexture, mainTexture, tailTexture, this);
-            CowPiece tail = new CowPiece(mainTexture, tailTexture);
-            CowPiece a = new CowPiece(mainTexture, tailTexture);
-            CowPiece b = new CowPiece(mainTexture, tailTexture);
-            CowPiece c = new CowPiece(mainTexture, tailTexture);
-            CowPiece d = new CowPiece(mainTexture, tailTexture);
+            CowPiece tail = new CowPiece(mainTexture, tailTexture, this);
+            CowPiece a = new CowPiece(mainTexture, tailTexture, this);
+            CowPiece b = new CowPiece(mainTexture, tailTexture, this);
+            CowPiece c = new CowPiece(mainTexture, tailTexture, this);
+            CowPiece d = new CowPiece(mainTexture, tailTexture, this);
             head.AttachPiece(tail);
             head.AttachPiece(a);
             head.AttachPiece(b);

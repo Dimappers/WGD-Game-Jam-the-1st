@@ -38,6 +38,7 @@ namespace WGDGameJam
             createMap();
         }
 
+        public Square getSquare(int i, int j) {return map[i,j];}
         public bool containsFood(Point location)
         {
             return map[location.X, location.Y].containsFood();
