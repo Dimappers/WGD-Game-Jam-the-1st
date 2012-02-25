@@ -34,8 +34,8 @@ namespace CowShooter
             IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 450;
-            cowManager = new CowManager();
             collisionManager = new CollisionManager(400.0f);
+            cowManager = new CowManager(collisionManager);
         }
 
         /// <summary>
