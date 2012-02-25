@@ -15,10 +15,10 @@ namespace CowShooter
         Vector2 velocity;
         Vector2 position;
 
-        const float dampening = 0.1f;
+        const float dampening = 0.55f;
         const float gravity = 5.0f;
+        const float friction = 1.0f;
 
-        public Rectangle collisionRectangle;
         Catapult catapult;
         public Ammunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition, Texture2D texture)
         {
@@ -27,11 +27,27 @@ namespace CowShooter
             velocity = startVelocity;
             velocity.X = MathHelper.Clamp(velocity.X, 1.5f, 100f);
             position = startPosition;
+            flying = true;
         }
 
         public void Update(GameTime gameTime)
         {
-            velocity.Y -= gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (flying)
+            {
+                velocity.Y -= gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                velocity.X -= 0.5f * friction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                if (velocity.X > 0)
+                {
+                    velocity.X -= friction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+                else
+                {
+                    velocity = Vector2.Zero;
+                }
+            }
             position -= velocity;
         }
 
@@ -42,7 +58,7 @@ namespace CowShooter
 
         public Rectangle getCollisionRectangle()
         {
-            return collisionRectangle;
+            return new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         }
 
         public void NotifyOfCollision(ICollisionObject otherObject)
@@ -68,8 +84,11 @@ namespace CowShooter
 
         public void NotifyGroundCollision()
         {
-            velocity.Y = velocity.Y * -1 * dampening;
-            if (velocity.Y < 0.01f)
+            if (velocity.Y < 0)
+                velocity.Y *= -1;
+
+            velocity.Y = velocity.Y * dampening;
+            if (Math.Abs(velocity.Y) < 0.1f)
             {
                 velocity.Y = 0;
                 flying = false;
