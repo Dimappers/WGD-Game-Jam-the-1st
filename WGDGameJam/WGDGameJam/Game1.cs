@@ -21,7 +21,9 @@ namespace WGDGameJam
 
         HeadPiece head;
         MapManager mapManager;
+
         int timeSinceLastJump = 0;
+        double angle = Math.PI/3.0;
 
         KeyboardState oldState;
         KeyboardState newState;
@@ -131,7 +133,11 @@ namespace WGDGameJam
 
             oldState = newState;
 
-            if (timeSinceLastJump > 500)
+            int randomTime = 500 + (int)(Math.Sin(angle)*15*score);
+            Console.WriteLine(randomTime);
+            angle += Math.PI / 8;
+
+            if (timeSinceLastJump > randomTime)
             {
                 head.Update(gameTime, direction, new Point(-1,-1));
                 timeSinceLastJump = 0;
