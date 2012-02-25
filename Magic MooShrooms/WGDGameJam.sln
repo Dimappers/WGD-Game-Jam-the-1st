@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WGDGameJam", "WGDGameJam\WGDGameJam\WGDGameJam.csproj", "{A96FE99B-0628-49D7-8418-DAA94576EE69}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "WGDGameJamContent", "WGDGameJam\WGDGameJamContent\WGDGameJamContent.contentproj", "{CB46562C-02F3-4CB4-B282-80878233364F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WGDGameJamContent", "WGDGameJam\WGDGameJamContent\WGDGameJamContent.contentproj", "{CB46562C-02F3-4CB4-B282-80878233364F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
