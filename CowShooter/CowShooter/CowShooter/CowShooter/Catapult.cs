@@ -86,7 +86,7 @@ namespace CowShooter
             float theta = (float)Math.Atan((double)((endPosition.X - startPosition.X) / (endPosition.Y - startPosition.Y)));
             float alpha = (float)(2 * Math.PI) - theta;
             spriteBatch.Begin();
-            spriteBatch.Draw(lineTexture, new Rectangle((int)startPosition.X, (int)startPosition.Y, widthOfLine, (int)length), null, Color.White, alpha, new Vector2(lineWidth / 2, 0), SpriteEffects.None, 0);
+            spriteBatch.Draw(lineTexture, new Rectangle((int)startPosition.X, (int)startPosition.Y, widthOfLine, (int)length), null, Color.White, alpha, new Vector2(widthOfLine / 2, 0), SpriteEffects.None, 0);
             spriteBatch.End();
         }
     }
