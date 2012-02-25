@@ -19,6 +19,8 @@ namespace CowShooter
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        WallManager wallManager;
+
         Catapult catapult;
         CowManager cowManager;
 
@@ -58,6 +60,7 @@ namespace CowShooter
             cowManager.AddTexture(typeof(Cow), Content.Load<Texture2D>("art//Cow_Piece"));
 
             catapult = new Catapult(Content.Load<Texture2D>("art//catapult"), Content.Load<Texture2D>("art//line")); 
+            wallManager = new WallManager(wallTexture);
 
             // TODO: use this.Content to load your game content here
         }
@@ -96,7 +99,7 @@ namespace CowShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin();
          
             cowManager.Draw(spriteBatch);
@@ -104,6 +107,9 @@ namespace CowShooter
 
             spriteBatch.End();
 
+            spriteBatch.Begin();
+            wallManager.Draw(spriteBatch);
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
