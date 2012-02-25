@@ -74,6 +74,7 @@ namespace WGDGameJam
             mapTexs.hedgeCornerTexturetr = Content.Load<Texture2D>("drawing//hedge_corner_tr");
             mapTexs.hedgeCornerTexturebl = Content.Load<Texture2D>("drawing//hedge_corner_bl");
             mapTexs.hedgeCornerTexturebr = Content.Load<Texture2D>("drawing//hedge_corner_br");
+            mapTexs.hedgeCrossTexture = Content.Load<Texture2D>("drawing//hedge_cross");
             mapTexs.foodTexture = Content.Load<Texture2D>("drawing//mushroom");
             font = Content.Load<SpriteFont>("DefaultFont");
 
@@ -170,5 +171,6 @@ namespace WGDGameJam
         public Texture2D hedgeCornerTexturebl;
         public Texture2D hedgeCornerTexturebr;
         public Texture2D foodTexture;
+        public Texture2D hedgeCrossTexture;
     }
 }

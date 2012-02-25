@@ -17,6 +17,7 @@ namespace WGDGameJam
         Texture2D hedgeCornerTexturetr;
         Texture2D hedgeCornerTexturebl;
         Texture2D hedgeCornerTexturebr;
+        Texture2D hedgeCrossTexture;
         Texture2D foodTexture;
         CowPiece headPiece;
         Random random = new Random();
@@ -34,6 +35,7 @@ namespace WGDGameJam
             this.hedgeCornerTexturetr = mapTex.hedgeCornerTexturetr;
             this.hedgeCornerTexturebl = mapTex.hedgeCornerTexturebl;
             this.hedgeCornerTexturebr = mapTex.hedgeCornerTexturebr;
+            this.hedgeCrossTexture = mapTex.hedgeCrossTexture;
             this.foodTexture = mapTex.foodTexture;
             headPiece = head;
             this.game = game;
