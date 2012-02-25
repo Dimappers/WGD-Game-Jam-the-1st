@@ -10,15 +10,15 @@ namespace WGDGameJam
     public class MapManager
     {
         public Square[,] map;
-        Texture2D grassTexture;
-        Texture2D hedgeTexture;
-        Texture2D hedgeVertTexture;
-        Texture2D hedgeCornerTexturetl;
-        Texture2D hedgeCornerTexturetr;
-        Texture2D hedgeCornerTexturebl;
-        Texture2D hedgeCornerTexturebr;
-        Texture2D hedgeCrossTexture;
-        Texture2D foodTexture;
+        public Texture2D grassTexture;
+        public Texture2D hedgeTexture;
+        public Texture2D hedgeVertTexture;
+        public Texture2D hedgeCornerTexturetl;
+        public Texture2D hedgeCornerTexturetr;
+        public Texture2D hedgeCornerTexturebl;
+        public Texture2D hedgeCornerTexturebr;
+        public Texture2D hedgeCrossTexture;
+        public Texture2D foodTexture;
         CowPiece headPiece;
         Random random = new Random();
         public int size;
@@ -98,7 +98,7 @@ namespace WGDGameJam
                 GenerateFood();
             }
 
-            wallpieces = new WallPiece[5];
+            wallpieces = new WallPiece[15];
             for(int i = 0; i <wallpieces.Length; ++i)
                 wallpieces[i] = GenerateWallShape();   
         }

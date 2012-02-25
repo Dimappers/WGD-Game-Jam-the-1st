@@ -9,7 +9,7 @@ namespace WGDGameJam
 {
     public class Square
     {
-        Texture2D texture;
+        protected Texture2D texture;
         public Color colour;
         private bool blocking;
         private Texture2D food;
@@ -51,7 +51,7 @@ namespace WGDGameJam
         public void changeColour(Color colour) { this.colour = colour; }
         public void Draw(SpriteBatch spriteBatch, CowPiece head, GameTime gameTime)
         {
-            Vector2 position = new Vector2((-head.headPosition.X + xlocation) * 50, (-head.headPosition.Y + ylocation) * 50) + new Vector2(350, 250);
+            Vector2 position = new Vector2((-head.headPosition.X + xlocation) * 50, (-head.headPosition.Y + ylocation) * 50) + new Vector2(350, 250) + new Vector2(400,300);
             spriteBatch.Draw(texture, position, null, colour, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f); 
         }
 
@@ -67,7 +67,7 @@ namespace WGDGameJam
                     scale = 0.0f;
                 }
                 scale += 1.0f;
-                Vector2 position = new Vector2((-head.headPosition.X + xlocation) * 50, (-head.headPosition.Y + ylocation) * 50) + new Vector2(350, 250);
+                Vector2 position = new Vector2((-head.headPosition.X + xlocation) * 50, (-head.headPosition.Y + ylocation) * 50) + new Vector2(350, 250) + new Vector2(400,300);
                 float scaledWidth = food.Width * scale;
                 float scaledHeight = food.Height * scale;
                 Rectangle destRect = new Rectangle((int)(position.X - ((scaledWidth -food.Width) / 2.0f)), (int)(position.Y - ((scaledHeight - food.Height) / 2.0f)), (int)scaledWidth, (int)scaledHeight);
