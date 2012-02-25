@@ -150,7 +150,7 @@ namespace WGDGameJam
                 {
                     head.Update(gameTime, direction, new Point(-1, -1));
                     timeSinceLastJump = 0;
-                    if(random.Next((int)(10/(score+1)))==0) {mapManager.MoveWalls();}
+                    mapManager.MoveWalls();
                 }
 
                 if (head.isDead())
@@ -213,12 +213,12 @@ namespace WGDGameJam
                 float scaleFactor = 1.0f;
                 float scaleConstant = 2.0f - scaleCentre;
 
-                Console.WriteLine(scaleCentre + ", " + scaleConstant);
+                //Console.WriteLine(scaleCentre + ", " + scaleConstant);
                 float cosElement = (float)Math.Cos((float)gameTime.TotalGameTime.TotalMilliseconds / 1000.0f * Math.Log(Math.Log(score + 2)));
                 cosElement += scaleCentre;
                 cosElement *= scaleFactor;
                 float scale = cosElement * scaleCentre + scaleConstant;
-                scale = 1.0f;
+                scale = 2.0f;
                 float scaledWidth = 800 * scale;
                 float scaledHeight = 600 * scale;
                 

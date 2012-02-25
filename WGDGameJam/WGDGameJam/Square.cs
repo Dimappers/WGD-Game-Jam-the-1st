@@ -9,7 +9,7 @@ namespace WGDGameJam
 {
     public class Square
     {
-        Texture2D texture;
+        protected Texture2D texture;
         public Color colour;
         private bool blocking;
         private Texture2D food;
