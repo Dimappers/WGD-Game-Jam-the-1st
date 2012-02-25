@@ -9,7 +9,7 @@ namespace CowShooter
 {
     class WallManager
     {
-        const int screenHeight = 450;
+        const int floorLevel = 400;
         const int startingNumberOfBlocks = 5;
         const float wallLocation = 600;
 
@@ -34,7 +34,7 @@ namespace CowShooter
         }
         private Vector2 createPositionVector(int i)
         {
-            return new Vector2(wallLocation, screenHeight - wallTexture.Height * (i + 1));
+            return new Vector2(wallLocation, floorLevel - wallTexture.Height * (i + 1));
         }
         public void addBlock()
         {

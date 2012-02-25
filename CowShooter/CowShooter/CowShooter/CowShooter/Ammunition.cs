@@ -19,7 +19,11 @@ namespace CowShooter
         const float gravity = 5.0f;
         const float friction = 1.0f;
 
+        public Boolean isDead;
+
+        public Rectangle collisionRectangle;
         Catapult catapult;
+
         public Ammunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition, Texture2D texture)
         {
             this.catapult = catapult;
@@ -27,6 +31,7 @@ namespace CowShooter
             velocity = startVelocity;
             velocity.X = MathHelper.Clamp(velocity.X, 1.5f, 100f);
             position = startPosition;
+            isDead = false;
             flying = true;
         }
 
@@ -56,6 +61,7 @@ namespace CowShooter
                 }
             }
             position -= velocity;
+            checkOutOfBounds();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -78,9 +84,8 @@ namespace CowShooter
 
         private void remove()
         {
-
+            isDead = true;
         }
-
         
 
         public bool listenForGround()
@@ -99,6 +104,14 @@ namespace CowShooter
             {
                 velocity.Y = 0;
                 flying = false;
+            }
+        }
+
+        private void checkOutOfBounds()
+        {
+            if ((int)position.X + texture.Width < 0)
+            {
+                remove();
             }
         }
     }

@@ -19,6 +19,8 @@ namespace CowShooter
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Texture2D background;
+
         WallManager wallManager;
 
         Catapult catapult;
@@ -57,6 +59,7 @@ namespace CowShooter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            background = Content.Load<Texture2D>("art//bg");
             Texture2D wallTexture = Content.Load<Texture2D>("art//Wall_Block");
 
             cowManager.AddTexture(typeof(Cow), Content.Load<Texture2D>("art//Cow_Piece"));
@@ -103,14 +106,12 @@ namespace CowShooter
         {
             GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin();
-         
+
+            spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
             cowManager.Draw(spriteBatch);
             catapult.Draw(gameTime, spriteBatch);
-
-            spriteBatch.End();
-
-            spriteBatch.Begin();
             wallManager.Draw(spriteBatch);
+
             spriteBatch.End();
             // TODO: Add your drawing code here
 

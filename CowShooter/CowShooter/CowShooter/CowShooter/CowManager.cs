@@ -10,17 +10,19 @@ namespace CowShooter
 {
     class CowManager
     {
-        List<Cow> activeCows;
+        public List<Cow> activeCows;
         Dictionary<Type, Texture2D> cowTextures;
 
         public CowManager()
         {
             activeCows = new List<Cow>();
             cowTextures = new Dictionary<Type, Texture2D>();
+            GenerateCow();
+            activeCows.ElementAt<Cow>(0).JumpUp();
+            GenerateCow();
         }
-
         public void Update(GameTime gameTime)
-        {
+        {  
             foreach(Cow cow in activeCows)
             {
                 cow.Update(gameTime);
@@ -35,9 +37,9 @@ namespace CowShooter
             }
         }
 
-        public void AddTexture(Type asociatedType, Texture2D texture)
+        public void AddTexture(Type associatedType, Texture2D texture)
         {
-            cowTextures.Add(asociatedType, texture);
+            cowTextures.Add(associatedType, texture);
         }
 
         public Texture2D GetTexture(Type type)
@@ -45,7 +47,7 @@ namespace CowShooter
             return cowTextures[type];
         }
 
-        private void GenerateStartingCows()
+        private void GenerateCow()
         {
             Cow myCow = new Cow(this);
             activeCows.Add(myCow);
