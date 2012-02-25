@@ -99,13 +99,13 @@ namespace CowShooter
             if (isBeingDragged)
             {
                 isBeingDragged = false;
-            }
 
-            Vector2 fireTrajectory = (draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y)) * powerScale;
-            Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
-            Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture);
-            ammo.Add(newAmmo);
-            collisionManager.addAmmo(newAmmo);
+                Vector2 fireTrajectory = (draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y)) * powerScale;
+                Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
+                Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture);
+                ammo.Add(newAmmo);
+                collisionManager.addAmmo(newAmmo);
+            }
         }
 
         private void drawLine(Vector2 endPosition, SpriteBatch spriteBatch)
