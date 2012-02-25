@@ -49,15 +49,31 @@ namespace WGDGameJam
             this.food = null;
         }
         public void changeColour(Color colour) { this.colour = colour; }
-        public void Draw(SpriteBatch spriteBatch, CowPiece head)
+        public void Draw(SpriteBatch spriteBatch, CowPiece head, GameTime gameTime)
         {
             Vector2 position = new Vector2((-head.headPosition.X + xlocation) * 50, (-head.headPosition.Y + ylocation) * 50) + new Vector2(350, 250);
-            spriteBatch.Draw(texture, position, colour); 
+            spriteBatch.Draw(texture, position, null, colour, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f); 
+        }
+
+        public void drawFood(SpriteBatch spriteBatch, CowPiece head, GameTime gameTime)
+        {
             if (food != null)
             {
-                spriteBatch.Draw(food, position, Color.White);
+                Game1 g = mapManager.getGame();
+                float sizeOfScale = Math.Min(g.score * 0.05f, 0.5f);
+                float scale = (float)Math.Cos(((float)gameTime.TotalGameTime.TotalMilliseconds / 1000.0f) * Math.Log(Math.Log(g.score + 1))) * sizeOfScale;
+                if (g.score < 2)
+                {
+                    scale = 0.0f;
+                }
+                scale += 1.0f;
+                Vector2 position = new Vector2((-head.headPosition.X + xlocation) * 50, (-head.headPosition.Y + ylocation) * 50) + new Vector2(350, 250);
+                float scaledWidth = food.Width * scale;
+                float scaledHeight = food.Height * scale;
+                Rectangle destRect = new Rectangle((int)(position.X - ((scaledWidth -food.Width) / 2.0f)), (int)(position.Y - ((scaledHeight - food.Height) / 2.0f)), (int)scaledWidth, (int)scaledHeight);
+                spriteBatch.Draw(food, destRect, Color.White);
+                //spriteBatch.Draw(food, position, null, Color.White, 0.0f, Vector2.Zero, scale, SpriteEffects.None, 0.0f);
             }
-            
         }
     }
 }

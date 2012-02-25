@@ -135,7 +135,7 @@ namespace WGDGameJam
                     newWallHedgeType = HedgeType.vertical;
                 }
 
-                if (lastDirectionMoved != null && lastPoint.X < 19 && lastPoint.X > 0 && lastPoint.Y < 19 && lastPoint.Y > 0)
+                if (lastDirectionMoved != null && lastPoint.X < size - 1 && lastPoint.X > 0 && lastPoint.Y < size - 1 && lastPoint.Y > 0)
                 {
                     //Must create a corner piece
                     HedgeType cornerType = newWallHedgeType;
@@ -238,16 +238,25 @@ namespace WGDGameJam
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Game1 game)
+        public void Draw(SpriteBatch spriteBatch, Game1 game, GameTime gameTime)
         {
             for(int i=0; i<size; i++)
             {
                 for(int j=0; j<size; j++)
                 {
-                    map[i, j].Draw(spriteBatch, headPiece);
+                    map[i, j].Draw(spriteBatch, headPiece, gameTime);
+                }
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    map[i, j].drawFood(spriteBatch, headPiece, gameTime);
                 }
             }
         }
+
 
         private Square createHedge(int i, int j, HedgeType hedge)
         {
@@ -264,6 +273,12 @@ namespace WGDGameJam
             }
         }
         private Square createGrass(int i, int j){return new Square(i, j, grassTexture, Color.Green, false, this);}
+
+        public Game1 getGame()
+        {
+            return game;
+        }
+
 
         enum HedgeType{
             horizontal,
