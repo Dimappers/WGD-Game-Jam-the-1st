@@ -9,7 +9,7 @@ namespace WGDGameJam
 {
     public class MapManager
     {
-        Square[,] map;
+        public Square[,] map;
         Texture2D grassTexture;
         Texture2D hedgeTexture;
         Texture2D hedgeVertTexture;
@@ -21,8 +21,9 @@ namespace WGDGameJam
         Texture2D foodTexture;
         CowPiece headPiece;
         Random random = new Random();
-        int size;
+        public int size;
         Game1 game;
+        WallPiece[] wallpieces;
 
         public MapManager(int size, MapTextures mapTex, CowPiece head, Game1 game)
         {
@@ -58,21 +59,22 @@ namespace WGDGameJam
                 {
                     if (!map[i, j].wall)
                     {
-                        double randomnum = random.Next(200);
-                        double factor = 1.0f/(3.0f*game.score+1.0f);
-                        int rounded = (int)Math.Round((double)(randomnum*factor));
-                        if (rounded == 0)
-                        {
-                            int r = random.Next(255);
-                            int g = random.Next(255);
-                            int b = random.Next(255);
-                            map[i, j].changeColour(new Color(r, g, b));
-                        }
+                        map[i, j].changeColour(crazyFloor());
                     }
                 }
             }
         }
-
+        private Color crazyFloor()
+        {
+            double randomnum = random.Next(200);
+            double factor = 1.0f / (3.0f * game.score + 1.0f);
+            int rounded = (int)Math.Round((double)(randomnum * factor));
+            if (rounded != 0) {return Color.Green;}
+            int r = random.Next(255);
+            int g = random.Next(255);
+            int b = random.Next(255);
+            return new Color(r, g, b);
+        }
         public void createMap()
         {
             for (int i = 0; i < size; i++)
@@ -95,9 +97,9 @@ namespace WGDGameJam
                 GenerateFood();
             }
 
-
-            for(int i = 0; i <25; ++i)
-                GenerateWallShape();   
+            wallpieces = new WallPiece[5];
+            for(int i = 0; i <wallpieces.Length; ++i)
+                wallpieces[i] = GenerateWallShape();   
         }
 
         private void GenerateFood()
@@ -113,128 +115,32 @@ namespace WGDGameJam
             map[xPos, yPos].giveFood(foodTexture);
         }
 
-        private void GenerateWallShape()
+        private WallPiece GenerateWallShape()
         {
             int numberOfVertices = random.Next(1,4); //number of times wall changes direction - may want to tie this in to psychedelic factor
-            Nullable<DirectionToMove> lastDirectionMoved = null;
-            Point lastPoint = new Point(random.Next(size), random.Next(size));
-            for(int verticesCreated = 0; verticesCreated <= numberOfVertices; ++verticesCreated)
+            Point lastPoint;
+            do { lastPoint = new Point(1 + random.Next(size - 1), 1 + random.Next(size - 1)); }
+            while (map[lastPoint.X, lastPoint.Y].isBlocking());
+            return new WallHead(lastPoint.X, lastPoint.Y, hedgeTexture, Color.Brown, this, numberOfVertices);
+        }
+        public void MoveWalls()
+        {
+            int boolean;
+            for (int i = 0; i < wallpieces.Length; i++)
             {
-                DirectionToMove newDirectionToMove;
-                do {
-                    newDirectionToMove = (DirectionToMove)random.Next(4);
-                } while(newDirectionToMove == lastDirectionMoved);
-
-                HedgeType newWallHedgeType;
-                if(newDirectionToMove == DirectionToMove.left || newDirectionToMove == DirectionToMove.right)
+                boolean = random.Next((int)(0/*8*/ / (1 + game.score)));
+                if (boolean == 0)
                 {
-                    newWallHedgeType = HedgeType.horizontal;
-                }
-                else
-                {
-                    newWallHedgeType = HedgeType.vertical;
-                }
-
-                if (lastDirectionMoved != null && lastPoint.X < size - 1 && lastPoint.X > 0 && lastPoint.Y < size - 1 && lastPoint.Y > 0)
-                {
-                    //Must create a corner piece
-                    HedgeType cornerType = newWallHedgeType;
-                    switch(lastDirectionMoved)
+                    int directionnumber = random.Next(4);
+                    DirectionToMove direction = DirectionToMove.up;
+                    switch (directionnumber)
                     {
-                        case DirectionToMove.down:
-                            switch(newDirectionToMove)
-                            {
-                                case DirectionToMove.left:
-                                    cornerType = HedgeType.corner_topleft;
-                                    break;
-
-                                case DirectionToMove.right:
-                                    cornerType = HedgeType.corner_topright;
-                                    break;
-                            }
-                            break;
-                        case DirectionToMove.up:
-                            switch(newDirectionToMove)
-                            {
-                                case DirectionToMove.left:
-                                    cornerType = HedgeType.corner_bottomleft; 
-                                    break;
-
-                                case DirectionToMove.right:
-                                    cornerType = HedgeType.corner_bottomright; //bottomright
-                                    break;
-                            }
-                            break;
-
-                        case DirectionToMove.left:
-                            switch(newDirectionToMove)
-                            {
-                                case DirectionToMove.up:
-                                    cornerType = HedgeType.corner_topright;
-                                    break;
-
-                                case DirectionToMove.down:
-                                    cornerType = HedgeType.corner_bottomright;
-                                    break;
-                            }
-                            break;
-                            
-                        case DirectionToMove.right:
-                            switch(newDirectionToMove)
-                            {
-                                case DirectionToMove.up:
-                                    cornerType = HedgeType.corner_topleft;
-                                    break;
-
-                                case DirectionToMove.down:
-                                    cornerType = HedgeType.corner_bottomleft;
-                                    break;
-                            }
-                            break;
+                        case 0: direction = DirectionToMove.down; break;
+                        case 1: direction = DirectionToMove.right; break;
+                        case 2: direction = DirectionToMove.left; break;
                     }
-
-                    //Now make the relevant corner
-                    map[lastPoint.X, lastPoint.Y] = createHedge(lastPoint.X, lastPoint.Y, cornerType);
+                    ((WallHead)wallpieces[i]).MakeMove(direction);
                 }
-
-                Point direction = Point.Zero;
-                switch (newDirectionToMove)
-                {
-                    case DirectionToMove.left:
-                        direction = new Point(-1, 0);
-                        break;
-
-                    case DirectionToMove.right:
-                        direction = new Point(1, 0);
-                        break;
-
-                    case DirectionToMove.up:
-                        direction = new Point(0, -1);
-                        break;
-
-                    case DirectionToMove.down:
-                        direction = new Point(0, 1);
-                        break;
-                }
-                int length = random.Next(2, 6);
-                for (int i = 1; i < length; ++i)
-                {
-                    Point pointToMakeWall = new Point(lastPoint.X + direction.X * i, lastPoint.Y + direction.Y * i);
-                    if (pointToMakeWall.X < size - 1 && pointToMakeWall.X > 0 && pointToMakeWall.Y < size -1 && pointToMakeWall.Y > 0 && pointToMakeWall != CowPiece.startPoint)
-                    {
-                        if (map[pointToMakeWall.X, pointToMakeWall.Y].isBlocking())
-                        {
-                            map[pointToMakeWall.X, pointToMakeWall.Y] = createHedge(pointToMakeWall.X, pointToMakeWall.Y, HedgeType.crisscross);
-                        }
-                        else
-                        {
-                            map[pointToMakeWall.X, pointToMakeWall.Y] = createHedge(pointToMakeWall.X, pointToMakeWall.Y, newWallHedgeType);
-                        }
-                    }
-                }
-
-                lastPoint = new Point(lastPoint.X + direction.X * length, lastPoint.Y + direction.Y * length);
-                lastDirectionMoved = newDirectionToMove;
             }
         }
 
@@ -257,22 +163,24 @@ namespace WGDGameJam
             }
         }
 
-
-        private Square createHedge(int i, int j, HedgeType hedge)
+        public WallPiece createHedge(int i, int j, HedgeType hedge)
         {
             switch(hedge)
             {
-                case HedgeType.horizontal : {return new Square(i, j, hedgeTexture, Color.White, true, this); }
-                case HedgeType.vertical : {return new Square(i, j, hedgeVertTexture, Color.White, true, this); }
-                case HedgeType.corner_topleft : {return new Square(i, j, hedgeCornerTexturetl, Color.White, true, this);}
-                case HedgeType.corner_topright : {return new Square(i, j, hedgeCornerTexturetr, Color.White, true, this);}
-                case HedgeType.corner_bottomleft : {return new Square(i, j, hedgeCornerTexturebl, Color.White, true, this);}
-                case HedgeType.corner_bottomright: {return new Square(i, j, hedgeCornerTexturebr, Color.White, true, this); }
-                case HedgeType.crisscross: { return new Square(i, j, hedgeCrossTexture, Color.White, true, this); }
+                case HedgeType.horizontal : {return new WallPiece(i, j, hedgeTexture, Color.Brown, this); }
+                case HedgeType.vertical: { return new WallPiece(i, j, hedgeVertTexture, Color.Brown, this); }
+                case HedgeType.corner_topleft: { return new WallPiece(i, j, hedgeCornerTexturetl, Color.Brown, this); }
+                case HedgeType.corner_topright: { return new WallPiece(i, j, hedgeCornerTexturetr, Color.Brown, this); }
+                case HedgeType.corner_bottomleft: { return new WallPiece(i, j, hedgeCornerTexturebl, Color.Brown, this); }
+                case HedgeType.corner_bottomright: { return new WallPiece(i, j, hedgeCornerTexturebr, Color.Brown, this); }
+                case HedgeType.crisscross: { return new WallPiece(i, j, hedgeCrossTexture, Color.Brown, this); }
                 default: return null;
             }
         }
-        private Square createGrass(int i, int j){return new Square(i, j, grassTexture, Color.Green, false, this);}
+        public Square createGrass(int i, int j)
+        {
+            return new Square(i, j, grassTexture, crazyFloor(), false, this);
+        }
 
         public Game1 getGame()
         {
@@ -280,7 +188,7 @@ namespace WGDGameJam
         }
 
 
-        enum HedgeType{
+        public enum HedgeType{
             horizontal,
             vertical,
             corner_topleft,

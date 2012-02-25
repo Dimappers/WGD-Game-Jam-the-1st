@@ -27,7 +27,6 @@ namespace WGDGameJam
         MapManager mapManager;
 
         int timeSinceLastJump = 0;
-        double angle = Math.PI/3.0;
 
         KeyboardState oldState;
         KeyboardState newState;
@@ -36,6 +35,8 @@ namespace WGDGameJam
 
         public int score;
         SpriteFont font;
+
+        Random random = new Random();
 
         public Game1()
         {
@@ -144,12 +145,12 @@ namespace WGDGameJam
                 else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
 
                 int randomTime = 500 + (int)(Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 1000.0f) * 12 * score);
-                angle += Math.PI / 10;
 
                 if (timeSinceLastJump > randomTime)
                 {
                     head.Update(gameTime, direction, new Point(-1, -1));
                     timeSinceLastJump = 0;
+                    if(random.Next((int)(10/(score+1)))==0) {mapManager.MoveWalls();}
                 }
 
                 if (head.isDead())
@@ -160,6 +161,7 @@ namespace WGDGameJam
                 oldState = newState;
                 base.Update(gameTime);
             }
+        
             else
             {
                 if (newState.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
