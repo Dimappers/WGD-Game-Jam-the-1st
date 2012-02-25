@@ -22,7 +22,7 @@ namespace WGDGameJam
         public void Move(int x, int y)
         {
             if (next != null) { next.Move(xlocation, ylocation); }
-            else { mapManager.map[xlocation, ylocation] = mapManager.createGrass(xlocation, ylocation); }
+            else { mapManager.map[xlocation, ylocation] = mapManager.createGrass(xlocation, ylocation, false); }
             this.xlocation = x;
             this.ylocation = y;
             mapManager.map[xlocation, ylocation] = this;

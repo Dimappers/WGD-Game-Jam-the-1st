@@ -174,10 +174,12 @@ namespace WGDGameJam
                     break;
                 }
             }
+            Square newSquare = mapManager.map[newx, newy];
+            if (newSquare.containsFood()) { newSquare.takeFood(); mapManager.GenerateFood(); }
             if (newx != xlocation || newy != ylocation)
             {
                 if (next != null) { next.Move(xlocation, ylocation); }
-                else { mapManager.map[xlocation, ylocation] = mapManager.createGrass(xlocation, ylocation); }
+                else { mapManager.map[xlocation, ylocation] = mapManager.createGrass(xlocation, ylocation, false); }
                 xlocation = newx;
                 ylocation = newy;
                 mapManager.map[newx, newy] = this;
@@ -185,7 +187,7 @@ namespace WGDGameJam
         }
         private bool isValid(int x, int y)
         {
-            return (x > 0 && x < mapManager.size -1 && y > 0 && y < mapManager.size - 1);
+            return (x > 0 && x < mapManager.size - 1 && y > 0 && y < mapManager.size - 1);
         }
     }
 }

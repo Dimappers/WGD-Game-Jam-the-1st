@@ -59,7 +59,8 @@ namespace WGDGameJam
                 {
                     if (!map[i, j].wall)
                     {
-                        map[i, j].changeColour(crazyFloor());
+                        Color newColour = crazyFloor();
+                        if (newColour != Color.Black) { map[i, j].changeColour(newColour); }
                     }
                 }
             }
@@ -69,7 +70,7 @@ namespace WGDGameJam
             double randomnum = random.Next(200);
             double factor = 1.0f / (3.0f * game.score + 1.0f);
             int rounded = (int)Math.Round((double)(randomnum * factor));
-            if (rounded != 0) {return Color.Green;}
+            if (rounded != 0) {return Color.Black;}
             int r = random.Next(255);
             int g = random.Next(255);
             int b = random.Next(255);
@@ -88,7 +89,7 @@ namespace WGDGameJam
                     else if (i == size - 1 && j == size - 1) { map[i, j] = createHedge(i, j, HedgeType.corner_topleft); }
                     else if (i == 0 || i == size - 1) { map[i, j] = createHedge(i, j, HedgeType.vertical); }
                     else if (j == 0 || j == size - 1) { map[i, j] = createHedge(i, j, HedgeType.horizontal); }
-                    else { map[i, j] = createGrass(i, j); }
+                    else { map[i, j] = createGrass(i, j, true); }
                 }
             }
 
@@ -102,7 +103,7 @@ namespace WGDGameJam
                 wallpieces[i] = GenerateWallShape();   
         }
 
-        private void GenerateFood()
+        public void GenerateFood()
         {
             int xPos, yPos;
             do
@@ -177,16 +178,31 @@ namespace WGDGameJam
                 default: return null;
             }
         }
-        public Square createGrass(int i, int j)
+        public Square createGrass(int i, int j, bool reset)
         {
-            return new Square(i, j, grassTexture, crazyFloor(), false, this);
+            Color newColour;
+            //for when resetting map to make everything green
+            if(reset) {return new Square(i, j, grassTexture, Color.Green, false, this);}
+            //for when colouring a square that was a wall
+            else if (map[i, j].colour == Color.Brown) 
+            {
+                newColour = crazyFloor();
+                if (newColour == Color.Black) { newColour = Color.Green; }
+            }
+            //other times
+            else
+            {
+                newColour = crazyFloor();
+                if (newColour == Color.Black) { newColour = map[i, j].colour; }
+            }
+            return new Square(i, j, grassTexture, newColour, false, this);
         }
 
         public Game1 getGame()
         {
             return game;
-        }
 
+        }
 
         public enum HedgeType{
             horizontal,
