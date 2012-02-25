@@ -100,11 +100,8 @@ namespace CowShooter
             spriteBatch.Begin();
          
             cowManager.Draw(spriteBatch);
-
-            spriteBatch.End();
-
-            spriteBatch.Begin();
             wallManager.Draw(spriteBatch);
+
             spriteBatch.End();
             // TODO: Add your drawing code here
 
