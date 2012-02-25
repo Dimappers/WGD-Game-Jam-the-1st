@@ -110,7 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Amunition.cs" />
+    <Compile Include="Ammunition.cs" />
     <Compile Include="Catapult.cs" />
     <Compile Include="ICollisionObject.cs" />
     <Compile Include="WallManager.cs" />

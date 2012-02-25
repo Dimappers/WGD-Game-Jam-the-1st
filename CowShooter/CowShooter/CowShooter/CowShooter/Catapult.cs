@@ -23,12 +23,17 @@ namespace CowShooter
         MouseState oldMouseState, newMouseState;
         Vector2 draggedToPoint;
 
+        List<Ammunition> ammo;
+
         public Catapult(Texture2D catapultTexture, Texture2D lineTexture)
         {
             this.catapultTexture = catapultTexture;
             this.lineTexture = lineTexture;
             oldMouseState = Mouse.GetState();
             newMouseState = oldMouseState;
+
+            // Setup the list of shot ammo
+            ammo = new List<Ammunition>();
         }
 
         public void Update(GameTime gameTime)
@@ -83,6 +88,8 @@ namespace CowShooter
 
             Vector2 fireTrajectory = draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y);
             Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
+
+            ammo.Add(new Ammunition(this, fireTrajectory));
         }
 
         private void drawLine(Vector2 endPosition, SpriteBatch spriteBatch)
