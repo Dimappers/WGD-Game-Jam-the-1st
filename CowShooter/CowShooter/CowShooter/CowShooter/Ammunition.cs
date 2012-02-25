@@ -23,6 +23,7 @@ namespace CowShooter
         float timeTillDeath;
 
         Catapult catapult;
+        float angle;
 
         public Ammunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition, Texture2D texture)
         {
@@ -34,6 +35,8 @@ namespace CowShooter
             timeTillDeath = -10f;
             isDead = false;
             flying = true;
+
+            angle = (float)Math.Atan2(startVelocity.Y, startVelocity.X);
         }
 
         public void Update(GameTime gameTime)
@@ -49,6 +52,7 @@ namespace CowShooter
                 {
                     velocity.X = 0;
                 }
+                angle = (float)Math.Atan2(velocity.Y, velocity.X);
             }
             else
             {
@@ -77,7 +81,7 @@ namespace CowShooter
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, position, null, Color.White, angle,Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
         }
 
         public Rectangle getCollisionRectangle()

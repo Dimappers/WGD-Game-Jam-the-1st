@@ -19,12 +19,16 @@ namespace CowShooter
         float timeTillNextCow;
         Random randomNumber;
 
-        public CowManager()
+        CollisionManager collisionManager;
+
+        public CowManager(CollisionManager collisionManager)
         {
+            this.collisionManager = collisionManager;
             activeCows = new List<Cow>();
             cowTextures = new Dictionary<Type, Texture2D>();
             GenerateCow();
             activeCows.ElementAt<Cow>(0).JumpUp();
+
             GenerateCow();
 
             randomNumber = new Random();
@@ -67,6 +71,12 @@ namespace CowShooter
         {
             Cow myCow = new Cow(this);
             activeCows.Add(myCow);
+            collisionManager.addCow(myCow);
+        }
+
+        public void RemoveCow(Cow removeCow)
+        {
+            activeCows.Remove(removeCow);
         }
     }
 }
