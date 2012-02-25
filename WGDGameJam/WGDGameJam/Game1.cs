@@ -32,7 +32,7 @@ namespace WGDGameJam
         KeyboardState newState;
 
         DirectionToMove direction;
-
+        double totalMiliStart =-1;
         public int score;
         SpriteFont font;
 
@@ -209,7 +209,7 @@ namespace WGDGameJam
                 GraphicsDevice.Clear(Color.DarkGreen);
                 spriteBatch.Begin();
 
-                float scaleCentre = Math.Max(0.75f, 1 - (score) * 0.05f);
+                /*float scaleCentre = Math.Max(0.75f, 1 - (score) * 0.05f);
                 float scaleFactor = 1.0f;
                 float scaleConstant = 2.0f - scaleCentre;
 
@@ -217,8 +217,31 @@ namespace WGDGameJam
                 float cosElement = (float)Math.Cos((float)gameTime.TotalGameTime.TotalMilliseconds / 1000.0f * Math.Log(Math.Log(score + 2)));
                 cosElement += scaleCentre;
                 cosElement *= scaleFactor;
-                float scale = cosElement * scaleCentre + scaleConstant;
-                scale = 2.0f;
+                float scale = (cosElement * scaleCentre) + 1.25f;*/
+                //float cosElement = (float)Math.Cos((float)gameTime.TotalGameTime.TotalMilliseconds / 1000.0f * Math.Log(Math.Log(score + 2)));
+                //float scale = (cosElement + 1.25f) * Math.Min(2.0f, (score * 0.05f) + 1.0f);
+
+                //scale = cosElement + 1.25f * scaleCentre;
+                /*float scaleCentre = Math.Max(0.75f, 1 - (score) * 0.05f);
+                float scaleFactor = 1.0f;
+                float scaleConstant = 2.0f - scaleCentre;
+
+                Console.WriteLine(scaleCentre + ", " + scaleConstant);
+                float cosElement = (float)Math.Cos((float)gameTime.TotalGameTime.TotalMilliseconds / 1000.0f * Math.Log(Math.Log(score + 2)));
+                cosElement += scaleCentre;
+                cosElement *= scaleFactor;
+                float scale = cosElement * scaleCentre + scaleConstant;*/
+                float scale = 1.0f;
+                if (score > 8)
+                {
+                    if (totalMiliStart < 0)
+                    {
+                        totalMiliStart = gameTime.TotalGameTime.TotalMilliseconds;
+                    }
+                    float cosElement = (float)Math.Sin((float)(gameTime.TotalGameTime.TotalMilliseconds - totalMiliStart) / 1000.0f * Math.Log(Math.Log(score - 6)));
+                    scale = (cosElement * 0.75f) + 1.25f;
+                }
+
                 float scaledWidth = 800 * scale;
                 float scaledHeight = 600 * scale;
                 
