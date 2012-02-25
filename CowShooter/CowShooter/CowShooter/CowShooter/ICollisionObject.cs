@@ -9,10 +9,10 @@ namespace CowShooter
 {
     interface ICollisionObject
     {
-        public Rectangle getCollisionRectangle();
+        Rectangle getCollisionRectangle();
 
-        public bool listenForGround();
-        public void NotifyOfCollision(ICollisionObject otherObject);
-        public void NotifyGroundCollision();
+        bool listenForGround();
+        void NotifyOfCollision(ICollisionObject otherObject);
+        void NotifyGroundCollision();
     }
 }
