@@ -54,7 +54,7 @@ namespace WGDGameJam
             spriteBatch.Draw(texture, position, colour); 
             if (food != null)
             {
-                spriteBatch.Draw(food, position + new Vector2(0,0), Color.White);
+                spriteBatch.Draw(food, position, Color.White);
             }
             
         }
