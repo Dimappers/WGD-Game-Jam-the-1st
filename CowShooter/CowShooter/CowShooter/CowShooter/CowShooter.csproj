@@ -114,6 +114,7 @@
     <Compile Include="WallManager.cs" />
     <Compile Include="Cow.cs" />
     <Compile Include="WallBlock.cs" />
+    <Compile Include="CowManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
