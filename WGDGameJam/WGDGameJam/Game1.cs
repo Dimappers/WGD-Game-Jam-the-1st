@@ -155,11 +155,21 @@ namespace WGDGameJam
                     gameMode = GameMode.endScreen;
                 }
 
-
                 oldState = newState;
                 base.Update(gameTime);
             }
         }
+            else
+            {
+                if (newState.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
+                {
+                    gameMode = GameMode.mainGame;
+                    reset();
+                    //TODO: Write reset methods
+                }
+            }
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -175,6 +185,7 @@ namespace WGDGameJam
             {
                 spriteBatch.DrawString(font, "Magic Mooshrooms", new Vector2(50, 200), Color.IndianRed);
                 spriteBatch.DrawString(font, "By Kim, Tom and Mark", new Vector2(50, 300), Color.Indigo);
+                spriteBatch.DrawString(font, "Press space to start", new Vector2(50, 400), Color.DarkBlue);
             }
             else if (gameMode == GameMode.mainGame)
             {
@@ -187,6 +198,7 @@ namespace WGDGameJam
                 GraphicsDevice.Clear(Color.PowderBlue);
                 spriteBatch.DrawString(font, "GAME OVER", new Vector2(200, 200), Color.Red);
                 spriteBatch.DrawString(font, "Score: " + score, new Vector2(200, 300), Color.Red);
+                spriteBatch.DrawString(font, "Press space to restart", new Vector2(200, 400), Color.DarkGreen);
             }
             spriteBatch.End();
 
@@ -194,6 +206,13 @@ namespace WGDGameJam
         }
 
         public void addToScore() {score++;}
+
+        private void reset()
+        {
+            mapManager.reset();
+            head.reset();
+            score = 0;
+        }
     }
 
     public struct MapTextures
