@@ -81,6 +81,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="drawing\food.png">
+      <Name>food</Name>
+	  <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="drawing\hedge_v.png">
       <Name>hedge_v</Name>
       <Importer>TextureImporter</Importer>

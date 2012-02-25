@@ -34,7 +34,6 @@ namespace WGDGameJam
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
-            
         }
 
         /// <summary>
@@ -66,14 +65,15 @@ namespace WGDGameJam
             Texture2D tailTexture = Content.Load<Texture2D>("drawing//Cow_Bum");
             mapTexs.grassTexture = Content.Load<Texture2D>("drawing//grass");
             mapTexs.hedgeTexture = Content.Load<Texture2D>("drawing//hedge");
-            mapTexs.hedgeVertTexture = Content.Load<Texture2D>("drawing//hedge_v");
+            mapTexs.hedgeVertTexture = Content.Load<Texture2D>("drawing/hedge_v");
+            mapTexs.foodTexture = Content.Load<Texture2D>("drawing//food");
             mapTexs.hedgeCornerTexturetl = Content.Load<Texture2D>("drawing//hedge_corner_tl");
             mapTexs.hedgeCornerTexturetr = Content.Load<Texture2D>("drawing//hedge_corner_tr");
             mapTexs.hedgeCornerTexturebl = Content.Load<Texture2D>("drawing//hedge_corner_bl");
             mapTexs.hedgeCornerTexturebr = Content.Load<Texture2D>("drawing//hedge_corner_br");
-            mapTexs.foodTexture = Content.Load<Texture2D>("drawing//grass");
+            mapTexs.foodTexture = Content.Load<Texture2D>("drawing//food");
 
-            head = new HeadPiece(headTexture, mainTexture);
+            head = new HeadPiece(headTexture, mainTexture, tailTexture, this);
             CowPiece tail = new CowPiece(mainTexture, tailTexture);
             CowPiece a = new CowPiece(mainTexture, tailTexture);
             CowPiece b = new CowPiece(mainTexture, tailTexture);
@@ -88,6 +88,11 @@ namespace WGDGameJam
             mapManager = new MapManager(20, mapTexs, head);
 
             // TODO: use this.Content to load your game content here
+        }
+
+        public MapManager GetMapManager()
+        {
+            return mapManager;
         }
 
         /// <summary>
@@ -149,7 +154,7 @@ namespace WGDGameJam
         }
     }
 
-    struct MapTextures
+    public struct MapTextures
     {
         public Texture2D grassTexture;
         public Texture2D hedgeTexture;

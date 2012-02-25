@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WGDGameJam
 {
-    class MapManager
+    public class MapManager
     {
         Square[,] map;
         Texture2D grassTexture;
@@ -38,6 +38,17 @@ namespace WGDGameJam
             createMap();
         }
 
+        public bool containsFood(Point location)
+        {
+            return map[location.X, location.Y].containsFood();
+        }
+
+        public void removeFood(Point location)
+        {
+            map[location.X, location.Y].takeFood();
+            GenerateFood();
+        }
+
         public void createMap()
         {
             for (int i = 0; i < size; i++)
@@ -54,6 +65,24 @@ namespace WGDGameJam
                     else { map[i, j] = createGrass(i, j); }
                 }
             }
+
+            for (int i = 0; i < 10; ++i)
+            {
+                GenerateFood();
+            }
+        }
+
+        public void GenerateFood()
+        {
+            int xPos, yPos;
+            do
+            {
+                xPos = random.Next(size);
+                yPos = random.Next(size);
+                //TODO: Check no snake here
+            }  while (map[xPos, yPos].isBlocking());
+
+            map[xPos, yPos].giveFood(foodTexture);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -71,22 +100,21 @@ namespace WGDGameJam
         {
             switch(hedge)
             {
-                case HedgeType.horizontal : {return new Square(i, j, hedgeTexture, Color.White, true, false); }
-                case HedgeType.vertical : {return new Square(i, j, hedgeVertTexture, Color.White, true, false); }
-                case HedgeType.corner_topleft : {return new Square(i, j, hedgeCornerTexturetl, Color.White, true, false);}
-                case HedgeType.corner_topright : {return new Square(i, j, hedgeCornerTexturetr, Color.White, true, false);}
-                case HedgeType.corner_bottomleft : {return new Square(i, j, hedgeCornerTexturebl, Color.White, true, false);}
-                case HedgeType.corner_bottomright: {return new Square(i, j, hedgeCornerTexturebr, Color.White, true, false); }
+                case HedgeType.horizontal : {return new Square(i, j, hedgeTexture, Color.White, true); }
+                case HedgeType.vertical : {return new Square(i, j, hedgeVertTexture, Color.White, true); }
+                case HedgeType.corner_topleft : {return new Square(i, j, hedgeCornerTexturetl, Color.White, true);}
+                case HedgeType.corner_topright : {return new Square(i, j, hedgeCornerTexturetr, Color.White, true);}
+                case HedgeType.corner_bottomleft : {return new Square(i, j, hedgeCornerTexturebl, Color.White, true);}
+                case HedgeType.corner_bottomright: {return new Square(i, j, hedgeCornerTexturebr, Color.White, true); }
                 default: return null;
             }
         }
-        private Square createFood(int i, int j) { return new Square(i, j, foodTexture, Color.Green, false, true); }
         private Square createGrass(int i, int j)
         {
             int r = random.Next(255);
             int g = random.Next(255);
             int b = random.Next(255); 
-            return new Square(i, j, grassTexture, new Color(r,g,b), false, false);
+            return new Square(i, j, grassTexture, new Color(r,g,b), false);
         }
 
         enum HedgeType{
