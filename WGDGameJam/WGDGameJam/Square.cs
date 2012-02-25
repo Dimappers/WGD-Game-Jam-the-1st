@@ -47,7 +47,7 @@ namespace WGDGameJam
 
         public void Draw(SpriteBatch spriteBatch, CowPiece head)
         {
-            Vector2 position = new Vector2((- head.headPosition.X + xlocation) * 50, (- head.headPosition.Y + ylocation) * 50);
+            Vector2 position = new Vector2((-head.headPosition.X + xlocation) * 50, (-head.headPosition.Y + ylocation) * 50) + new Vector2(350, 250);
             spriteBatch.Draw(texture, position, colour); 
             if (food != null)
             {
