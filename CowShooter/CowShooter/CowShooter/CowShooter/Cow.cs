@@ -26,10 +26,14 @@ namespace CowShooter
         {
             cowPosition = new Vector2(0, floorLevel); //32 is height of cow_piece
             this.manager = manager;
-            texture = manager.GetTexture(GetType());
+            
         }
         public virtual void Update(GameTime gameTime)
         {
+            if (texture == null)
+            {
+                texture = manager.GetTexture(GetType());
+            }
             this.gameTime = gameTime;
             Move(velocity_h, velocity_v);
             if(velocity_v!=0)Console.WriteLine("h: " + velocity_h + " v: " + velocity_v);
