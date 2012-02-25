@@ -34,7 +34,6 @@ namespace WGDGameJam
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
-            
         }
 
         /// <summary>
@@ -65,9 +64,9 @@ namespace WGDGameJam
             Texture2D tailTexture = Content.Load<Texture2D>("drawing//Cow_Bum");
             Texture2D grassTexture = Content.Load<Texture2D>("drawing//grass");
             Texture2D hedgeTexture = Content.Load<Texture2D>("drawing//hedge");
-            Texture2D foodTexture = Content.Load<Texture2D>("drawing//grass");
+            Texture2D foodTexture = Content.Load<Texture2D>("drawing//food");
 
-            head = new HeadPiece(headTexture, mainTexture);
+            head = new HeadPiece(headTexture, mainTexture, tailTexture, this);
             CowPiece tail = new CowPiece(mainTexture, tailTexture);
             CowPiece a = new CowPiece(mainTexture, tailTexture);
             CowPiece b = new CowPiece(mainTexture, tailTexture);
@@ -82,6 +81,11 @@ namespace WGDGameJam
             mapManager = new MapManager(100, grassTexture, hedgeTexture, foodTexture, head);
 
             // TODO: use this.Content to load your game content here
+        }
+
+        public MapManager GetMapManager()
+        {
+            return mapManager;
         }
 
         /// <summary>

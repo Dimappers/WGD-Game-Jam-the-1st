@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WGDGameJam
 {
-    class CowPiece
+    public class CowPiece
     {
         Point startPoint = new Point(5, 5);
         Vector2 squareSize = new Vector2(50, 50);
@@ -19,7 +19,7 @@ namespace WGDGameJam
         protected DirectionToMove lastMoveDirection;
         protected bool isTail;
 
-        Point location;
+        protected Point location;
         public Point headPosition;
 
         public CowPiece(Texture2D texture, Texture2D tailTexture)
@@ -196,7 +196,7 @@ namespace WGDGameJam
         }
     }
 
-    enum DirectionToMove
+    public enum DirectionToMove
     {
         up,
         down,
