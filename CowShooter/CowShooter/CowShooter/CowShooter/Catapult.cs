@@ -11,8 +11,8 @@ namespace CowShooter
 {
     class Catapult
     {
-        const Vector2 positionToSpawn = new Vector2(10, 10);
-        const Rectangle draggablePosition = new Rectangle(0,0, 50,50);
+        Vector2 positionToSpawn = new Vector2(10, 10);
+        Rectangle draggablePosition = new Rectangle(0,0, 50,50);
         const int widthOfLine = 5;
         
         Texture2D catapultTexture;
