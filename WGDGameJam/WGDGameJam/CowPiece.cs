@@ -164,7 +164,7 @@ namespace WGDGameJam
         {
             
             Point offsetFromHead = new Point(location.X - headPosition.X, location.Y - headPosition.Y);
-            Vector2 position = middle + new Vector2(squareSize.X * offsetFromHead.X, squareSize.Y * offsetFromHead.Y);
+            Vector2 position = middle + new Vector2(squareSize.X * offsetFromHead.X, squareSize.Y * offsetFromHead.Y) + new Vector2(400, 300);
 
             Texture2D texToDraw;
             if (isTail)

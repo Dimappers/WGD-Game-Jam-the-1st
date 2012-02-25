@@ -19,6 +19,8 @@ namespace WGDGameJam
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        RenderTarget2D standardRenderTarget;
+
         GameMode gameMode;
 
         HeadPiece head;
@@ -55,6 +57,7 @@ namespace WGDGameJam
         {
             // TODO: Add your initialization logic here
             oldState = Keyboard.GetState();
+            standardRenderTarget = new RenderTarget2D(GraphicsDevice, 1600, 1200);
             newState = oldState;
             base.Initialize();
             score = 0;    
@@ -96,7 +99,7 @@ namespace WGDGameJam
             head.AttachPiece(c);
             head.AttachPiece(d);*/
 
-            mapManager = new MapManager(20, mapTexs, head, this);
+            mapManager = new MapManager(40, mapTexs, head, this);
 
             // TODO: use this.Content to load your game content here
         }
@@ -140,8 +143,7 @@ namespace WGDGameJam
                 else if (newState.IsKeyDown(Keys.Up) && oldState.IsKeyUp(Keys.Up)) { direction = DirectionToMove.up; }
                 else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
 
-                int randomTime = 500 + (int)(Math.Sin(angle) * 12 * score);
-                Console.WriteLine(randomTime);
+                int randomTime = 500 + (int)(Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 1000.0f) * 12 * score);
                 angle += Math.PI / 10;
 
                 if (timeSinceLastJump > randomTime)
@@ -158,7 +160,6 @@ namespace WGDGameJam
                 oldState = newState;
                 base.Update(gameTime);
             }
-        }
             else
             {
                 if (newState.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
@@ -176,31 +177,64 @@ namespace WGDGameJam
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkGreen);
-
-            // TODO: Add your drawing code here
-
-            spriteBatch.Begin();
+            //GraphicsDevice.Clear(Color.DarkGreen);
             if (gameMode == GameMode.frontScreen)
             {
-                spriteBatch.DrawString(font, "Magic Mooshrooms", new Vector2(50, 200), Color.IndianRed);
+                GraphicsDevice.Clear(Color.Blue);
+                spriteBatch.Begin();
+                spriteBatch.DrawString(font, "Magic Mooshmooms", new Vector2(50, 200), Color.IndianRed);
                 spriteBatch.DrawString(font, "By Kim, Tom and Mark", new Vector2(50, 300), Color.Indigo);
                 spriteBatch.DrawString(font, "Press space to start", new Vector2(50, 400), Color.DarkBlue);
+                spriteBatch.End();
             }
             else if (gameMode == GameMode.mainGame)
             {
+                //Render the game to a render target
+                GraphicsDevice.SetRenderTarget(standardRenderTarget);
+                GraphicsDevice.Clear(Color.DarkGreen);
+
+                spriteBatch.Begin();
                 mapManager.Draw(spriteBatch, gameTime);
                 head.Draw(gameTime, spriteBatch);
+                
+
+                spriteBatch.End();
+
+                Texture2D screen = (Texture2D)standardRenderTarget;
+              
+                //Render the game on to the back buffer scaling as required
+                GraphicsDevice.SetRenderTarget(null); //set the back buffer as our render target
+                GraphicsDevice.Clear(Color.DarkGreen);
+                spriteBatch.Begin();
+
+                float scaleCentre = Math.Max(0.75f, 1 - (score) * 0.05f);
+                float scaleFactor = 1.0f;
+                float scaleConstant = 2.0f - scaleCentre;
+
+                Console.WriteLine(scaleCentre + ", " + scaleConstant);
+                float cosElement = (float)Math.Cos((float)gameTime.TotalGameTime.TotalMilliseconds / 1000.0f * Math.Log(Math.Log(score + 2)));
+                cosElement += scaleCentre;
+                cosElement *= scaleFactor;
+                float scale = cosElement * scaleCentre + scaleConstant;
+                scale = 1.0f;
+                float scaledWidth = 800 * scale;
+                float scaledHeight = 600 * scale;
+                
+                Rectangle sourceRectangle = new Rectangle((int)((screen.Width - scaledWidth) * 0.5f), (int)((screen.Height - scaledHeight) * 0.5), (int)scaledWidth, (int)scaledHeight);
+                spriteBatch.Draw(screen, new Rectangle(0,0, 800, 600), sourceRectangle, Color.White);
                 spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, 0), Color.Black);
+
+                spriteBatch.End();
             }
             else
             {
+                spriteBatch.Begin();
                 GraphicsDevice.Clear(Color.PowderBlue);
                 spriteBatch.DrawString(font, "GAME OVER", new Vector2(200, 200), Color.Red);
                 spriteBatch.DrawString(font, "Score: " + score, new Vector2(200, 300), Color.Red);
                 spriteBatch.DrawString(font, "Press space to restart", new Vector2(200, 400), Color.DarkGreen);
+                spriteBatch.End();
             }
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }
