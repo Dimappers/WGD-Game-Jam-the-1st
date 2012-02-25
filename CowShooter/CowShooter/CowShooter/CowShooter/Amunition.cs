@@ -13,14 +13,29 @@ namespace CowShooter
         Texture2D texture;
         bool flying;
         Vector2 velocity;
+        Vector2 position;
 
         const float dampening = 0.1f;
+        const float gravity = 1.0f;
 
         public Rectangle collisionRectangle;
-
-        public Amunition(Catapult catapult, Vector2 startVelocity)
+        Catapult catapult;
+        public Amunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition)
         {
+            this.catapult = catapult;
+            velocity = startVelocity;
+            position = startPosition;
+        }
 
+        public void Update(GameTime gameTime)
+        {
+            velocity.Y += gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position += velocity;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, position, Color.White);
         }
 
         public Rectangle getCollisionRectangle()
@@ -33,10 +48,6 @@ namespace CowShooter
             if (otherObject is Cow)
             {
                 remove();
-            }
-            else if (true)
-            {
-
             }
         }
 
