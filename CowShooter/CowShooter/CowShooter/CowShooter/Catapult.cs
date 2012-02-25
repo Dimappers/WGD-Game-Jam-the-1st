@@ -64,11 +64,20 @@ namespace CowShooter
                 }
             }
 
+            List<Ammunition> deadAmmo = new List<Ammunition>();
             foreach (Ammunition a in ammo)
             {
                 a.Update(gameTime);
+                if (a.isDead)
+                {
+                    deadAmmo.Add(a);
+                }
             }
 
+            foreach (Ammunition a in deadAmmo)
+            {
+                ammo.Remove(a);
+            }
             oldMouseState = newMouseState;
         }
 

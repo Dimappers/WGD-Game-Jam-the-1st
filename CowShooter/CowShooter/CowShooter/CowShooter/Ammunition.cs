@@ -20,8 +20,8 @@ namespace CowShooter
         const float friction = 1.0f;
 
         public Boolean isDead;
+        float timeTillDeath;
 
-        public Rectangle collisionRectangle;
         Catapult catapult;
 
         public Ammunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition, Texture2D texture)
@@ -31,6 +31,7 @@ namespace CowShooter
             velocity = startVelocity;
             velocity.X = MathHelper.Clamp(velocity.X, 1.5f, 100f);
             position = startPosition;
+            timeTillDeath = -10f;
             isDead = false;
             flying = true;
         }
@@ -51,6 +52,16 @@ namespace CowShooter
             }
             else
             {
+                // Handles killing off the ammo 
+                if (timeTillDeath < -5f)
+                {
+                    timeTillDeath = (float)gameTime.TotalGameTime.TotalSeconds;
+                }
+                else if ((float)gameTime.TotalGameTime.TotalSeconds > timeTillDeath+4f)
+                {
+                    remove();
+                }
+
                 if (velocity.X > 0)
                 {
                     velocity.X -= friction * (float)gameTime.ElapsedGameTime.TotalSeconds;
