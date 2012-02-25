@@ -46,6 +46,7 @@ namespace CowShooter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            Texture2D wallTexture = Content.Load<Texture2D>("art//Wall_Block");
 
             // TODO: use this.Content to load your game content here
         }
