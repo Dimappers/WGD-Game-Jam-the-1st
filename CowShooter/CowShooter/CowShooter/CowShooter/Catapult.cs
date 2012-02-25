@@ -12,8 +12,8 @@ namespace CowShooter
     class Catapult
     {
         
-        Vector2 positionToSpawn = new Vector2(600, 50);
-        Rectangle draggablePosition = new Rectangle(648, 51, 32, 32);
+        Vector2 positionToSpawn = new Vector2(668, 100);
+        Rectangle draggablePosition = new Rectangle(660, 84, 32, 32);
         const int widthOfLine = 5;
         const float maxDistance = 150;
         const float sharpestDownAngle = (9.0f * (float)Math.PI) / 8.0f;
@@ -27,6 +27,7 @@ namespace CowShooter
         Vector2 draggedToPoint;
         CollisionManager collisionManager;
         List<Ammunition> ammo;
+        float lastSetAngle;
 
 
         public Catapult(Texture2D catapultTexture, Texture2D lineTexture, Texture2D ammoTexture, CollisionManager collisionManager)
@@ -39,6 +40,7 @@ namespace CowShooter
             this.collisionManager = collisionManager;
             // Setup the list of shot ammo
             ammo = new List<Ammunition>();
+            lastSetAngle = 0.0f;
         }
 
         public void Update(GameTime gameTime)
@@ -64,17 +66,26 @@ namespace CowShooter
                 }
             }
 
+            List<Ammunition> deadAmmo = new List<Ammunition>();
             foreach (Ammunition a in ammo)
             {
                 a.Update(gameTime);
+                if (a.isDead)
+                {
+                    deadAmmo.Add(a);
+                }
             }
 
+            foreach (Ammunition a in deadAmmo)
+            {
+                ammo.Remove(a);
+                collisionManager.removeAmmo(a);
+            }
             oldMouseState = newMouseState;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(catapultTexture, positionToSpawn, Color.White);
             foreach (Ammunition a in ammo)
             {
                 a.Draw(spriteBatch);
@@ -83,6 +94,10 @@ namespace CowShooter
             if (isBeingDragged)
             {
                 drawLine(draggedToPoint, spriteBatch);
+            }
+            else
+            {
+                spriteBatch.Draw(catapultTexture, positionToSpawn, null, Color.White, (3.0f * (float)Math.PI) / 2.0f + ((float)Math.PI / 2.0f) + lastSetAngle, /*Vector2.Zero*/new Vector2(68, 34f), 1.0f, SpriteEffects.None, 0.0f);
             }
         }
 
@@ -126,6 +141,8 @@ namespace CowShooter
                 alpha = sharpestDownAngle;
 
             spriteBatch.Draw(lineTexture, new Rectangle((int)startPosition.X, (int)startPosition.Y, widthOfLine, (int)length), null, Color.White, alpha, new Vector2(widthOfLine / 2, 0), SpriteEffects.None, 0);
+            spriteBatch.Draw(catapultTexture, positionToSpawn, null, Color.White, (3.0f * (float)Math.PI) / 2.0f + ((float)Math.PI / 2.0f) + (float)Math.Atan(yDist / xDist), /*Vector2.Zero*/new Vector2(68,34f), 1.0f, SpriteEffects.None, 0.0f);
+            lastSetAngle = (float)Math.Atan(yDist / xDist);
         }
     }
 }
