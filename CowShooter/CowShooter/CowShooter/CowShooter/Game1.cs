@@ -57,6 +57,8 @@ namespace CowShooter
 
             cowManager.AddTexture(typeof(Cow), Content.Load<Texture2D>("art//Cow_Piece"));
 
+            catapult = new Catapult(Content.Load<Texture2D>("art//catapult"), Content.Load<Texture2D>("art//line")); 
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -83,6 +85,7 @@ namespace CowShooter
             // TODO: Add your update logic here
 
             cowManager.Update(gameTime);
+            catapult.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -97,6 +100,7 @@ namespace CowShooter
             spriteBatch.Begin();
          
             cowManager.Draw(spriteBatch);
+            catapult.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
 

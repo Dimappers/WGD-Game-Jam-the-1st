@@ -11,9 +11,11 @@ namespace CowShooter
 {
     class Catapult
     {
-        Vector2 positionToSpawn = new Vector2(10, 10);
-        Rectangle draggablePosition = new Rectangle(0,0, 50,50);
+        
+        Vector2 positionToSpawn = new Vector2(600, 50);
+        Rectangle draggablePosition = new Rectangle(648, 51, 32, 32);
         const int widthOfLine = 5;
+        const float maxDistance = 150;
         
         Texture2D catapultTexture;
         Texture2D lineTexture;
@@ -46,6 +48,10 @@ namespace CowShooter
             {
                 //TODO: Distance check
                 draggedToPoint = new Vector2(newMouseState.X, newMouseState.Y);
+                if (newMouseState.X < draggablePosition.Center.X)
+                {
+                    draggedToPoint.X = draggablePosition.Center.X;
+                }
             }
 
             oldMouseState = newMouseState;
@@ -83,11 +89,16 @@ namespace CowShooter
         {
             Vector2 startPosition = new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y);
             float length = Vector2.Distance(startPosition, endPosition);
-            float theta = (float)Math.Atan((double)((endPosition.X - startPosition.X) / (endPosition.Y - startPosition.Y)));
-            float alpha = (float)(2 * Math.PI) - theta;
-            spriteBatch.Begin();
-            spriteBatch.Draw(lineTexture, new Rectangle((int)startPosition.X, (int)startPosition.Y, widthOfLine, (int)length), null, Color.White, alpha, new Vector2(lineWidth / 2, 0), SpriteEffects.None, 0);
-            spriteBatch.End();
+            if (length > maxDistance)
+            {
+                length = maxDistance;
+            }
+            float alpha = (3.0f * (float)Math.PI) / 2.0f;
+            float xDist = endPosition.X - startPosition.X;
+            float yDist = endPosition.Y - startPosition.Y;
+            alpha += (float)Math.Atan(yDist / xDist);
+
+            spriteBatch.Draw(lineTexture, new Rectangle((int)startPosition.X, (int)startPosition.Y, widthOfLine, (int)length), null, Color.White, alpha, new Vector2(widthOfLine / 2, 0), SpriteEffects.None, 0);
         }
     }
 }
