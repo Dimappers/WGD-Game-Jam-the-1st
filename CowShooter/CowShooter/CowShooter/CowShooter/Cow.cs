@@ -11,7 +11,7 @@ namespace CowShooter
     class Cow : ICollisionObject
     {
         const float velocity_h = 10.0f;
-        Vector2 cowPosition;
+        public Vector2 cowPosition;
         CowManager manager;
         GameTime gameTime;
 
@@ -24,7 +24,7 @@ namespace CowShooter
 
         public Cow(CowManager manager)
         {
-            cowPosition = new Vector2(0, floorLevel); //32 is height of cow_piece
+            cowPosition = new Vector2(0, floorLevel);
             this.manager = manager;
             
         }
@@ -58,7 +58,7 @@ namespace CowShooter
         {
             if (otherObject is Ammunition)
             {
-                //TODO: Kill me :(
+                //manager.
             }
         }
 
