@@ -59,7 +59,7 @@ namespace WGDGameJam
                     if (!map[i, j].wall)
                     {
                         double randomnum = random.Next(200);
-                        double factor = 1.0f/(game.score+1.0f);
+                        double factor = 1.0f/(3.0f*game.score+1.0f);
                         int rounded = (int)Math.Round((double)(randomnum*factor));
                         if (rounded == 0)
                         {
@@ -220,7 +220,7 @@ namespace WGDGameJam
                 for (int i = 1; i < length; ++i)
                 {
                     Point pointToMakeWall = new Point(lastPoint.X + direction.X * i, lastPoint.Y + direction.Y * i);
-                    if (pointToMakeWall.X < 19 && pointToMakeWall.X > 0 && pointToMakeWall.Y < 19 && pointToMakeWall.Y > 0 && pointToMakeWall != CowPiece.startPoint)
+                    if (pointToMakeWall.X < size - 1 && pointToMakeWall.X > 0 && pointToMakeWall.Y < size -1 && pointToMakeWall.Y > 0 && pointToMakeWall != CowPiece.startPoint)
                     {
                         if (map[pointToMakeWall.X, pointToMakeWall.Y].isBlocking())
                         {
@@ -238,7 +238,7 @@ namespace WGDGameJam
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Game1 game, GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             for(int i=0; i<size; i++)
             {
