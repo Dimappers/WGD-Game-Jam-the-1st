@@ -140,11 +140,11 @@ namespace WGDGameJam
                 else if (newState.IsKeyDown(Keys.Up) && oldState.IsKeyUp(Keys.Up)) { direction = DirectionToMove.up; }
                 else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
 
-            int randomTime = 500 + (int)(Math.Sin(angle)*15*score);
-            Console.WriteLine(randomTime);
-            angle += Math.PI / 8;
+                int randomTime = 500 + (int)(Math.Sin(angle) * 12 * score);
+                Console.WriteLine(randomTime);
+                angle += Math.PI / 10;
 
-            if (timeSinceLastJump > randomTime)
+                if (timeSinceLastJump > randomTime)
                 {
                     head.Update(gameTime, direction, new Point(-1, -1));
                     timeSinceLastJump = 0;
@@ -154,12 +154,12 @@ namespace WGDGameJam
                 {
                     gameMode = GameMode.endScreen;
                 }
-            
 
-            oldState = newState;
-            base.Update(gameTime);
+
+                oldState = newState;
+                base.Update(gameTime);
+            }
         }
-
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -178,7 +178,7 @@ namespace WGDGameJam
             }
             else if (gameMode == GameMode.mainGame)
             {
-                mapManager.Draw(spriteBatch, this);
+                mapManager.Draw(spriteBatch);
                 head.Draw(gameTime, spriteBatch);
                 spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, 0), Color.Black);
             }

@@ -59,7 +59,7 @@ namespace WGDGameJam
                     if (!map[i, j].wall)
                     {
                         double randomnum = random.Next(200);
-                        double factor = 1.0f/(game.score+1.0f);
+                        double factor = 1.0f/(3.0f*game.score+1.0f);
                         int rounded = (int)Math.Round((double)(randomnum*factor));
                         if (rounded == 0)
                         {
@@ -135,7 +135,7 @@ namespace WGDGameJam
                     newWallHedgeType = HedgeType.vertical;
                 }
 
-                if (lastDirectionMoved != null && lastPoint.X < 20 && lastPoint.X >= 0 && lastPoint.Y < 20 && lastPoint.Y >= 0)
+                if (lastDirectionMoved != null && lastPoint.X < size && lastPoint.X >= 0 && lastPoint.Y < size && lastPoint.Y >= 0)
                 {
                     //Must create a corner piece
                     HedgeType cornerType = newWallHedgeType;
@@ -220,7 +220,7 @@ namespace WGDGameJam
                 for (int i = 1; i < length; ++i)
                 {
                     Point pointToMakeWall = new Point(lastPoint.X + direction.X * i, lastPoint.Y + direction.Y * i);
-                    if (pointToMakeWall.X < 19 && pointToMakeWall.X > 0 && pointToMakeWall.Y < 19 && pointToMakeWall.Y > 0 && pointToMakeWall != CowPiece.startPoint)
+                    if (pointToMakeWall.X < size - 1 && pointToMakeWall.X > 0 && pointToMakeWall.Y < size -1 && pointToMakeWall.Y > 0 && pointToMakeWall != CowPiece.startPoint)
                     {
                         if (map[pointToMakeWall.X, pointToMakeWall.Y].isBlocking())
                         {
@@ -238,7 +238,7 @@ namespace WGDGameJam
             }
         }
 
-public void Draw(SpriteBatch spriteBatch, Game1 game)
+public void Draw(SpriteBatch spriteBatch)
         {
             for(int i=0; i<size; i++)
             {
@@ -253,13 +253,13 @@ public void Draw(SpriteBatch spriteBatch, Game1 game)
         {
             switch(hedge)
             {
-                case HedgeType.horizontal : {return new Square(i, j, hedgeTexture, Color.White, true); }
-                case HedgeType.vertical : {return new Square(i, j, hedgeVertTexture, Color.White, true); }
-                case HedgeType.corner_topleft : {return new Square(i, j, hedgeCornerTexturetl, Color.White, true);}
-                case HedgeType.corner_topright : {return new Square(i, j, hedgeCornerTexturetr, Color.White, true);}
-                case HedgeType.corner_bottomleft : {return new Square(i, j, hedgeCornerTexturebl, Color.White, true);}
-                case HedgeType.corner_bottomright: {return new Square(i, j, hedgeCornerTexturebr, Color.White, true); }
-                case HedgeType.crisscross: { return new Square(i, j, hedgeCrossTexture, Color.White, true); }
+                case HedgeType.horizontal : {return new Square(i, j, hedgeTexture, Color.Brown, true); }
+                case HedgeType.vertical : {return new Square(i, j, hedgeVertTexture, Color.Brown, true); }
+                case HedgeType.corner_topleft : {return new Square(i, j, hedgeCornerTexturetl, Color.Brown, true);}
+                case HedgeType.corner_topright : {return new Square(i, j, hedgeCornerTexturetr, Color.Brown, true);}
+                case HedgeType.corner_bottomleft : {return new Square(i, j, hedgeCornerTexturebl, Color.Brown, true);}
+                case HedgeType.corner_bottomright: {return new Square(i, j, hedgeCornerTexturebr, Color.Brown, true); }
+                case HedgeType.crisscross: { return new Square(i, j, hedgeCrossTexture, Color.Brown, true); }
                 default: return null;
             }
         }
