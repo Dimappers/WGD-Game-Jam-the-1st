@@ -189,7 +189,7 @@ namespace WGDGameJam
             }
             else if (gameMode == GameMode.mainGame)
             {
-                mapManager.Draw(spriteBatch);
+                mapManager.Draw(spriteBatch, gameTime);
                 head.Draw(gameTime, spriteBatch);
                 spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, 0), Color.Black);
             }

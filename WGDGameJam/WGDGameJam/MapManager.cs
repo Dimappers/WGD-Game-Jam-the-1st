@@ -144,13 +144,21 @@ namespace WGDGameJam
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             for(int i=0; i<size; i++)
             {
                 for(int j=0; j<size; j++)
                 {
-                    map[i, j].Draw(spriteBatch, headPiece);
+                    map[i, j].Draw(spriteBatch, headPiece, gameTime);
+                }
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    map[i, j].drawFood(spriteBatch, headPiece, gameTime);
                 }
             }
         }
@@ -173,6 +181,12 @@ namespace WGDGameJam
         {
             return new Square(i, j, grassTexture, crazyFloor(), false, this);
         }
+
+        public Game1 getGame()
+        {
+            return game;
+        }
+
 
         public enum HedgeType{
             horizontal,
