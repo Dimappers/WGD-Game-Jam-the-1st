@@ -135,7 +135,7 @@ namespace WGDGameJam
                     newWallHedgeType = HedgeType.vertical;
                 }
 
-                if (lastDirectionMoved != null && lastPoint.X < 20 && lastPoint.X >= 0 && lastPoint.Y < 20 && lastPoint.Y >= 0)
+                if (lastDirectionMoved != null && lastPoint.X < 19 && lastPoint.X > 0 && lastPoint.Y < 19 && lastPoint.Y > 0)
                 {
                     //Must create a corner piece
                     HedgeType cornerType = newWallHedgeType;
@@ -238,7 +238,7 @@ namespace WGDGameJam
             }
         }
 
-public void Draw(SpriteBatch spriteBatch, Game1 game)
+        public void Draw(SpriteBatch spriteBatch, Game1 game)
         {
             for(int i=0; i<size; i++)
             {
@@ -253,17 +253,17 @@ public void Draw(SpriteBatch spriteBatch, Game1 game)
         {
             switch(hedge)
             {
-                case HedgeType.horizontal : {return new Square(i, j, hedgeTexture, Color.White, true); }
-                case HedgeType.vertical : {return new Square(i, j, hedgeVertTexture, Color.White, true); }
-                case HedgeType.corner_topleft : {return new Square(i, j, hedgeCornerTexturetl, Color.White, true);}
-                case HedgeType.corner_topright : {return new Square(i, j, hedgeCornerTexturetr, Color.White, true);}
-                case HedgeType.corner_bottomleft : {return new Square(i, j, hedgeCornerTexturebl, Color.White, true);}
-                case HedgeType.corner_bottomright: {return new Square(i, j, hedgeCornerTexturebr, Color.White, true); }
-                case HedgeType.crisscross: { return new Square(i, j, hedgeCrossTexture, Color.White, true); }
+                case HedgeType.horizontal : {return new Square(i, j, hedgeTexture, Color.White, true, this); }
+                case HedgeType.vertical : {return new Square(i, j, hedgeVertTexture, Color.White, true, this); }
+                case HedgeType.corner_topleft : {return new Square(i, j, hedgeCornerTexturetl, Color.White, true, this);}
+                case HedgeType.corner_topright : {return new Square(i, j, hedgeCornerTexturetr, Color.White, true, this);}
+                case HedgeType.corner_bottomleft : {return new Square(i, j, hedgeCornerTexturebl, Color.White, true, this);}
+                case HedgeType.corner_bottomright: {return new Square(i, j, hedgeCornerTexturebr, Color.White, true, this); }
+                case HedgeType.crisscross: { return new Square(i, j, hedgeCrossTexture, Color.White, true, this); }
                 default: return null;
             }
         }
-        private Square createGrass(int i, int j){return new Square(i, j, grassTexture, Color.Green, false);}
+        private Square createGrass(int i, int j){return new Square(i, j, grassTexture, Color.Green, false, this);}
 
         enum HedgeType{
             horizontal,
@@ -273,6 +273,11 @@ public void Draw(SpriteBatch spriteBatch, Game1 game)
             corner_topright,
             corner_bottomright,
             crisscross
+        }
+
+        public void reset()
+        {
+            createMap();
         }
     }
 }

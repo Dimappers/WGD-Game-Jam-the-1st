@@ -45,5 +45,13 @@ namespace WGDGameJam
             }
             game.GetMapManager().getSquare(location.X, location.Y).SetBlocking(true);
         }
+
+        public void reset()
+        {
+            nextPiece = null;
+            dead = false;
+            location = CowPiece.startPoint;
+            AttachPiece(new CowPiece(standardTexture, standardTailTexture, game));
+        }
     }
 }

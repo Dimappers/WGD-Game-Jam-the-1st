@@ -140,11 +140,11 @@ namespace WGDGameJam
                 else if (newState.IsKeyDown(Keys.Up) && oldState.IsKeyUp(Keys.Up)) { direction = DirectionToMove.up; }
                 else if (newState.IsKeyDown(Keys.Down) && oldState.IsKeyUp(Keys.Down)) { direction = DirectionToMove.down; }
 
-            int randomTime = 500 + (int)(Math.Sin(angle)*15*score);
-            Console.WriteLine(randomTime);
-            angle += Math.PI / 8;
+                int randomTime = 500 + (int)(Math.Sin(angle) * 15 * score);
+                Console.WriteLine(randomTime);
+                angle += Math.PI / 8;
 
-            if (timeSinceLastJump > randomTime)
+                if (timeSinceLastJump > randomTime)
                 {
                     head.Update(gameTime, direction, new Point(-1, -1));
                     timeSinceLastJump = 0;
@@ -154,17 +154,20 @@ namespace WGDGameJam
                 {
                     gameMode = GameMode.endScreen;
                 }
-            
+
+                oldState = newState;
+                base.Update(gameTime);
+            }
+
             else
             {
                 if (newState.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
                 {
                     gameMode = GameMode.mainGame;
+                    reset();
+                    //TODO: Write reset methods
                 }
             }
-
-            oldState = newState;
-            base.Update(gameTime);
         }
 
         /// <summary>
@@ -203,6 +206,13 @@ namespace WGDGameJam
         }
 
         public void addToScore() {score++;}
+
+        private void reset()
+        {
+            mapManager.reset();
+            head.reset();
+            score = 0;
+        }
     }
 
     public struct MapTextures

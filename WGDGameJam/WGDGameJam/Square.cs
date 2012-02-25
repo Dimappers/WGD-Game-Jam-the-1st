@@ -16,8 +16,8 @@ namespace WGDGameJam
         int xlocation;
         int ylocation;
         public bool wall;
-
-        public Square(int x, int y, Texture2D texture, Color colour, bool blocking)
+        MapManager mapManager;
+        public Square(int x, int y, Texture2D texture, Color colour, bool blocking, MapManager manager)
         {
             this.texture = texture;
             this.colour = colour;
@@ -26,6 +26,7 @@ namespace WGDGameJam
             xlocation = x;
             ylocation = y;
             wall = blocking;
+            this.mapManager = manager;
         }
 
         public bool isBlocking()
