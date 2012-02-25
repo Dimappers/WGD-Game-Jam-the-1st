@@ -59,12 +59,19 @@ namespace WGDGameJam
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            MapTextures mapTexs = new MapTextures();
             Texture2D headTexture = Content.Load<Texture2D>("drawing//Cow_Head");
             Texture2D mainTexture = Content.Load<Texture2D>("drawing//Cow_Middle");
             Texture2D tailTexture = Content.Load<Texture2D>("drawing//Cow_Bum");
-            Texture2D grassTexture = Content.Load<Texture2D>("drawing//grass");
-            Texture2D hedgeTexture = Content.Load<Texture2D>("drawing//hedge");
-            Texture2D foodTexture = Content.Load<Texture2D>("drawing//food");
+            mapTexs.grassTexture = Content.Load<Texture2D>("drawing//grass");
+            mapTexs.hedgeTexture = Content.Load<Texture2D>("drawing//hedge");
+            mapTexs.hedgeVertTexture = Content.Load<Texture2D>("drawing/hedge_v");
+            mapTexs.foodTexture = Content.Load<Texture2D>("drawing//food");
+            mapTexs.hedgeCornerTexturetl = Content.Load<Texture2D>("drawing//hedge_corner_tl");
+            mapTexs.hedgeCornerTexturetr = Content.Load<Texture2D>("drawing//hedge_corner_tr");
+            mapTexs.hedgeCornerTexturebl = Content.Load<Texture2D>("drawing//hedge_corner_bl");
+            mapTexs.hedgeCornerTexturebr = Content.Load<Texture2D>("drawing//hedge_corner_br");
+            mapTexs.foodTexture = Content.Load<Texture2D>("drawing//food");
 
             head = new HeadPiece(headTexture, mainTexture, tailTexture, this);
             CowPiece tail = new CowPiece(mainTexture, tailTexture);
@@ -78,7 +85,7 @@ namespace WGDGameJam
             head.AttachPiece(c);
             head.AttachPiece(d);
 
-            mapManager = new MapManager(100, grassTexture, hedgeTexture, foodTexture, head);
+            mapManager = new MapManager(20, mapTexs, head);
 
             // TODO: use this.Content to load your game content here
         }
@@ -145,5 +152,17 @@ namespace WGDGameJam
 
             base.Draw(gameTime);
         }
+    }
+
+    public struct MapTextures
+    {
+        public Texture2D grassTexture;
+        public Texture2D hedgeTexture;
+        public Texture2D hedgeVertTexture;
+        public Texture2D hedgeCornerTexturetl;
+        public Texture2D hedgeCornerTexturetr;
+        public Texture2D hedgeCornerTexturebl;
+        public Texture2D hedgeCornerTexturebr;
+        public Texture2D foodTexture;
     }
 }
