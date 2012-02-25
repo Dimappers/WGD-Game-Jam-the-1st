@@ -80,10 +80,10 @@ namespace WGDGameJam
             CowPiece c = new CowPiece(mainTexture, tailTexture, this);
             CowPiece d = new CowPiece(mainTexture, tailTexture, this);
             head.AttachPiece(tail);
-            head.AttachPiece(a);
+            /*head.AttachPiece(a);
             head.AttachPiece(b);
             head.AttachPiece(c);
-            head.AttachPiece(d);
+            head.AttachPiece(d);*/
 
             mapManager = new MapManager(20, mapTexs, head);
 

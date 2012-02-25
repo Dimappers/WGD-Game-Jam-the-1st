@@ -34,6 +34,7 @@ namespace WGDGameJam
             {
                 CowPiece newPiece = new CowPiece(standardTexture, standardTailTexture, game);
                 AttachPiece(newPiece);
+                game.GetMapManager().removeFood(location);
             }
             game.GetMapManager().getSquare(location.X, location.Y).SetBlocking(true);
         }

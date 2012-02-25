@@ -68,7 +68,9 @@ namespace WGDGameJam
 
                 newPiece.Move(newLocation);
                 newPiece.SetAsTail();
+                newPiece.lastMoveDirection = lastMoveDirection;
                 isTail = false;
+                newPiece.headPosition = headPosition;
             }
             else
             {
