@@ -182,11 +182,12 @@ namespace WGDGameJam
             //GraphicsDevice.Clear(Color.DarkGreen);
             if (gameMode == GameMode.frontScreen)
             {
-                GraphicsDevice.Clear(Color.Blue);
+                GraphicsDevice.Clear(Color.Green);
                 spriteBatch.Begin();
-                spriteBatch.DrawString(font, "Magic Mooshmooms", new Vector2(50, 200), Color.IndianRed);
-                spriteBatch.DrawString(font, "By Kim, Tom and Mark", new Vector2(50, 300), Color.Indigo);
-                spriteBatch.DrawString(font, "Press space to start", new Vector2(50, 400), Color.DarkBlue);
+                spriteBatch.DrawString(font, "Magic Mooshmooms", new Vector2(50, 100), Color.White);
+                spriteBatch.DrawString(font, "Collect the mushrooms, but know your limits!", new Vector2(50, 200), Color.White);
+                spriteBatch.DrawString(font, "By Kim, Tom and Mark", new Vector2(50, 500), Color.White);
+                spriteBatch.DrawString(font, "Press space to start", new Vector2(50, 300), Color.White);
                 spriteBatch.End();
             }
             else if (gameMode == GameMode.mainGame)
@@ -254,10 +255,10 @@ namespace WGDGameJam
             else
             {
                 spriteBatch.Begin();
-                GraphicsDevice.Clear(Color.PowderBlue);
-                spriteBatch.DrawString(font, "GAME OVER", new Vector2(200, 200), Color.Red);
-                spriteBatch.DrawString(font, "Score: " + score, new Vector2(200, 300), Color.Red);
-                spriteBatch.DrawString(font, "Press space to restart", new Vector2(200, 400), Color.DarkGreen);
+                GraphicsDevice.Clear(Color.Green);
+                spriteBatch.DrawString(font, "GAME OVER", new Vector2(200, 200), Color.White);
+                spriteBatch.DrawString(font, "Score: " + score, new Vector2(200, 300), Color.White);
+                spriteBatch.DrawString(font, "Press space to restart", new Vector2(200, 400), Color.White);
                 spriteBatch.End();
             }
 
