@@ -62,7 +62,7 @@ namespace CowShooter
 
         public void RemoveCow(Cow removeCow)
         {
-            //activeCows.Add(activeCows.IndexOf(removeCow)) = null;
+            activeCows.Remove(removeCow);
         }
     }
 }
