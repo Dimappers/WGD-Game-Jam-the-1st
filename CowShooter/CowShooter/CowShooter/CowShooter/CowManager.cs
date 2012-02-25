@@ -11,6 +11,8 @@ namespace CowShooter
     class CowManager
     {
         public List<Cow> activeCows;
+        public List<Meat> activeMeats;
+        public List<Meat> meatsToRemove;
         Dictionary<Type, Texture2D> cowTextures;
 
         CollisionManager collisionManager;
@@ -19,7 +21,10 @@ namespace CowShooter
         {
             this.collisionManager = collisionManager;
             activeCows = new List<Cow>();
+            activeMeats = new List<Meat>();
+            meatsToRemove = new List<Meat>();
             cowTextures = new Dictionary<Type, Texture2D>();
+
             GenerateCow();
             activeCows.ElementAt<Cow>(0).JumpUp();
             
@@ -28,11 +33,20 @@ namespace CowShooter
 
         }
         public void Update(GameTime gameTime)
-        {  
+        {
             foreach(Cow cow in activeCows)
             {
                 cow.Update(gameTime);
             }
+            foreach (Meat meat in activeMeats)
+            {
+                meat.Update(gameTime);
+            }
+            foreach (Meat meat in meatsToRemove)
+            {
+                activeMeats.Remove(meat);
+            }
+            meatsToRemove = new List<Meat>();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -40,6 +54,10 @@ namespace CowShooter
             foreach (Cow cow in activeCows)
             {
                 cow.Draw(spriteBatch);
+            }
+            foreach (Meat meat in activeMeats)
+            {
+                meat.Draw(spriteBatch);
             }
         }
 
@@ -63,6 +81,12 @@ namespace CowShooter
         public void RemoveCow(Cow removeCow)
         {
             activeCows.Remove(removeCow);
+            activeMeats.Add(new Meat(this, GetTexture(typeof(Meat)), removeCow.cowPosition));
+        }
+
+        public void RemoveMeat(Meat removeMeat)
+        {
+            meatsToRemove.Add(removeMeat);
         }
     }
 }
