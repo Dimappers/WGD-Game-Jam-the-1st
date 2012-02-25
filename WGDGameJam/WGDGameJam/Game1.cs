@@ -28,6 +28,9 @@ namespace WGDGameJam
 
         DirectionToMove direction;
 
+        public int score;
+        SpriteFont font;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,7 +51,7 @@ namespace WGDGameJam
             oldState = Keyboard.GetState();
             newState = oldState;
             base.Initialize();
-            
+            score = 0;    
         }
 
         /// <summary>
@@ -71,7 +74,8 @@ namespace WGDGameJam
             mapTexs.hedgeCornerTexturetr = Content.Load<Texture2D>("drawing//hedge_corner_tr");
             mapTexs.hedgeCornerTexturebl = Content.Load<Texture2D>("drawing//hedge_corner_bl");
             mapTexs.hedgeCornerTexturebr = Content.Load<Texture2D>("drawing//hedge_corner_br");
-            mapTexs.foodTexture = Content.Load<Texture2D>("drawing//food");
+            mapTexs.foodTexture = Content.Load<Texture2D>("drawing//mushroom");
+            font = Content.Load<SpriteFont>("DefaultFont");
 
             head = new HeadPiece(headTexture, mainTexture, tailTexture, this);
             CowPiece tail = new CowPiece(mainTexture, tailTexture, this);
@@ -85,7 +89,7 @@ namespace WGDGameJam
             head.AttachPiece(c);
             head.AttachPiece(d);*/
 
-            mapManager = new MapManager(20, mapTexs, head);
+            mapManager = new MapManager(20, mapTexs, head, this);
 
             // TODO: use this.Content to load your game content here
         }
@@ -145,13 +149,15 @@ namespace WGDGameJam
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
-            mapManager.Draw(spriteBatch);
+            mapManager.Draw(spriteBatch, this);
             head.Draw(gameTime, spriteBatch);
-
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, 0), Color.Black);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        public void addToScore() {score++;}
     }
 
     public struct MapTextures
