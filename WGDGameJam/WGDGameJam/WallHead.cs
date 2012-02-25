@@ -37,7 +37,7 @@ namespace WGDGameJam
                     newWallHedgeType = MapManager.HedgeType.vertical;
                 }
 
-                if (lastDirectionMoved != null && lastPoint.X < manager.size && lastPoint.X >= 0 && lastPoint.Y < manager.size && lastPoint.Y >= 0)
+                if (lastDirectionMoved != null && lastPoint.X < manager.size && lastPoint.X > 0 && lastPoint.Y < manager.size && lastPoint.Y > 0)
                 {
                     //Must create a corner piece
                     MapManager.HedgeType cornerType = newWallHedgeType;
@@ -124,7 +124,7 @@ namespace WGDGameJam
                 for (int i = 1; i < length; ++i)
                 {
                     Point pointToMakeWall = new Point(lastPoint.X + direction.X * i, lastPoint.Y + direction.Y * i);
-                    if (pointToMakeWall.X < manager.size - 1 && pointToMakeWall.X > 0 && pointToMakeWall.Y < manager.size - 1 && pointToMakeWall.Y > 0 && pointToMakeWall != CowPiece.startPoint)
+                    if (isValid(pointToMakeWall.X,pointToMakeWall.Y) && pointToMakeWall != CowPiece.startPoint)
                     {
                         if (manager.map[pointToMakeWall.X, pointToMakeWall.Y].isBlocking())
                         {
@@ -174,8 +174,7 @@ namespace WGDGameJam
                     break;
                 }
             }
-            Square newSquare = mapManager.map[newx, newy];
-            if (newSquare.containsFood()) { newSquare.takeFood(); mapManager.GenerateFood(); }
+            if (mapManager.map[newx, newy].containsFood()) { mapManager.GenerateFood(); }
             if (newx != xlocation || newy != ylocation)
             {
                 if (next != null) { next.Move(xlocation, ylocation); }
