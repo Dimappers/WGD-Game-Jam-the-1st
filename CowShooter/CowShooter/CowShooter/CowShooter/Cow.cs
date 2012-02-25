@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CowShooter
 {
-    class Cow
+    class Cow : ICollisionObject
     {
         const float velocity_h = 10.0f;
         Vector2 cowPosition;
@@ -20,10 +20,13 @@ namespace CowShooter
 
         int floorLevel = 400 - 32; //32 is height of cow_piece
 
+        Texture2D texture;
+
         public Cow(CowManager manager)
         {
             cowPosition = new Vector2(0, floorLevel); //32 is height of cow_piece
             this.manager = manager;
+            texture = manager.GetTexture(GetType());
         }
         public virtual void Update(GameTime gameTime)
         {
@@ -34,7 +37,30 @@ namespace CowShooter
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(manager.GetTexture(GetType()), cowPosition, Color.White);
+            spriteBatch.Draw(texture, cowPosition, Color.White);
+        }
+
+        public Rectangle getCollisionRectangle()
+        {
+            return new Rectangle((int)cowPosition.X, (int)cowPosition.Y, texture.Width, texture.Height);
+        }
+
+        public bool listenForGround()
+        {
+            return false;
+        }
+
+        public void NotifyOfCollision(ICollisionObject otherObject)
+        {
+            if (otherObject is Ammunition)
+            {
+                //TODO: Kill me :(
+            }
+        }
+
+        public void NotifyGroundCollision()
+        {
+            //Don't care
         }
         public void JumpUp()
         {
