@@ -25,10 +25,15 @@ namespace WGDGameJam
         public override void Update(GameTime gameTime, DirectionToMove moveDirection, Point newHeadPosition)
         {
             base.Update(gameTime, moveDirection, newHeadPosition);
+
+            //TODO: Check if the next square is 
+
+
             if(game.GetMapManager().containsFood(location))
             {
                 CowPiece newPiece = new CowPiece(standardTexture, standardTailTexture);
                 AttachPiece(newPiece);
+                game.GetMapManager().removeFood(location);
             }
         }
     }
