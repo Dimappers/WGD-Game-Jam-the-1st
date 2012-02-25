@@ -16,6 +16,7 @@ namespace CowShooter
         Rectangle draggablePosition = new Rectangle(648, 51, 32, 32);
         const int widthOfLine = 5;
         const float maxDistance = 150;
+        const float sharpestDownAngle = (9.0f * (float)Math.PI) / 8.0f;
         const float powerScale = 0.05f;
         
         Texture2D catapultTexture;
@@ -120,6 +121,9 @@ namespace CowShooter
             float xDist = endPosition.X - startPosition.X;
             float yDist = endPosition.Y - startPosition.Y;
             alpha += (float)Math.Atan(yDist / xDist);
+
+            if (alpha < sharpestDownAngle)
+                alpha = sharpestDownAngle;
 
             spriteBatch.Draw(lineTexture, new Rectangle((int)startPosition.X, (int)startPosition.Y, widthOfLine, (int)length), null, Color.White, alpha, new Vector2(widthOfLine / 2, 0), SpriteEffects.None, 0);
         }
