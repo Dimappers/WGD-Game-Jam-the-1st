@@ -13,13 +13,19 @@ namespace CowShooter
         public List<Cow> activeCows;
         Dictionary<Type, Texture2D> cowTextures;
 
-        public CowManager()
+        CollisionManager collisionManager;
+
+        public CowManager(CollisionManager collisionManager)
         {
+            this.collisionManager = collisionManager;
             activeCows = new List<Cow>();
             cowTextures = new Dictionary<Type, Texture2D>();
             GenerateCow();
             activeCows.ElementAt<Cow>(0).JumpUp();
+            
+            
             GenerateCow();
+
         }
         public void Update(GameTime gameTime)
         {  
@@ -51,6 +57,7 @@ namespace CowShooter
         {
             Cow myCow = new Cow(this);
             activeCows.Add(myCow);
+            collisionManager.addCow(myCow);
         }
 
         public void RemoveCow(Cow removeCow)
