@@ -14,7 +14,7 @@ namespace WGDGameJam
         DirectionToMove lastMovedDirection;
 
         public WallHead(int x, int y, Texture2D texture, Color colour, MapManager manager, int numberOfVertices) 
-            : base(x,y,texture,Color.White,manager)
+            : base(x,y,texture,colour,manager)
         {
             headPoint = new Point(x, y);
             Point lastPoint = new Point(x, y);
@@ -326,16 +326,17 @@ namespace WGDGameJam
                 }
 
                 if (next != null) { next.Move(xlocation, ylocation, textureToPassOn); }
-                else { mapManager.map[xlocation, ylocation] = mapManager.createGrass(xlocation, ylocation); }
+                else { mapManager.map[xlocation, ylocation] = mapManager.createGrass(xlocation, ylocation, false); }
                 xlocation = newx;
                 ylocation = newy;
+                if (mapManager.map[newx, newy].containsFood()) { mapManager.GenerateFood(); }
                 mapManager.map[newx, newy] = this;
                 lastMovedDirection = direction;
             }
         }
         private bool isValid(int x, int y)
         {
-            return (x > 0 && x < mapManager.size -1 && y > 0 && y < mapManager.size - 1);
+            return (x > 0 && x < mapManager.size - 1 && y > 0 && y < mapManager.size - 1);
         }
     }
 }
