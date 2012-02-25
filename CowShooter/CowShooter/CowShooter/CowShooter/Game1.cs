@@ -19,6 +19,8 @@ namespace CowShooter
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Catapult catapult;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
