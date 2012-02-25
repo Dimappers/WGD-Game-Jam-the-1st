@@ -70,9 +70,13 @@ namespace WGDGameJam
             {
                 GenerateFood();
             }
+
+
+            for(int i = 0; i <5; ++i)
+                GenerateWallShape();   
         }
 
-        public void GenerateFood()
+        private void GenerateFood()
         {
             int xPos, yPos;
             do
@@ -83,6 +87,131 @@ namespace WGDGameJam
             }  while (map[xPos, yPos].isBlocking());
 
             map[xPos, yPos].giveFood(foodTexture);
+        }
+
+        private void GenerateWallShape()
+        {
+            int numberOfVertices = random.Next(1,4); //number of times wall changes direction - may want to tie this in to psychedelic factor
+            Nullable<DirectionToMove> lastDirectionMoved = null;
+            Point lastPoint = new Point(random.Next(size), random.Next(size));
+            for(int verticesCreated = 0; verticesCreated <= numberOfVertices; ++verticesCreated)
+            {
+                DirectionToMove newDirectionToMove;
+                do {
+                    newDirectionToMove = (DirectionToMove)random.Next(4);
+                } while(newDirectionToMove == lastDirectionMoved);
+
+                HedgeType newWallHedgeType;
+                if(newDirectionToMove == DirectionToMove.left || newDirectionToMove == DirectionToMove.right)
+                {
+                    newWallHedgeType = HedgeType.horizontal;
+                }
+                else
+                {
+                    newWallHedgeType = HedgeType.vertical;
+                }
+
+                if (lastDirectionMoved != null && lastPoint.X < 20 && lastPoint.X >= 0 && lastPoint.Y < 20 && lastPoint.Y >= 0)
+                {
+                    //Must create a corner piece
+                    HedgeType cornerType = newWallHedgeType;
+                    switch(lastDirectionMoved)
+                    {
+                        case DirectionToMove.down:
+                            switch(newDirectionToMove)
+                            {
+                                case DirectionToMove.left:
+                                    cornerType = HedgeType.corner_topleft;
+                                    break;
+
+                                case DirectionToMove.right:
+                                    cornerType = HedgeType.corner_topright;
+                                    break;
+                            }
+                            break;
+                        case DirectionToMove.up:
+                            switch(newDirectionToMove)
+                            {
+                                case DirectionToMove.left:
+                                    cornerType = HedgeType.corner_bottomleft; 
+                                    break;
+
+                                case DirectionToMove.right:
+                                    cornerType = HedgeType.corner_bottomright; //bottomright
+                                    break;
+                            }
+                            break;
+
+                        case DirectionToMove.left:
+                            switch(newDirectionToMove)
+                            {
+                                case DirectionToMove.up:
+                                    cornerType = HedgeType.corner_topright;
+                                    break;
+
+                                case DirectionToMove.down:
+                                    cornerType = HedgeType.corner_bottomright;
+                                    break;
+                            }
+                            break;
+                            
+                        case DirectionToMove.right:
+                            switch(newDirectionToMove)
+                            {
+                                case DirectionToMove.up:
+                                    cornerType = HedgeType.corner_topleft;
+                                    break;
+
+                                case DirectionToMove.down:
+                                    cornerType = HedgeType.corner_bottomleft;
+                                    break;
+                            }
+                            break;
+                    }
+
+                    //Now make the relevant corner
+                    map[lastPoint.X, lastPoint.Y] = createHedge(lastPoint.X, lastPoint.Y, cornerType);
+                }
+
+                Point direction = Point.Zero;
+                switch (newDirectionToMove)
+                {
+                    case DirectionToMove.left:
+                        direction = new Point(-1, 0);
+                        break;
+
+                    case DirectionToMove.right:
+                        direction = new Point(1, 0);
+                        break;
+
+                    case DirectionToMove.up:
+                        direction = new Point(0, -1);
+                        break;
+
+                    case DirectionToMove.down:
+                        direction = new Point(0, 1);
+                        break;
+                }
+                int length = random.Next(2, 6);
+                for (int i = 1; i < length; ++i)
+                {
+                    Point pointToMakeWall = new Point(lastPoint.X + direction.X * i, lastPoint.Y + direction.Y * i);
+                    if (pointToMakeWall.X < 20 && pointToMakeWall.X >= 0 && pointToMakeWall.Y < 20 && pointToMakeWall.Y >= 0)
+                    {
+                        if (map[pointToMakeWall.X, pointToMakeWall.Y].isBlocking())
+                        {
+                            //TODO: Replace with cross roads wall
+                        }
+                        else
+                        {
+                            map[pointToMakeWall.X, pointToMakeWall.Y] = createHedge(pointToMakeWall.X, pointToMakeWall.Y, newWallHedgeType);
+                        }
+                    }
+                }
+
+                lastPoint = new Point(lastPoint.X + direction.X * length, lastPoint.Y + direction.Y * length);
+                lastDirectionMoved = newDirectionToMove;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -114,7 +243,7 @@ namespace WGDGameJam
             int r = random.Next(255);
             int g = random.Next(255);
             int b = random.Next(255); 
-            return new Square(i, j, grassTexture, new Color(r,g,b), false);
+            return new Square(i, j, grassTexture, Color.PaleGreen/*new Color(r,g,b)*/, false);
         }
 
         enum HedgeType{
