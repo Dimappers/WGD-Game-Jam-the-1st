@@ -59,5 +59,10 @@ namespace CowShooter
             activeCows.Add(myCow);
             collisionManager.addCow(myCow);
         }
+
+        public void RemoveCow(Cow removeCow)
+        {
+            //activeCows.Add(activeCows.IndexOf(removeCow)) = null;
+        }
     }
 }
