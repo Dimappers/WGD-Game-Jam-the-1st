@@ -83,7 +83,7 @@
   <ItemGroup>
     <Compile Include="drawing\food.png">
       <Name>food</Name>
-	  <Importer>TextureImporter</Importer>
+      <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="drawing\hedge_v.png">
@@ -110,6 +110,13 @@
     </Compile>
     <Compile Include="drawing\hedge_corner_tr.png">
       <Name>hedge_corner_tr</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="drawing\mushroom.png">
+      <Name>mushroom</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

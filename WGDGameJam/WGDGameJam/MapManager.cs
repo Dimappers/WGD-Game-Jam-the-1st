@@ -21,8 +21,9 @@ namespace WGDGameJam
         CowPiece headPiece;
         Random random = new Random();
         int size;
+        Game1 game;
 
-        public MapManager(int size, MapTextures mapTex, CowPiece head)
+        public MapManager(int size, MapTextures mapTex, CowPiece head, Game1 game)
         {
             this.size = size;
             map = new Square[size,size];
@@ -35,9 +36,11 @@ namespace WGDGameJam
             this.hedgeCornerTexturebr = mapTex.hedgeCornerTexturebr;
             this.foodTexture = mapTex.foodTexture;
             headPiece = head;
+            this.game = game;
             createMap();
         }
 
+        public Square getSquare(int i, int j) {return map[i,j];}
         public bool containsFood(Point location)
         {
             return map[location.X, location.Y].containsFood();
@@ -47,6 +50,25 @@ namespace WGDGameJam
         {
             map[location.X, location.Y].takeFood();
             GenerateFood();
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    if (!map[i, j].wall)
+                    {
+                        double randomnum = random.Next(200);
+                        double factor = 1.0f/(game.score+1.0f);
+                        int rounded = (int)Math.Round((double)(randomnum*factor));
+                        if (rounded == 0)
+                        {
+                            int r = random.Next(255);
+                            int g = random.Next(255);
+                            int b = random.Next(255);
+                            map[i, j].changeColour(new Color(r, g, b));
+                        }
+                    }
+                }
+            }
         }
 
         public void createMap()
@@ -214,7 +236,7 @@ namespace WGDGameJam
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+public void Draw(SpriteBatch spriteBatch, Game1 game)
         {
             for(int i=0; i<size; i++)
             {
@@ -238,13 +260,7 @@ namespace WGDGameJam
                 default: return null;
             }
         }
-        private Square createGrass(int i, int j)
-        {
-            int r = random.Next(255);
-            int g = random.Next(255);
-            int b = random.Next(255); 
-            return new Square(i, j, grassTexture, Color.PaleGreen/*new Color(r,g,b)*/, false);
-        }
+        private Square createGrass(int i, int j){return new Square(i, j, grassTexture, Color.Green, false);}
 
         enum HedgeType{
             horizontal,

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WGDGameJam
 {
-    class Square
+    public class Square
     {
         Texture2D texture;
         Color colour;
@@ -15,6 +15,7 @@ namespace WGDGameJam
         private Texture2D food;
         int xlocation;
         int ylocation;
+        public bool wall;
 
         public Square(int x, int y, Texture2D texture, Color colour, bool blocking)
         {
@@ -24,12 +25,14 @@ namespace WGDGameJam
             this.food = null;
             xlocation = x;
             ylocation = y;
+            wall = blocking;
         }
 
         public bool isBlocking()
         {
             return blocking;
         }
+        public void SetBlocking(bool blocking) { this.blocking = blocking; }
         public bool containsFood()
         {
             return food != null;
@@ -44,14 +47,14 @@ namespace WGDGameJam
         {
             this.food = null;
         }
-
+        public void changeColour(Color colour) { this.colour = colour; }
         public void Draw(SpriteBatch spriteBatch, CowPiece head)
         {
             Vector2 position = new Vector2((-head.headPosition.X + xlocation) * 50, (-head.headPosition.Y + ylocation) * 50) + new Vector2(350, 250);
             spriteBatch.Draw(texture, position, colour); 
             if (food != null)
             {
-                spriteBatch.Draw(food, position + new Vector2(12, 12), Color.White);
+                spriteBatch.Draw(food, position + new Vector2(0,0), Color.White);
             }
             
         }
