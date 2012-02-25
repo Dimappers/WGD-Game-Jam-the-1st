@@ -35,7 +35,14 @@ namespace CowShooter
             if (flying)
             {
                 velocity.Y -= gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                velocity.X -= 0.5f * friction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (velocity.X > 0)
+                {
+                    velocity.X -= 0.5f * friction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+                else
+                {
+                    velocity.X = 0;
+                }
             }
             else
             {
