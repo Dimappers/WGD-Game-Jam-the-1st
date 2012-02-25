@@ -13,6 +13,7 @@ namespace WGDGameJam
         Texture2D standardTexture;
         Texture2D standardTailTexture;
         Game1 game;
+        bool dead;
 
         public HeadPiece(Texture2D headTexture, Texture2D standardPiece, Texture2D tailTexture, Game1 game)
             :base(headTexture, headTexture, game)
@@ -20,6 +21,12 @@ namespace WGDGameJam
             standardTexture = standardPiece;
             standardTailTexture = tailTexture;
             this.game = game;
+            dead = false;
+        }
+
+        public bool isDead()
+        {
+            return dead;
         }
 
         public override void Update(GameTime gameTime, DirectionToMove moveDirection, Point newHeadPosition)
@@ -27,8 +34,7 @@ namespace WGDGameJam
             base.Update(gameTime, moveDirection, newHeadPosition);
             if (game.GetMapManager().getSquare(location.X,location.Y).isBlocking())
             {
-                //TODO: stop it doing this
-                throw new Exception();
+                dead = true;
             }
             else if (game.GetMapManager().containsFood(location))
             {
