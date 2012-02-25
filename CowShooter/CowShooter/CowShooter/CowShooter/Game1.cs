@@ -22,6 +22,7 @@ namespace CowShooter
         WallManager wallManager;
 
         Catapult catapult;
+        CowManager cowManager;
 
         public Game1()
         {
@@ -30,6 +31,7 @@ namespace CowShooter
             IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 450;
+            cowManager = new CowManager();
         }
 
         /// <summary>
@@ -54,7 +56,8 @@ namespace CowShooter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D wallTexture = Content.Load<Texture2D>("art//Wall_Block");
-            Texture2D basicCow = Content.Load<Texture2D>("art//Cow_Piece");
+
+            cowManager.AddTexture(typeof(Cow), Content.Load<Texture2D>("art//Cow_Piece"));
 
             wallManager = new WallManager(wallTexture);
             // TODO: use this.Content to load your game content here
@@ -82,6 +85,8 @@ namespace CowShooter
 
             // TODO: Add your update logic here
 
+            cowManager.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -92,6 +97,11 @@ namespace CowShooter
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
+            spriteBatch.Begin();
+         
+            cowManager.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             spriteBatch.Begin();
             wallManager.Draw(spriteBatch);

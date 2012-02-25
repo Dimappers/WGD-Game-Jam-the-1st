@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="Catapult.cs" />
     <Compile Include="WallManager.cs" />
+    <Compile Include="Cow.cs" />
     <Compile Include="WallBlock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

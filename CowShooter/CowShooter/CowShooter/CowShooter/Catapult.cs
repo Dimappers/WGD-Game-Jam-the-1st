@@ -90,6 +90,4 @@ namespace CowShooter
             spriteBatch.End();
         }
     }
-
-
 }
