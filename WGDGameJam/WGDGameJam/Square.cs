@@ -10,13 +10,13 @@ namespace WGDGameJam
     public class Square
     {
         Texture2D texture;
-        Color colour;
+        public Color colour;
         private bool blocking;
         private Texture2D food;
-        int xlocation;
-        int ylocation;
+        protected int xlocation;
+        protected int ylocation;
         public bool wall;
-        MapManager mapManager;
+        public MapManager mapManager;
         public Square(int x, int y, Texture2D texture, Color colour, bool blocking, MapManager manager)
         {
             this.texture = texture;

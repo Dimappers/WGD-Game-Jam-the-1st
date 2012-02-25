@@ -126,6 +126,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WallHead.cs" />
+    <Compile Include="WallPiece.cs" />
     <Compile Include="MapManager.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="CowPiece.cs" />
