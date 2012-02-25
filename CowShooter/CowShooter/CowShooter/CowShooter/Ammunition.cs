@@ -16,21 +16,23 @@ namespace CowShooter
         Vector2 position;
 
         const float dampening = 0.1f;
-        const float gravity = 1.0f;
+        const float gravity = 5.0f;
 
         public Rectangle collisionRectangle;
         Catapult catapult;
-        public Ammunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition)
+        public Ammunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition, Texture2D texture)
         {
             this.catapult = catapult;
+            this.texture = texture;
             velocity = startVelocity;
+            velocity.X = MathHelper.Clamp(velocity.X, 1.5f, 100f);
             position = startPosition;
         }
 
         public void Update(GameTime gameTime)
         {
-            velocity.Y += gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position += velocity;
+            velocity.Y -= gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position -= velocity;
         }
 
         public void Draw(SpriteBatch spriteBatch)

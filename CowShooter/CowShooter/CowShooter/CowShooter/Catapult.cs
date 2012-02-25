@@ -17,19 +17,23 @@ namespace CowShooter
         const int widthOfLine = 5;
         const float maxDistance = 150;
         const float sharpestDownAngle = (9.0f * (float)Math.PI) / 8.0f;
+        const float powerScale = 0.05f;
         
         Texture2D catapultTexture;
         Texture2D lineTexture;
+        Texture2D ammoTexture;
         bool isBeingDragged;
         MouseState oldMouseState, newMouseState;
         Vector2 draggedToPoint;
         CollisionManager collisionManager;
         List<Ammunition> ammo;
 
-        public Catapult(Texture2D catapultTexture, Texture2D lineTexture, CollisionManager collisionManager)
+
+        public Catapult(Texture2D catapultTexture, Texture2D lineTexture, Texture2D ammoTexture, CollisionManager collisionManager)
         {
             this.catapultTexture = catapultTexture;
             this.lineTexture = lineTexture;
+            this.ammoTexture = ammoTexture;
             oldMouseState = Mouse.GetState();
             newMouseState = oldMouseState;
             this.collisionManager = collisionManager;
@@ -60,12 +64,21 @@ namespace CowShooter
                 }
             }
 
+            foreach (Ammunition a in ammo)
+            {
+                a.Update(gameTime);
+            }
+
             oldMouseState = newMouseState;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(catapultTexture, positionToSpawn, Color.White);
+            foreach (Ammunition a in ammo)
+            {
+                a.Draw(spriteBatch);
+            }
 
             if (isBeingDragged)
             {
@@ -84,12 +97,14 @@ namespace CowShooter
 
         private void onRelease()
         {
-            isBeingDragged = false;
+            if (isBeingDragged)
+            {
+                isBeingDragged = false;
+            }
 
-
-            Vector2 fireTrajectory = draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y);
+            Vector2 fireTrajectory = (draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y)) * powerScale;
             Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
-            Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y));
+            Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture);
             ammo.Add(newAmmo);
             collisionManager.addAmmo(newAmmo);
         }
