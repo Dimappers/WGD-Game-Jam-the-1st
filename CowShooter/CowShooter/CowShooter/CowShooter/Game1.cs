@@ -23,6 +23,7 @@ namespace CowShooter
 
         Catapult catapult;
         CowManager cowManager;
+        CollisionManager collisionManager;
 
         public Game1()
         {
@@ -32,6 +33,7 @@ namespace CowShooter
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 450;
             cowManager = new CowManager();
+            collisionManager = new CollisionManager(400.0f);
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace CowShooter
 
             cowManager.Update(gameTime);
             catapult.Update(gameTime);
-
+            collisionManager.checkCollision();
             base.Update(gameTime);
         }
 

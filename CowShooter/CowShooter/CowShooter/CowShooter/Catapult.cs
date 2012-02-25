@@ -22,16 +22,16 @@ namespace CowShooter
         bool isBeingDragged;
         MouseState oldMouseState, newMouseState;
         Vector2 draggedToPoint;
-
+        CollisionManager collisionManager;
         List<Ammunition> ammo;
 
-        public Catapult(Texture2D catapultTexture, Texture2D lineTexture)
+        public Catapult(Texture2D catapultTexture, Texture2D lineTexture, CollisionManager collisionManager)
         {
             this.catapultTexture = catapultTexture;
             this.lineTexture = lineTexture;
             oldMouseState = Mouse.GetState();
             newMouseState = oldMouseState;
-
+            this.collisionManager = collisionManager;
             // Setup the list of shot ammo
             ammo = new List<Ammunition>();
         }
@@ -88,8 +88,9 @@ namespace CowShooter
 
             Vector2 fireTrajectory = draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y);
             Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
-
-            ammo.Add(new Ammunition(this, fireTrajectory));
+            Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y));
+            ammo.Add(newAmmo);
+            collisionManager.addAmmo(newAmmo);
         }
 
         private void drawLine(Vector2 endPosition, SpriteBatch spriteBatch)
