@@ -23,7 +23,7 @@ namespace CowShooter
 
         CowManager cowManager;
 
-        const float speed = 20.0f;
+        const float speed = 2.5f;
 
         public Villager(Texture2D villagerTexture, CowManager cowManager, Vector2 startingPosition)
         {
@@ -86,7 +86,7 @@ namespace CowShooter
                         if (targetMeat == null)
                         {
                             //wander round aimlessly
-                            return new Vector2(new Random().Next(300), position.Y);
+                            return new Vector2(new Random().Next(500), position.Y);
                         }
                     }
 
@@ -101,7 +101,7 @@ namespace CowShooter
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (hasMeat)
+            if (!hasMeat)
             {
                 spriteBatch.Draw(texture, position, frame, Color.White);
             }

@@ -45,12 +45,11 @@ namespace CowShooter
                                         + randomNumber.Next(minSpawnTime, maxSpawnTime);
             }
             List<Cow> cowsToRemove = new List<Cow>();
-            meatsToRemove = new List<Meat>();
             foreach(Cow cow in activeCows)
             {
-                if (collisionManager.checkCowCollision(cow)) {
+                /*if (collisionManager.checkCowCollision(cow)) {
                     cow.cowIsInFront = true;
-                }
+                }*/
                 cow.Update(gameTime);
                 if (cow.isDead)
                 {
