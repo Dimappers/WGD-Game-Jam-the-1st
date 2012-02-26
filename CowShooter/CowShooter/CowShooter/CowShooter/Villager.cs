@@ -21,16 +21,31 @@ namespace CowShooter
         private bool seekingFood;
         private Rectangle frame = new Rectangle(0, 0, 32, 32);
 
+        bool isDead;
+        bool isHome;
+
+        bool movingLeft;
+
         CowManager cowManager;
+        VillagerManager villagerManager;
 
         const float speed = 2.5f;
 
-        public Villager(Texture2D villagerTexture, CowManager cowManager, Vector2 startingPosition)
+        public Villager(Texture2D villagerTexture, CowManager cowManager, VillagerManager villagerManager, Vector2 startingPosition)
         {
             wheredYouComeFrom = startingPosition;
             texture = villagerTexture;
+            this.villagerManager = villagerManager;
 
             this.cowManager = cowManager;
+            isDead = false;
+            isHome = false;
+            movingLeft = true;
+        }
+
+        public bool getIsDead()
+        {
+            return isDead;
         }
 
         public void setSeekingFood(bool seekFood) //if true villager will head to nearest food, pick it up and find another, if false will head home
@@ -61,10 +76,23 @@ namespace CowShooter
                 if (!seekingFood)
                 {
                     //We are home and we should stop moving
+                    if (!isHome)
+                    {
+                        isHome = true;
+                        villagerManager.notifyReturn();
+                    }
                     directionToMove = Vector2.Zero;
+                    
                 }
             }
-
+            if (directionToMove != Vector2.Zero)
+            {
+                if (isHome)
+                {
+                    isHome = false;
+                }
+                
+            }
             position += directionToMove;
         }
 
@@ -86,7 +114,30 @@ namespace CowShooter
                         if (targetMeat == null)
                         {
                             //wander round aimlessly
-                            return new Vector2(new Random().Next(500), position.Y);
+                            if (movingLeft)
+                            {
+                                if (position.X < 100)
+                                {
+                                    movingLeft = false;
+                                    return new Vector2(600, position.Y);
+                                }
+                                else
+                                {
+                                    return new Vector2(100, position.Y);
+                                }
+                            }
+                            else
+                            {
+                                if (position.X > 600)
+                                {
+                                    movingLeft = true;
+                                    return new Vector2(100, position.Y);
+                                }
+                                else
+                                {
+                                    return new Vector2(600, position.Y);
+                                }
+                            }
                         }
                     }
 
@@ -133,6 +184,11 @@ namespace CowShooter
                     ((Meat)otherObject).pickupMeat();
                     targetMeat = null;
                 }
+            }
+            else if (otherObject is Bull)
+            {
+                //kill the villager
+                isDead = true;
             }
         }
 
