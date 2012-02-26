@@ -13,8 +13,8 @@ namespace CowShooter
         public List<Cow> activeCows;
         Dictionary<Type, Texture2D> cowTextures;
 
-        const int minSpawnTime = 2;
-        const int maxSpawnTime = 6;
+        const int minSpawnTime = 5;
+        const int maxSpawnTime = 10;
 
         float timeTillNextCow;
         Random randomNumber;
@@ -26,13 +26,9 @@ namespace CowShooter
             this.collisionManager = collisionManager;
             activeCows = new List<Cow>();
             cowTextures = new Dictionary<Type, Texture2D>();
-            GenerateCow();
-            activeCows.ElementAt<Cow>(0).JumpUp();
-
-            GenerateCow();
-
             randomNumber = new Random();
             timeTillNextCow = randomNumber.Next(minSpawnTime, maxSpawnTime);
+            GenerateCow();
 
         }
         public void Update(GameTime gameTime)
@@ -45,6 +41,9 @@ namespace CowShooter
             }
             foreach(Cow cow in activeCows)
             {
+                if (collisionManager.checkCowCollision(cow)) {
+                    cow.cowIsInFront = true;
+                }
                 cow.Update(gameTime);
             }
         }

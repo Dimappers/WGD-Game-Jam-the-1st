@@ -49,6 +49,21 @@ namespace CowShooter
             }
         }
 
+        public bool checkCowCollision(Cow cow)
+        {
+            foreach (Cow otherCow in cows)
+            {
+                if (!otherCow.Equals(cow))
+                {
+                    if (cow.getCollisionRectangle().Intersects(otherCow.getCollisionRectangle()))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public void removeCow(Cow cow)
         {
             cows.Remove(cow);
