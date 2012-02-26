@@ -116,6 +116,10 @@
     <Compile Include="Meat.cs" />
     <Compile Include="CollisionManager.cs" />
     <Compile Include="ICollisionObject.cs" />
+    <Compile Include="MeatStore.cs" />
+    <Compile Include="NewTowerStoreItem.cs" />
+    <Compile Include="NewVillagerStoreItem.cs" />
+    <Compile Include="StoreItem.cs" />
     <Compile Include="Villager.cs" />
     <Compile Include="VillagerManager.cs" />
     <Compile Include="WallManager.cs" />

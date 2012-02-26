@@ -74,6 +74,7 @@ namespace CowShooter
                 {
                     hasMeat = false;
                     //TODO: Tell manager have brought meat
+                    villagerManager.DropOffMeat();
                 }
 
                 if (!seekingFood)

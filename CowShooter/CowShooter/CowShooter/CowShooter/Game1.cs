@@ -27,6 +27,10 @@ namespace CowShooter
         CowManager cowManager;
         CollisionManager collisionManager;
         VillagerManager villagerManager;
+        MeatStore meatStore;
+
+        MouseState currentMouseState, oldMouseState;
+        KeyboardState currentKeyboardState, oldKeyboardState;
 
         public Game1()
         {
@@ -48,7 +52,10 @@ namespace CowShooter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            currentMouseState = Mouse.GetState();
+            currentKeyboardState = Keyboard.GetState();
+            oldMouseState = currentMouseState;
+            oldKeyboardState = currentKeyboardState;
             base.Initialize();
         }
 
@@ -63,6 +70,9 @@ namespace CowShooter
             background = Content.Load<Texture2D>("art//bg");
             Texture2D wallTexture = Content.Load<Texture2D>("art//Wall_Block");
 
+            meatStore = new MeatStore(Content.Load<SpriteFont>("ScoreFont"), Content.Load<Texture2D>("art//storebackground"));
+
+
             cowManager.AddTexture(typeof(Cow), Content.Load<Texture2D>("art//Cow_Piece"));
             cowManager.AddTexture(typeof(Bull), Content.Load<Texture2D>("art//Cow_Piece_bull"));
             cowManager.AddTexture(typeof(Meat), Content.Load<Texture2D>("art//meat"));
@@ -71,7 +81,13 @@ namespace CowShooter
             wallManager = new WallManager(wallTexture);
             cowManager.SetWallManager(wallManager);
 
-            villagerManager = new VillagerManager(Content.Load<Texture2D>("art//villager"), cowManager, collisionManager);
+            villagerManager = new VillagerManager(Content.Load<Texture2D>("art//villager"), cowManager, collisionManager, meatStore);
+
+            meatStore.addTexture(typeof(NewTowerStoreItem), wallTexture);
+            NewTowerStoreItem towerStoreItem = new NewTowerStoreItem(wallManager);
+            NewTowerStoreItem towerItem2 = new NewTowerStoreItem(wallManager);
+            meatStore.addStoreItem(towerStoreItem);
+            meatStore.addStoreItem(towerItem2);
             // TODO: use this.Content to load your game content here
         }
 
@@ -91,17 +107,25 @@ namespace CowShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
+            currentKeyboardState = Keyboard.GetState();
+            currentMouseState = Mouse.GetState();
             // TODO: Add your update logic here
 
             cowManager.Update(gameTime);
             catapult.Update(gameTime);
             collisionManager.checkCollision();
             villagerManager.Update(gameTime);
+
+            if (currentKeyboardState.IsKeyDown(Keys.S) && oldKeyboardState.IsKeyUp(Keys.S))
+            {
+                meatStore.toggleStore();
+            }
+            meatStore.Update(currentMouseState, oldMouseState);
+            oldKeyboardState = currentKeyboardState;
+            oldMouseState = currentMouseState;
+
             base.Update(gameTime);
+
         }
 
         /// <summary>
@@ -118,6 +142,7 @@ namespace CowShooter
             catapult.Draw(gameTime, spriteBatch);
             wallManager.Draw(spriteBatch);
             villagerManager.Draw(spriteBatch);
+            meatStore.Draw(spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 
