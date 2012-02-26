@@ -26,6 +26,7 @@ namespace CowShooter
         Catapult catapult;
         CowManager cowManager;
         CollisionManager collisionManager;
+        VillagerManager villagerManager;
 
         public Game1()
         {
@@ -69,6 +70,7 @@ namespace CowShooter
             catapult = new Catapult(Content.Load<Texture2D>("art//catapult"), Content.Load<Texture2D>("art//line"), Content.Load<Texture2D>("art//ammo"), collisionManager); 
             wallManager = new WallManager(wallTexture);
 
+            villagerManager = new VillagerManager(Content.Load<Texture2D>("art//villager"), cowManager, collisionManager);
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,6 +99,7 @@ namespace CowShooter
             cowManager.Update(gameTime);
             catapult.Update(gameTime);
             collisionManager.checkCollision();
+            villagerManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -113,7 +116,7 @@ namespace CowShooter
             cowManager.Draw(spriteBatch);
             catapult.Draw(gameTime, spriteBatch);
             wallManager.Draw(spriteBatch);
-
+            villagerManager.Draw(spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 

@@ -48,10 +48,10 @@ namespace CowShooter
             meatsToRemove = new List<Meat>();
             foreach(Cow cow in activeCows)
             {
-                if (collisionManager.checkCowCollision(cow)) {
+                /*if (collisionManager.checkCowCollision(cow)) {
                     cow.partOfPyramid = true;
                     cow.otherCows = collisionManager.findCowCollisions(cow);
-                }
+                }*/
                 cow.Update(gameTime);
                 if (cow.isDead)
                 {
@@ -69,6 +69,7 @@ namespace CowShooter
             foreach (Meat meat in meatsToRemove)
             {
                 activeMeats.Remove(meat);
+                collisionManager.removeOther(meat);
             }
             meatsToRemove = new List<Meat>();
         }
@@ -107,7 +108,9 @@ namespace CowShooter
         public void RemoveCow(Cow removeCow)
         {
             activeCows.Remove(removeCow);
-            activeMeats.Add(new Meat(this, GetTexture(typeof(Meat)), removeCow.cowPosition));
+            Meat newMeat = new Meat(this, GetTexture(typeof(Meat)), removeCow.cowPosition);
+            activeMeats.Add(newMeat);
+            collisionManager.addOther(newMeat);
             collisionManager.removeCow(removeCow);
         }
 
@@ -122,7 +125,7 @@ namespace CowShooter
             foreach (Meat meat in activeMeats)
             {
                 if(nearestMeat==null) {nearestMeat = meat;}
-                else if (Math.Abs(meat.getLocation() - toWhere) < Math.Abs(nearestMeat.getLocation() - toWhere)) { nearestMeat = meat; }
+                else if (Math.Abs(meat.getLocation().X - toWhere) < Math.Abs(nearestMeat.getLocation().X - toWhere)) { nearestMeat = meat; }
             }
             return nearestMeat;
         }

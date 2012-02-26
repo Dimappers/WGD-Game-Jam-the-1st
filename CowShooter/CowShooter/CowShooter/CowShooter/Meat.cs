@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CowShooter
 {
-    public class Meat
+    public class Meat : ICollisionObject
     {
         double age;
 
@@ -24,6 +24,11 @@ namespace CowShooter
             age = 0; 
         }
 
+        public bool getIsOff()
+        {
+            return age >= 15000;
+        }
+
         public void Update(GameTime gameTime)
         {
             age+=gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -37,9 +42,34 @@ namespace CowShooter
             spriteBatch.Draw(texture, position, colour);
         }
 
-        public float getLocation()
+        public Vector2 getLocation()
         {
-            return position.X;
+            return position;
+        }
+
+        public void pickupMeat()
+        {
+            manager.RemoveMeat(this);
+        }
+
+        public Rectangle getCollisionRectangle()
+        {
+            return new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+        }
+
+        public bool listenForGround()
+        {
+            return false;
+        }
+
+        public void NotifyOfCollision(ICollisionObject otherObject)
+        {
+            //Don't really care - the cow deletes it if necessary
+        }
+
+        public void NotifyGroundCollision()
+        {
+            //Not checking for ground collisions
         }
     }
 }
