@@ -52,7 +52,7 @@ namespace CowShooter
         }
         public bool addBlock()
         {
-            if (blocks.Length <= 10)
+            if (blocks.Length <= 9)
             {
                 WallBlock[] temp = new WallBlock[blocks.Length + 1];
                 for (int i = 0; i < blocks.Length; i++)
