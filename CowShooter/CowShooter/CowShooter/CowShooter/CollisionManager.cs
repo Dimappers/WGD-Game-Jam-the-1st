@@ -69,7 +69,7 @@ namespace CowShooter
             bool hasCowBelow = false;
             bool hasCowInJumpToPosition = false;
             bool hasCowNextToWithNoCowOnTop = false;
-            bool aboveGround = cowRectangle.Bottom < 400 - cowRectangle.Height ;
+            bool notStoodOnGround = cowRectangle.Bottom < 400 - cowRectangle.Height ;
             foreach (ICollisionObject otherCowObject in otherObjects)
             {             
                 Cow otherCow = otherCowObject as Cow;
@@ -77,23 +77,40 @@ namespace CowShooter
                 {
                     if (!otherCow.Equals(cow)&&otherCow.partOfPyramid)
                     {
-                        if (aboveGround
-                            && new Rectangle(cowRectangle.X, cowRectangle.Y + cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                        if (notStoodOnGround
+                            && new Rectangle(
+                                    cowRectangle.X, 
+                                    cowRectangle.Y + (int)(1.5*(float)cowRectangle.Height), 
+                                    cowRectangle.Width, 
+                                    cowRectangle.Height/2)
+                                .Intersects(otherCow.getCollisionRectangle()))
                         {
                             hasCowBelow = true;
                         }
-                        else if (new Rectangle(cowRectangle.X /*+ cowRectangle.Width*/, cowRectangle.Y - (int)(1.5*(float)cowRectangle.Height), cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                        if (new Rectangle(
+                                    cowRectangle.X + cowRectangle.Width/2, 
+                                    cowRectangle.Y - (int)(1.5*(float)cowRectangle.Height), 
+                                    cowRectangle.Width, 
+                                    cowRectangle.Height)
+                                .Intersects(otherCow.getCollisionRectangle()))
                         {
+                            //looks to right & up to check for cow
                             hasCowInJumpToPosition = true;
                         }
-                        else if (new Rectangle(cowRectangle.X /*+ cowRectangle.Width*/, cowRectangle.Y, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                        else if (new Rectangle(
+                                    cowRectangle.X + cowRectangle.Width/2, 
+                                    cowRectangle.Y, 
+                                    cowRectangle.Width, 
+                                    cowRectangle.Height)
+                                .Intersects(otherCow.getCollisionRectangle()))
                         {
+                            //just looks to right
                             hasCowNextToWithNoCowOnTop = true;
                         }
                     }
                 }
             }
-            if(aboveGround&&!hasCowBelow)
+            if(notStoodOnGround&&!hasCowBelow)
             {
                 return OtherCowLocations.ThereIsNoCowBelowCurrentCow;
             }

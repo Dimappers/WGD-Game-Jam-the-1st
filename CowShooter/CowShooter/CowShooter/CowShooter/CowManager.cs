@@ -105,7 +105,7 @@ namespace CowShooter
         private void GenerateCow()
         {
             Cow myCow;
-            if (randomNumber.Next(5) == 0) { myCow = new Bull(this, wallManager, h1Texture, h2Texture); }
+            if (randomNumber.Next(0) == 0) { myCow = new Bull(this, wallManager, h1Texture, h2Texture); }
             else { myCow = new Cow(this, wallManager, h1Texture, h2Texture, 1); }
             activeCows.Add(myCow);
             collisionManager.addCow(myCow);
