@@ -33,6 +33,7 @@ namespace CowShooter
             randomNumber = new Random();
             timeTillNextCow = randomNumber.Next(minSpawnTime, maxSpawnTime);
             GenerateCow();
+            activeMeats = new List<Meat>();
 
         }
         public void Update(GameTime gameTime)
@@ -43,12 +44,30 @@ namespace CowShooter
                 timeTillNextCow = (float)gameTime.TotalGameTime.TotalSeconds
                                         + randomNumber.Next(minSpawnTime, maxSpawnTime);
             }
+            List<Cow> cowsToRemove = new List<Cow>();
+            meatsToRemove = new List<Meat>();
             foreach(Cow cow in activeCows)
             {
                 if (collisionManager.checkCowCollision(cow)) {
                     cow.cowIsInFront = true;
                 }
                 cow.Update(gameTime);
+                if (cow.isDead)
+                {
+                    cowsToRemove.Add(cow);
+                }
+            }
+            foreach (Cow cow in cowsToRemove)
+            {
+                RemoveCow(cow);
+            }
+            foreach (Meat meat in activeMeats)
+            {
+                meat.Update(gameTime);
+            }
+            foreach (Meat meat in meatsToRemove)
+            {
+                activeMeats.Remove(meat);
             }
             foreach (Meat meat in activeMeats)
             {
@@ -94,6 +113,7 @@ namespace CowShooter
         {
             activeCows.Remove(removeCow);
             activeMeats.Add(new Meat(this, GetTexture(typeof(Meat)), removeCow.cowPosition));
+            collisionManager.removeCow(removeCow);
         }
 
         public void RemoveMeat(Meat removeMeat)

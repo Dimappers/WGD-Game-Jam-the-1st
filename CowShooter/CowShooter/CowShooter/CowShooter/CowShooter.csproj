@@ -115,6 +115,7 @@
     <Compile Include="Meat.cs" />
     <Compile Include="CollisionManager.cs" />
     <Compile Include="ICollisionObject.cs" />
+    <Compile Include="Villager.cs" />
     <Compile Include="WallManager.cs" />
     <Compile Include="Cow.cs" />
     <Compile Include="WallBlock.cs" />
