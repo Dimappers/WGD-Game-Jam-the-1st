@@ -9,12 +9,14 @@ namespace CowShooter
     {
         List<Ammunition> ammo;
         List<Cow> cows;
+        List<ICollisionObject> otherObjects;
         float groundLevel;
 
         public CollisionManager(float groundLevel)
         {
             ammo = new List<Ammunition>();
             cows = new List<Cow>();
+            otherObjects = new List<ICollisionObject>();
 
             this.groundLevel = groundLevel;
         }
@@ -29,6 +31,11 @@ namespace CowShooter
             this.ammo.Add(ammo);
         }
 
+        public void addOther(ICollisionObject other)
+        {
+            otherObjects.Add(other);
+        }
+
         public void checkCollision()
         {
             foreach (Ammunition ammoShot in ammo)
@@ -41,6 +48,36 @@ namespace CowShooter
                         ammoShot.NotifyOfCollision(c);
                     }
                 }
+
+                foreach (ICollisionObject other in otherObjects)
+                {
+                    if (ammoShot.getCollisionRectangle().Intersects(other.getCollisionRectangle()))
+                    {
+                        ammoShot.NotifyOfCollision(other);
+                        other.NotifyOfCollision(ammoShot);
+                    }
+                    foreach (Cow c in cows)
+                    {
+                        if (other.getCollisionRectangle().Intersects(c.getCollisionRectangle()))
+                        {
+                            other.NotifyOfCollision(c);
+                            c.NotifyOfCollision(other);
+                        }
+                    }
+
+                    foreach (ICollisionObject another in otherObjects)
+                    {
+                        if (another != other)
+                        {
+                            if (another.getCollisionRectangle().Intersects(other.getCollisionRectangle()))
+                            {
+                                another.NotifyOfCollision(other);
+                                other.NotifyOfCollision(another);
+                            }
+                        }
+                    }
+                }
+                
 
                 if (ammoShot.getCollisionRectangle().Bottom > groundLevel)
                 {
@@ -74,6 +111,9 @@ namespace CowShooter
             ammo.Remove(ammoToRemove);
         }
 
-
+        public void removeOther(ICollisionObject other)
+        {
+            otherObjects.Remove(other);
+        }
     }
 }
