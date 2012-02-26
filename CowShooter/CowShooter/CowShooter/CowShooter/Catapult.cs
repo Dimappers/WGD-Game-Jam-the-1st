@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CowShooter
 {
-    class Catapult
+    public class Catapult
     {
         
         Vector2 positionToSpawn = new Vector2(668, 100);

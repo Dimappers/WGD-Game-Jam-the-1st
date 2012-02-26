@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CowShooter
 {
-    class CowManager
+    public class CowManager
     {
         public List<Cow> activeCows;
         public List<Meat> meatsToRemove;
@@ -45,10 +45,12 @@ namespace CowShooter
                                         + randomNumber.Next(minSpawnTime, maxSpawnTime);
             }
             List<Cow> cowsToRemove = new List<Cow>();
+            meatsToRemove = new List<Meat>();
             foreach(Cow cow in activeCows)
             {
                 /*if (collisionManager.checkCowCollision(cow)) {
-                    cow.cowIsInFront = true;
+                    cow.partOfPyramid = true;
+                    cow.otherCows = collisionManager.findCowCollisions(cow);
                 }*/
                 cow.Update(gameTime);
                 if (cow.isDead)
