@@ -27,6 +27,7 @@ namespace CowShooter
 
         int health;
         HealthBar healthBar;
+        bool inVillage = false;
 
         bool justFinishedJumping;
         Vector2 startPoint;
@@ -86,9 +87,13 @@ namespace CowShooter
                     Move(velocity_h, 0);
                 }
             }
-            else
+            else if (!inVillage)
             {
                 takePyramidMove();
+            }
+            else
+            {
+                invadeVillageMove();
             }
 
             /*if (!partOfPyramid||isJumping||isFalling||justFinishedJumping) { Move(velocity_h, velocity_v); }
@@ -166,6 +171,16 @@ namespace CowShooter
             }
             //else do no moving
 
+            if (nextStackPoint.X == -1) { inVillage = true; }
+        }
+
+        private void invadeVillageMove()
+        {
+            if (cowPosition.X <= 600 + wallManager.wallHeight + getCollisionRectangle().Width) { Move(velocity_h, 0); }
+            else {
+                if (cowPosition.Y <= 400) { Move(0, -velocity_v); }
+            }
+            if(cowPosition.Y >= 400) {Move(velocity_h,0);}
         }
 
         public bool listenForGround()

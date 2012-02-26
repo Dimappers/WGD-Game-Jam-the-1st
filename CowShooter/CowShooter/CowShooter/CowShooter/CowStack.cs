@@ -71,7 +71,7 @@ namespace CowShooter
             }
 
             Stack[position.X, position.Y] = null;
-            Stack[returnPoint.X, returnPoint.Y] = cow;
+            if(returnPoint.X!=-1||returnPoint.Y!=-1) {Stack[returnPoint.X, returnPoint.Y] = cow;}
 
             return returnPoint;
         }

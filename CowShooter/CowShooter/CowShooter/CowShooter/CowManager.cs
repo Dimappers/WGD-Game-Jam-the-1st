@@ -18,8 +18,8 @@ namespace CowShooter
         Texture2D h1Texture;
         Texture2D h2Texture;
 
-        const int minSpawnTime = 5;
-        const int maxSpawnTime = 10;
+        const int minSpawnTime = 1;
+        const int maxSpawnTime = 4;
 
         float timeTillNextCow;
         Random randomNumber;
