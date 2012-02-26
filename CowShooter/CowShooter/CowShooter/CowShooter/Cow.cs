@@ -113,6 +113,7 @@ namespace CowShooter
                 if (!isJumping)
                 {
                     startPoint = cowPosition;
+                    isJumping = true;
                 }
                 JumpUp();
             }
