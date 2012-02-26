@@ -10,6 +10,6 @@ namespace CowShooter
 {
     class Bull : Cow
     {
-        public Bull(CowManager manager) : base(manager){ }
+        public Bull(CowManager manager, WallManager wallManager) : base(manager, wallManager){ }
     }
 }

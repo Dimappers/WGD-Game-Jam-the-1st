@@ -69,6 +69,7 @@ namespace CowShooter
 
             catapult = new Catapult(Content.Load<Texture2D>("art//catapult"), Content.Load<Texture2D>("art//line"), Content.Load<Texture2D>("art//ammo"), collisionManager); 
             wallManager = new WallManager(wallTexture);
+            cowManager.SetWallManager(wallManager);
 
             villagerManager = new VillagerManager(Content.Load<Texture2D>("art//villager"), cowManager, collisionManager);
             // TODO: use this.Content to load your game content here

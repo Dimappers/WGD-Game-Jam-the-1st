@@ -7,11 +7,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CowShooter
 {
-    class WallManager
+    public class WallManager
     {
         const int floorLevel = 400;
         const int startingNumberOfBlocks = 5;
         public const float wallLocation = 600;
+
+        public float wallHeight = 0;
 
         WallBlock[] blocks;
         Texture2D wallTexture;
@@ -23,6 +25,7 @@ namespace CowShooter
             for (int i = 0; i < blocks.Length; i++)
             {
                 blocks[i] = new WallBlock(wallTexture, createPositionVector(i));
+                wallHeight += wallTexture.Height;
             }
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -38,13 +41,17 @@ namespace CowShooter
         }
         public void addBlock()
         {
-            WallBlock[] temp = new WallBlock[blocks.Length+1];
-            for (int i = 0; i < blocks.Length; i++)
+            if (blocks.Length <= 10)
             {
-                temp[i] = blocks[i];
+                WallBlock[] temp = new WallBlock[blocks.Length + 1];
+                for (int i = 0; i < blocks.Length; i++)
+                {
+                    temp[i] = blocks[i];
+                }
+                temp[blocks.Length] = new WallBlock(wallTexture, createPositionVector(blocks.Length));
+                wallHeight += wallTexture.Height;
+                blocks = temp;
             }
-            temp[blocks.Length] = new WallBlock(wallTexture, createPositionVector(blocks.Length));
-            blocks = temp;
         }
         public void removeBlock()
         {
@@ -53,6 +60,7 @@ namespace CowShooter
             {
                 temp[i] = blocks[i];
             }
+            wallHeight -= wallTexture.Height;
             blocks = temp;
         }
     }
