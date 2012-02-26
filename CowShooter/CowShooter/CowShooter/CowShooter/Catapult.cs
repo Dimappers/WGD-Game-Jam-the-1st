@@ -28,6 +28,7 @@ namespace CowShooter
         CollisionManager collisionManager;
         List<Ammunition> ammo;
         float lastSetAngle;
+        int damage;
 
 
         public Catapult(Texture2D catapultTexture, Texture2D lineTexture, Texture2D ammoTexture, CollisionManager collisionManager)
@@ -41,6 +42,7 @@ namespace CowShooter
             // Setup the list of shot ammo
             ammo = new List<Ammunition>();
             lastSetAngle = 0.0f;
+            damage = 1;
         }
 
         public void Update(GameTime gameTime)
@@ -118,7 +120,7 @@ namespace CowShooter
 
                 Vector2 fireTrajectory = (draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y)) * powerScale;
                 Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
-                Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture);
+                Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture, damage);
                 ammo.Add(newAmmo);
                 collisionManager.addAmmo(newAmmo);
             }
@@ -143,6 +145,11 @@ namespace CowShooter
             spriteBatch.Draw(lineTexture, new Rectangle((int)startPosition.X, (int)startPosition.Y, widthOfLine, (int)length), null, Color.White, alpha, new Vector2(widthOfLine / 2, 0), SpriteEffects.None, 0);
             spriteBatch.Draw(catapultTexture, positionToSpawn, null, Color.White, (3.0f * (float)Math.PI) / 2.0f + ((float)Math.PI / 2.0f) + (float)Math.Atan(yDist / xDist), /*Vector2.Zero*/new Vector2(68,34f), 1.0f, SpriteEffects.None, 0.0f);
             lastSetAngle = (float)Math.Atan(yDist / xDist);
+        }
+
+        public void upgradeDamage(int upgradeAmount)
+        {
+            damage += upgradeAmount;
         }
     }
 }

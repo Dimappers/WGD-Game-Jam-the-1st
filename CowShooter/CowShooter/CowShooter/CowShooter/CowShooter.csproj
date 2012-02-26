@@ -114,6 +114,8 @@
     <Compile Include="Catapult.cs" />
     <Compile Include="Bull.cs" />
     <Compile Include="CowStack.cs" />
+    <Compile Include="DamageUpgrade.cs" />
+    <Compile Include="HealthBar.cs" />
     <Compile Include="Meat.cs" />
     <Compile Include="CollisionManager.cs" />
     <Compile Include="ICollisionObject.cs" />

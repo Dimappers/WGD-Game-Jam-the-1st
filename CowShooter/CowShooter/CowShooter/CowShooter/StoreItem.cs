@@ -33,7 +33,7 @@ namespace CowShooter
 
         public void SetTexture()
         {
-            texture = texture = meatStore.getTexture(GetType());
+            texture = meatStore.getTexture(GetType());
         }
 
         public bool CheckClick(Point mousePoisition)

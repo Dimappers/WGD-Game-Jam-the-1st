@@ -15,6 +15,9 @@ namespace CowShooter
         public List<Meat> activeMeats;
         Dictionary<Type, Texture2D> cowTextures;
 
+        Texture2D h1Texture;
+        Texture2D h2Texture;
+
         const int minSpawnTime = 5;
         const int maxSpawnTime = 10;
 
@@ -37,6 +40,8 @@ namespace CowShooter
             timeTillNextCow = randomNumber.Next(minSpawnTime, maxSpawnTime);
             activeMeats = new List<Meat>();
             
+            this.h1Texture = h1Texture;
+            this.h2Texture = h2Texture;
 
         }
         public void SetWallManager(WallManager wallManager)

@@ -24,8 +24,13 @@ namespace CowShooter
 
         bool isJumping;
         bool isFalling;
+
+        int health;
+        HealthBar healthBar;
+
         bool justFinishedJumping;
         Vector2 startPoint;
+
 
         WallManager wallManager;
 
@@ -38,7 +43,7 @@ namespace CowShooter
         Point lastStackPoint;
         CowStack cowStack;
 
-        public Cow(CowManager manager, WallManager wallManager, CowStack cowStack)
+        public Cow(CowManager manager, WallManager wallManager, CowStack cowStack, Texture2D h1Texture, Texture2D h2Texture, int health)
         {
             cowPosition = new Vector2(0, floorLevel);
             this.manager = manager;
@@ -48,6 +53,8 @@ namespace CowShooter
             isJumping = false;
             isFalling = true;
             this.cowStack = cowStack;
+            this.health = health;
+            healthBar = new HealthBar(h1Texture, h2Texture, cowPosition, health);
         }
         /*public bool cowHasStopped()
         {
@@ -59,7 +66,7 @@ namespace CowShooter
             {
                 texture = manager.GetTexture(GetType());
             }
-
+            healthBar.Update(gameTime, cowPosition);
 
             this.gameTime = gameTime;
 
@@ -91,6 +98,7 @@ namespace CowShooter
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, cowPosition, Color.White);
+            healthBar.Draw(spriteBatch);
         }
 
         public Rectangle getCollisionRectangle()
@@ -169,7 +177,16 @@ namespace CowShooter
         {
             if (otherObject is Ammunition)
             {
-                isDead = true;
+                int d = ((Ammunition)otherObject).damage;
+                health -= d;
+                if (health <= 0)
+                {
+                    isDead = true;
+                }
+                else
+                {
+                    healthBar.takeDamage(d, gameTime);
+                }
             }
         }
 
