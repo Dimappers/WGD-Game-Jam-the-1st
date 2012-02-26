@@ -39,8 +39,10 @@ namespace CowShooter
         {
             if (meatCount >= item.getCost())
             {
-                meatCount -= item.getCost();
-                item.onBuy();
+                if (item.onBuy())
+                {
+                    meatCount -= item.getCost();
+                }
             }
         }
 

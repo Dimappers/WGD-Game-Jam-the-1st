@@ -39,7 +39,7 @@ namespace CowShooter
         {
             return new Vector2(wallLocation, floorLevel - wallTexture.Height * (i + 1));
         }
-        public void addBlock()
+        public bool addBlock()
         {
             if (blocks.Length <= 10)
             {
@@ -51,7 +51,9 @@ namespace CowShooter
                 temp[blocks.Length] = new WallBlock(wallTexture, createPositionVector(blocks.Length));
                 wallHeight += wallTexture.Height;
                 blocks = temp;
+                return true;
             }
+            return false;
         }
         public void removeBlock()
         {

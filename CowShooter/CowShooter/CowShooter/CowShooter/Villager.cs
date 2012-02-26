@@ -14,6 +14,7 @@ namespace CowShooter
         Vector2 position;
         Vector2 wheredYouComeFrom;
         Texture2D texture;
+        Meat carryMeat;
 
         private bool hasMeat;
         private bool seekingFood;
@@ -34,6 +35,7 @@ namespace CowShooter
             wheredYouComeFrom = startingPosition;
             texture = villagerTexture;
             this.villagerManager = villagerManager;
+            carryMeat = null;
 
             this.cowManager = cowManager;
             isDead = false;
@@ -74,7 +76,8 @@ namespace CowShooter
                 {
                     hasMeat = false;
                     //TODO: Tell manager have brought meat
-                    villagerManager.DropOffMeat();
+                    villagerManager.DropOffMeat(carryMeat);
+                    carryMeat = null;
                 }
 
                 if (!seekingFood)
@@ -183,6 +186,7 @@ namespace CowShooter
                 if (!hasMeat)
                 {
                     hasMeat = true;
+                    carryMeat = (Meat)otherObject;
                     ((Meat)otherObject).pickupMeat();
                     targetMeat = null;
                 }

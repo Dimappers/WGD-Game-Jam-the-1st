@@ -16,9 +16,7 @@ namespace CowShooter
 
         public override bool onBuy()
         {
-            wallManager.addBlock();
-            //TODO: Use kims methods
-            return true;
+            return wallManager.addBlock();
         }
 
     }

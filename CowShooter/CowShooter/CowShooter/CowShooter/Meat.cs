@@ -10,20 +10,28 @@ namespace CowShooter
     public class Meat : ICollisionObject
     {
         double age;
+        const float groundLevel = 400;
+        const float gravityScaleFactor = 0.05f;
 
         CowManager manager;
         Texture2D texture;
         Vector2 position;
         Color colour = Color.White;
+        public int value;
+
         bool meatPickedUp;
+        bool onGround;
+        float yVelocity;
 
         public Meat(CowManager manager, Texture2D texture, Vector2 position)
         {
+            value = 3;
             this.manager = manager;
             this.texture = texture;
             this.position = position;
             age = 0;
             meatPickedUp = false;
+            onGround = false;
         }
 
         public bool getIsOff()
@@ -33,10 +41,28 @@ namespace CowShooter
 
         public void Update(GameTime gameTime)
         {
+            if (!onGround)
+            {
+                yVelocity += 9.8f * gravityScaleFactor;
+                position.Y += yVelocity;
+
+                if (position.Y + texture.Height > groundLevel)
+                {
+                    NotifyGroundCollision();
+                }
+            }
+
+                
             age+=gameTime.ElapsedGameTime.TotalMilliseconds;
             if (age >= 15000) { manager.RemoveMeat(this); }
-            else if (age >= 10000) { colour = Color.Green; }
-            else if (age >= 5000) {colour = Color.LightGreen;}
+            else if (age >= 10000) { 
+                colour = Color.Green;
+                value = 1;
+            }
+            else if (age >= 5000) {
+                colour = Color.LightGreen;
+                value = 2;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -77,6 +103,8 @@ namespace CowShooter
 
         public void NotifyGroundCollision()
         {
+            yVelocity = 0;
+            onGround = true;
             //Not checking for ground collisions
         }
     }
