@@ -11,6 +11,8 @@ namespace CowShooter
     class CowManager
     {
         public List<Cow> activeCows;
+        List<Meat> meatsToRemove;
+        List<Meat> activeMeats;
         Dictionary<Type, Texture2D> cowTextures;
 
         const int minSpawnTime = 5;
@@ -29,6 +31,7 @@ namespace CowShooter
             randomNumber = new Random();
             timeTillNextCow = randomNumber.Next(minSpawnTime, maxSpawnTime);
             GenerateCow();
+            activeMeats = new List<Meat>();
 
         }
         public void Update(GameTime gameTime)
@@ -40,6 +43,7 @@ namespace CowShooter
                                         + randomNumber.Next(minSpawnTime, maxSpawnTime);
             }
             List<Cow> cowsToRemove = new List<Cow>();
+            meatsToRemove = new List<Meat>();
             foreach(Cow cow in activeCows)
             {
                 if (collisionManager.checkCowCollision(cow)) {
@@ -63,7 +67,6 @@ namespace CowShooter
             {
                 activeMeats.Remove(meat);
             }
-            meatsToRemove = new List<Meat>();
         }
 
         public void Draw(SpriteBatch spriteBatch)
