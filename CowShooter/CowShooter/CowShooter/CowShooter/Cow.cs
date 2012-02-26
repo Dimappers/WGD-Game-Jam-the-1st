@@ -22,15 +22,9 @@ namespace CowShooter
 
         public bool partOfPyramid;
 
-        bool isJumping;
-        bool isFalling;
-
         int health;
         HealthBar healthBar;
         bool inVillage = false;
-
-        bool justFinishedJumping;
-        Vector2 startPoint;
 
 
         WallManager wallManager;
@@ -51,16 +45,11 @@ namespace CowShooter
             this.wallManager = wallManager;
             isDead = false;
             partOfPyramid = false;
-            isJumping = false;
-            isFalling = true;
             this.cowStack = cowStack;
             this.health = health;
             healthBar = new HealthBar(h1Texture, h2Texture, cowPosition, health);
         }
-        /*public bool cowHasStopped()
-        {
-            return partOfPyramid && !(isFalling || isJumping);
-        }*/
+
         public virtual void Update(GameTime gameTime)
         {
             if (texture == null)
@@ -95,9 +84,6 @@ namespace CowShooter
             {
                 invadeVillageMove();
             }
-
-            /*if (!partOfPyramid||isJumping||isFalling||justFinishedJumping) { Move(velocity_h, velocity_v); }
-            else { PyramidMove(velocity_h, velocity_v); }*/
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -207,118 +193,13 @@ namespace CowShooter
 
         public void NotifyGroundCollision()
         {
-            isFalling = false;
         }
-        /*public void JumpUp()
-        {
-            if (cowPosition.Y + frameSize.Height > startPoint.Y)
-            {
-                velocity_v = 10.0f;
-                cowPosition.Y -= velocity_v * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //gravity();
-            }
-            else
-            {
-                isJumping = false;
-                justFinishedJumping = true;
-                velocity_v = 0.0f;
-            }
-        }*/
-        /*private void gravity()
-        {
-            velocity_v -= 1.0f;
-        }*/
+
         private void Move(float xd, float yd)
         {
-            /*if (partOfPyramid)
-            {
-                if (isJumping)
-                {
-                    JumpUp();
-                }
-                else if (isFalling)
-                {
-                    Fall();
-                }
-                else
-                {
-                    cowPosition += new Vector2(xd, yd) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (otherCows != CollisionManager.OtherCowLocations.ThereIsNoCowToTheRight||wallInWay()) { justFinishedJumping = false; }
-                }
-            }
-            else
-            {
-                if (cowPosition.X + (xd * gameTime.ElapsedGameTime.TotalSeconds) + getCollisionRectangle().Width >= WallManager.wallLocation
-                    || otherCows == CollisionManager.OtherCowLocations.ThereIsACowNextToUsWithNoCowOnTop
-                    || otherCows == CollisionManager.OtherCowLocations.ThereIsACowOnTopOfTheCowToTheRight)
-                {
-                    partOfPyramid = true;
-                }
-                else
-                {
-                    cowPosition += new Vector2(xd, yd) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }
-            }*/
-
             cowPosition += new Vector2(xd, yd) * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-        /*private void Fall() {
-            isFalling = false;
-            /*if (startPoint.Y < getCollisionRectangle().Top - getCollisionRectangle().Height)
-            {
-                velocity_v = -10.0f;
-                cowPosition.Y += velocity_v * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //gravity();
-            }
-            else
-            {
-                isFalling = false;
-                velocity_v = 0.0f;
-            }*/
-        //}*/
-        /*private void PyramidMove(float xd, float yd)
-        {
-            switch (otherCows)
-            {
-                case CollisionManager.OtherCowLocations.ThereIsNoCowBelowCurrentCow: 
-                    {
-                        isFalling = true;
-                        startPoint = cowPosition;
-                        Fall(); 
-                        break; 
-                    }
-                case CollisionManager.OtherCowLocations.ThereIsACowOnTopOfTheCowToTheRight: 
-                    { 
-                        break; 
-                    }
-                case CollisionManager.OtherCowLocations.ThereIsACowNextToUsWithNoCowOnTop:
-                    { 
-                        isJumping = true;
-                        startPoint = cowPosition;
-                        JumpUp(); 
-                        break; 
-                    }
-                case CollisionManager.OtherCowLocations.ThereIsNoCowToTheRight:
-                    {
-                        if(!wallInWay())
-                        {
-                            Move(velocity_h,velocity_v);     
-                        }
-                        break; 
-                    }
-            }
-        }
-        private bool wallInWay()
-        {
-            return (belowWallHeight() && toRightOfWall());
-        }
-        private bool belowWallHeight() { return getCollisionRectangle().Bottom >= 400 - wallManager.wallHeight; } //TODO: Broken wall height - not using pixels
-        private bool toRightOfWall() 
-        {
-            partOfPyramid = true;
-            return getCollisionRectangle().Right >= WallManager.wallLocation; 
-        }
-        */
+
         public override string ToString()
         {
             return getCollisionRectangle().ToString();
