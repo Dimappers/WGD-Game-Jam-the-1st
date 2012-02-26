@@ -23,17 +23,17 @@ namespace CowShooter
         public Point AddCowToCowStack(Cow newCow)
         {
             Stack[startPoint.X, startPoint.Y] = newCow;
-            return GetMove(startPoint);
+            return GetMove(startPoint, newCow);
         }
 
         public Point FinishedMove(Cow cow, Point reached, Point last)
         {
-            Stack[last.X, last.Y] = null;
-            Stack[reached.X, reached.Y] = cow;
-            return GetMove(reached);
+            //Stack[last.X, last.Y] = null;
+            //Stack[reached.X, reached.Y] = cow;
+            return GetMove(reached, cow);
         }
 
-        public Point GetMove(Point position)
+        public Point GetMove(Point position, Cow cow)
         {
             Point returnPoint;
             if (position.Y + 1 < 11 && Stack[position.X, position.Y + 1] == null)
@@ -69,6 +69,9 @@ namespace CowShooter
                     returnPoint = position; //At wall move
                 }
             }
+
+            Stack[position.X, position.Y] = null;
+            Stack[returnPoint.X, returnPoint.Y] = cow;
 
             return returnPoint;
         }

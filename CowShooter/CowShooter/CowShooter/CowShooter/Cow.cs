@@ -144,11 +144,17 @@ namespace CowShooter
                 {
                     //This is a down move
                     Move(0, -velocity_v);
+                    if (cowPosition.Y >= targetPosition.Y)
+                    {
+                        Point temp = lastStackPoint;
+                        lastStackPoint = nextStackPoint;
+                        nextStackPoint = cowStack.FinishedMove(this, nextStackPoint, temp);
+                    } //else still moving downs
                 }
             }
             else
             {
-                nextStackPoint = cowStack.GetMove(nextStackPoint);
+                nextStackPoint = cowStack.GetMove(nextStackPoint, this);
             }
             //else do no moving
 
