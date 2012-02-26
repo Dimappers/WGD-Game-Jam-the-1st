@@ -85,6 +85,7 @@ namespace CowShooter
             bool below = false;
             bool jumpTo = false;
             bool nextTo = false;
+            bool aboveGround = cowRectangle.Y+(2*cowRectangle.Height)<=400;
             foreach (ICollisionObject otherCowObject in otherObjects)
             {             
                 Cow otherCow = otherCowObject as Cow;
@@ -92,34 +93,38 @@ namespace CowShooter
                 {
                     if (!otherCow.Equals(cow)&&otherCow.partOfPyramid)
                     {
-                        if (new Rectangle(cowRectangle.X, cowRectangle.Y + cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                        if (aboveGround
+                            && new Rectangle(cowRectangle.X, cowRectangle.Y + cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
                         {
+                            Console.WriteLine("cow : " + cow.cowPosition.X + " collides with " + otherCow.cowPosition.X + " so there is a cow below us.");
                             below = true;
                         }
                         else if (new Rectangle(cowRectangle.X + cowRectangle.Width, cowRectangle.Y - cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
                         {
+                            Console.WriteLine("cow : " + cow.cowPosition.X + " collides with " + otherCow.cowPosition.X + " so there is a cow on top of the cow to the right.");
                             jumpTo = true;
                         }
                         else if (new Rectangle(cowRectangle.X + cowRectangle.Width, cowRectangle.Y, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
                         {
+                            Console.WriteLine("cow : " + cow.cowPosition.X + " collides with " + otherCow.cowPosition.X + " so there is a cow next to us, with no cow on top.");
                             nextTo = true;
                         }
                     }
                 }
             }
-            if(below)
+            if(aboveGround&&!below)
             {
-                return OtherCowLocations.notBelow;
+                return OtherCowLocations.ThereIsNoCowBelowCurrentCow;
             }
             if(jumpTo)
             {
-                return OtherCowLocations.alsoJumpTo; 
+                return OtherCowLocations.ThereIsACowOnTopOfTheCowToTheRight; 
             }
             if(nextTo) 
             {
-                return OtherCowLocations.onlyNextTo;
+                return OtherCowLocations.ThereIsACowNextToUsWithNoCowOnTop;
             }
-            return OtherCowLocations.noCows;
+            return OtherCowLocations.ThereIsNoCowToTheRight;
         }
 
         public void removeCow(Cow cow)
@@ -139,10 +144,10 @@ namespace CowShooter
         
         public enum OtherCowLocations
         {
-            onlyNextTo,
-            alsoJumpTo,
-            notBelow,
-            noCows
+            ThereIsACowNextToUsWithNoCowOnTop,
+            ThereIsACowOnTopOfTheCowToTheRight,
+            ThereIsNoCowBelowCurrentCow,
+            ThereIsNoCowToTheRight
         }
     }
 }

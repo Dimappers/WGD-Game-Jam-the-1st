@@ -10,7 +10,7 @@ namespace CowShooter
 {
     public class Cow : ICollisionObject
     {
-        const float velocity_h = 10.0f;
+        const float velocity_h = 100.0f;
         public Vector2 cowPosition;
         CowManager manager;
         GameTime gameTime;
@@ -98,13 +98,13 @@ namespace CowShooter
                 {
                     isJumping = false;
                 }
-                else
+                /*else
                 {
                     cowPosition.Y -= velocity_v;
                     gravity();
 
                     cowPosition.X += frameSize.Width/20;
-                }
+                }*/
             }
         }
         private void gravity()
@@ -122,7 +122,8 @@ namespace CowShooter
                 }
                 JumpUp();
             }
-            if (cowPosition.X + xd + manager.GetTexture(GetType()).Width / 2 >= 600) 
+            if (cowPosition.X + (xd*gameTime.ElapsedGameTime.TotalSeconds) + getCollisionRectangle().Width >= WallManager.wallLocation
+                || otherCows == CollisionManager.OtherCowLocations.ThereIsACowNextToUsWithNoCowOnTop || otherCows == CollisionManager.OtherCowLocations.ThereIsACowOnTopOfTheCowToTheRight) 
             {
                 partOfPyramid = true;
             }
@@ -136,10 +137,31 @@ namespace CowShooter
         {
             switch (otherCows)
             {
-                case CollisionManager.OtherCowLocations.notBelow: { Fall(); break; }
-                case CollisionManager.OtherCowLocations.alsoJumpTo: { break; }
-                case CollisionManager.OtherCowLocations.onlyNextTo: { isJumping = true; JumpUp(); break; }
-                case CollisionManager.OtherCowLocations.noCows: { Move(1.0f, 0); break; }
+                case CollisionManager.OtherCowLocations.ThereIsNoCowBelowCurrentCow: 
+                    {
+                        isFalling = true;
+                        Fall(); 
+                        break; 
+                    }
+                case CollisionManager.OtherCowLocations.ThereIsACowOnTopOfTheCowToTheRight: 
+                    { 
+                        break; 
+                    }
+                case CollisionManager.OtherCowLocations.ThereIsACowNextToUsWithNoCowOnTop:
+                    { 
+                        isJumping = true;
+                        startPoint = cowPosition;
+                        JumpUp(); 
+                        break; 
+                    }
+                case CollisionManager.OtherCowLocations.ThereIsNoCowToTheRight:
+                    {
+                        if(cowPosition.X+getCollisionRectangle().Width<WallManager.wallLocation)
+                        {
+                            Move(1.0f, 0);     
+                        }
+                        break; 
+                    }
             }
         }
     }
