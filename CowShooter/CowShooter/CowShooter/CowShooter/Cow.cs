@@ -14,7 +14,7 @@ namespace CowShooter
         public Vector2 cowPosition;
         CowManager manager;
         GameTime gameTime;
-        Rectangle frameSize = new Rectangle(0, 0, 48, 36);
+        Rectangle frameSize = new Rectangle(0, 0, 48, 36); //TODO: Make this the actual size of a cow
 
         const int sizeOfJump = 50;
         float velocity_v = 0.0f;
@@ -23,10 +23,13 @@ namespace CowShooter
 
         Texture2D texture;
 
+        public bool isDead;
+
         public Cow(CowManager manager)
         {
             cowPosition = new Vector2(0, floorLevel);
             this.manager = manager;
+            isDead = false;
             
         }
         public virtual void Update(GameTime gameTime)
@@ -59,7 +62,7 @@ namespace CowShooter
         {
             if (otherObject is Ammunition)
             {
-                manager.RemoveCow(this);
+                isDead = true;
             }
         }
 

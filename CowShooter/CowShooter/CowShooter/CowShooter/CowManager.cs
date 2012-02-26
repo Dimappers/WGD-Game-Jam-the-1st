@@ -48,9 +48,18 @@ namespace CowShooter
                 timeTillNextCow = (float)gameTime.TotalGameTime.TotalSeconds
                                         + randomNumber.Next(minSpawnTime, maxSpawnTime);
             }
+            List<Cow> cowsToRemove = new List<Cow>();
             foreach(Cow cow in activeCows)
             {
                 cow.Update(gameTime);
+                if (cow.isDead)
+                {
+                    cowsToRemove.Add(cow);
+                }
+            }
+            foreach (Cow cow in cowsToRemove)
+            {
+                RemoveCow(cow);
             }
             foreach (Meat meat in activeMeats)
             {
@@ -96,6 +105,7 @@ namespace CowShooter
         {
             activeCows.Remove(removeCow);
             activeMeats.Add(new Meat(this, GetTexture(typeof(Meat)), removeCow.cowPosition));
+            collisionManager.removeCow(removeCow);
         }
 
         public void RemoveMeat(Meat removeMeat)
