@@ -11,8 +11,8 @@ namespace CowShooter
     class CowManager
     {
         public List<Cow> activeCows;
-        List<Meat> meatsToRemove;
-        List<Meat> activeMeats;
+        public List<Meat> meatsToRemove;
+        public List<Meat> activeMeats;
         Dictionary<Type, Texture2D> cowTextures;
 
         const int minSpawnTime = 5;
