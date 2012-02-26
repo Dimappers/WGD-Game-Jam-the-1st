@@ -102,5 +102,16 @@ namespace CowShooter
         {
             meatsToRemove.Add(removeMeat);
         }
+
+        public Meat NearestMeat(float toWhere)
+        {
+            Meat nearestMeat = null;
+            foreach (Meat meat in activeMeats)
+            {
+                if(nearestMeat==null) {nearestMeat = meat;}
+                else if (Math.Abs(meat.getLocation() - toWhere) < Math.Abs(nearestMeat.getLocation() - toWhere)) { nearestMeat = meat; }
+            }
+            return nearestMeat;
+        }
     }
 }
