@@ -206,8 +206,9 @@ namespace CowShooter
 
                 case Screens.gameOverScreen:
                     {
-                        spriteBatch.DrawString(font, "Game Over - Press enter to restart", new Vector2(200,200), Color.Blue);
-                        spriteBatch.DrawString(font, "Score: " + meatStore.getMeatCount(), new Vector2(200, 250), Color.Blue);
+                        spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
+                        spriteBatch.DrawString(font, "Game Over - Press Enter to Restart", new Vector2(200,200), Color.Blue);
+                        spriteBatch.DrawString(font, "Score: " + meatStore.getMeatCount(), new Vector2(200,250), Color.Blue);
                         break;
                     }
             }
