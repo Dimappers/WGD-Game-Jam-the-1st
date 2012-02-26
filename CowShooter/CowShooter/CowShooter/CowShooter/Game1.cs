@@ -157,6 +157,7 @@ namespace CowShooter
                 case Screens.gameOverScreen:
                     if (currentKeyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
                     {
+                        ResetGame();
                         currentScreen = Screens.gameScreen;
                     }
                     break;
@@ -208,6 +209,17 @@ namespace CowShooter
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        private void ResetGame()
+        {
+            catapult.Reset();
+            collisionManager.Reset();
+            cowManager.Reset();
+            meatStore.Reset();
+            villagerManager.Reset();
+            wallManager.Reset();
+
         }
     }
 }

@@ -80,5 +80,10 @@ namespace CowShooter
         {
             Stack[p.X, p.Y] = null;
         }
+
+        public void Reset()
+        {
+            Stack = new Cow[12, 11];
+        }
     }
 }

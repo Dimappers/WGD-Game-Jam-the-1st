@@ -28,6 +28,17 @@ namespace CowShooter
                 wallHeight += 1;
             }
         }
+
+        public void Reset()
+        {
+            blocks = new WallBlock[startingNumberOfBlocks];
+            for (int i = 0; i < blocks.Length; i++)
+            {
+                blocks[i] = new WallBlock(wallTexture, createPositionVector(i));
+                wallHeight += 1;
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (WallBlock block in blocks)

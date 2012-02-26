@@ -24,6 +24,11 @@ namespace CowShooter
             this.groundLevel = groundLevel;
         }
 
+        public void Reset()
+        {
+            otherObjects = new List<ICollisionObject>();
+        }
+
         public void addCow(Cow cow)
         {
             otherObjects.Add(cow);

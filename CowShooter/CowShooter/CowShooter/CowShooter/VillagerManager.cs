@@ -53,7 +53,11 @@ namespace CowShooter
             {
                 if (villagers.Count != 0)
                 {
-                    Villager outVillager = villagers.Dequeue();
+                    Villager outVillager = null;
+                    do
+                    {
+                        outVillager = villagers.Dequeue();
+                    } while (outVillager.getIsDead());
                     outVillager.setSeekingFood(true);
                     outVillagers.Add(outVillager);
                 }
@@ -104,7 +108,10 @@ namespace CowShooter
         {
             foreach (Villager villager in villagers)
             {
-                villager.Draw(spriteBatch);
+                if (!villager.getIsDead())
+                {
+                    villager.Draw(spriteBatch);
+                }
             }
             foreach (Villager villager in outVillagers)
             {
@@ -112,9 +119,32 @@ namespace CowShooter
             }
         }
 
+        public void Reset()
+        {
+            villagers = new Queue<Villager>();
+            outVillagers = new List<Villager>();
+            justReturnedVillagers = new List<Villager>();
+
+            for (int i = 0; i < maxVillagers; ++i)
+            {
+                CreateVillager();
+            }
+
+            oldState = Keyboard.GetState();
+            newState = oldState;
+        }
+
         public bool PlayerHasLost()
         {
-            return villagers.Count + outVillagers.Count <= 0;
+            int aliveVillagers = outVillagers.Count ;
+            foreach (Villager inVillager in villagers)
+            {
+                if(!inVillager.getIsDead())   
+                {
+                    ++aliveVillagers;
+                }
+            }
+            return aliveVillagers <= 0;
         }
 
         public void notifyReturn(Villager villager)

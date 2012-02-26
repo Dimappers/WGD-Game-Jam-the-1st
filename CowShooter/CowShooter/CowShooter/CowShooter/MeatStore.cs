@@ -51,6 +51,11 @@ namespace CowShooter
             return meatCount;
         }
 
+        public void Reset()
+        {
+            meatCount = 0;
+        }
+
         public void toggleStore()
         {
             displayingStoreFront = !displayingStoreFront;

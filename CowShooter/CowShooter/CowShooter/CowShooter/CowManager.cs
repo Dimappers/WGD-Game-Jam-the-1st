@@ -84,6 +84,15 @@ namespace CowShooter
             meatsToRemove = new List<Meat>();
         }
 
+        public void Reset()
+        {
+            activeCows.Clear();
+            activeMeats.Clear();
+            timeTillNextCow = 0.0f;
+
+            cowStack.Reset();
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (Cow cow in activeCows)

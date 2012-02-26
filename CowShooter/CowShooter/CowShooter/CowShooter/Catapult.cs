@@ -45,6 +45,11 @@ namespace CowShooter
             damage = 1;
         }
 
+        public void Reset()
+        {
+            ammo = new List<Ammunition>();
+        }
+
         public void Update(GameTime gameTime)
         {
             newMouseState = Mouse.GetState();
