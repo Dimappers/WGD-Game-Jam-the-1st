@@ -106,9 +106,9 @@ namespace CowShooter
             justReturnedVillagers.Add(villager);
         }
 
-        public void DropOffMeat()
+        public void DropOffMeat(Meat meat)
         {
-            meatStore.addMeat(1);
+            meatStore.addMeat(meat.value);
         }
     }
 }
