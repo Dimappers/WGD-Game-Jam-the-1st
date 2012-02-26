@@ -85,27 +85,40 @@ namespace CowShooter
             bool below = false;
             bool jumpTo = false;
             bool nextTo = false;
-            foreach (Cow otherCow in cows)
-            {
-                if (!otherCow.Equals(cow)&&otherCow.GetType()==typeof(Cow))
+            foreach (ICollisionObject otherCowObject in otherObjects)
+            {             
+                Cow otherCow = otherCowObject as Cow;
+                if(otherCow != null)
                 {
-                    if (!new Rectangle(cowRectangle.X, cowRectangle.Y+cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                    if (!otherCow.Equals(cow)&&otherCow.partOfPyramid)
                     {
-                        below = true;
-                    }
-                    else if (new Rectangle(cowRectangle.X + cowRectangle.Width, cowRectangle.Y - cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
-                    {
-                        jumpTo = true;
-                    }
-                    else if(new Rectangle(cowRectangle.X + cowRectangle.Width, cowRectangle.Y, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
-                    {
-                        nextTo = true;
+                        if (new Rectangle(cowRectangle.X, cowRectangle.Y + cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                        {
+                            below = true;
+                        }
+                        else if (new Rectangle(cowRectangle.X + cowRectangle.Width, cowRectangle.Y - cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                        {
+                            jumpTo = true;
+                        }
+                        else if (new Rectangle(cowRectangle.X + cowRectangle.Width, cowRectangle.Y, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                        {
+                            nextTo = true;
+                        }
                     }
                 }
             }
-            if(below) {return OtherCowLocations.notBelow;}
-            if(jumpTo) {return OtherCowLocations.alsoJumpTo; }
-            if(nextTo) {return OtherCowLocations.onlyNextTo;}
+            if(below)
+            {
+                return OtherCowLocations.notBelow;
+            }
+            if(jumpTo)
+            {
+                return OtherCowLocations.alsoJumpTo; 
+            }
+            if(nextTo) 
+            {
+                return OtherCowLocations.onlyNextTo;
+            }
             return OtherCowLocations.noCows;
         }
 

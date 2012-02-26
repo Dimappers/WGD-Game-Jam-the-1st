@@ -48,10 +48,7 @@ namespace CowShooter
             meatsToRemove = new List<Meat>();
             foreach(Cow cow in activeCows)
             {
-                /*if (collisionManager.checkCowCollision(cow)) {
-                    cow.partOfPyramid = true;
-                    cow.otherCows = collisionManager.findCowCollisions(cow);
-                }*/
+                cow.otherCows = collisionManager.findCowCollisions(cow);
                 cow.Update(gameTime);
                 if (cow.isDead)
                 {

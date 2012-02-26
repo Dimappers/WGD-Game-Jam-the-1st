@@ -21,11 +21,11 @@ namespace CowShooter
         float velocity_v = 0.0f;
 
         public bool partOfPyramid;
-        public bool cowHasStopped;
         public Cow jumpTo = null;
         public Cow nextTo = null;
 
         bool isJumping;
+        bool isFalling;
         Vector2 startPoint;
 
         int floorLevel = 400 - 32; //32 is height of cow_piece
@@ -40,9 +40,12 @@ namespace CowShooter
             this.manager = manager;
             isDead = false;
             partOfPyramid = false;
-            cowHasStopped = false;
             isJumping = false;
-            
+            isFalling = true;
+        }
+        public bool cowHasStopped()
+        {
+            return partOfPyramid && !(isFalling || isJumping);
         }
         public virtual void Update(GameTime gameTime)
         {
@@ -110,7 +113,7 @@ namespace CowShooter
         }
         private void Move(float xd, float yd)
         {
-            if (partOfPyramid && !cowHasStopped)
+            if (partOfPyramid && !cowHasStopped())
             {
                 if (!isJumping)
                 {
@@ -121,9 +124,9 @@ namespace CowShooter
             }
             if (cowPosition.X + xd + manager.GetTexture(GetType()).Width / 2 >= 600) 
             {
-                cowHasStopped = true;
+                partOfPyramid = true;
             }
-            if (!cowHasStopped)
+            if (!cowHasStopped())
             {
                 cowPosition += new Vector2(xd, yd) * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
@@ -134,7 +137,7 @@ namespace CowShooter
             switch (otherCows)
             {
                 case CollisionManager.OtherCowLocations.notBelow: { Fall(); break; }
-                case CollisionManager.OtherCowLocations.alsoJumpTo: { cowHasStopped = true; break; }
+                case CollisionManager.OtherCowLocations.alsoJumpTo: { break; }
                 case CollisionManager.OtherCowLocations.onlyNextTo: { isJumping = true; JumpUp(); break; }
                 case CollisionManager.OtherCowLocations.noCows: { Move(1.0f, 0); break; }
             }
