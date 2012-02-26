@@ -37,6 +37,7 @@ namespace CowShooter
         KeyboardState currentKeyboardState, oldKeyboardState;
 
         SpriteFont font;
+        Texture2D cowTexture;
 
         public Game1()
         {
@@ -81,8 +82,8 @@ namespace CowShooter
             font = Content.Load<SpriteFont>("ScoreFont");
             meatStore = new MeatStore(font, Content.Load<Texture2D>("art//storebackground"));
 
-
-            cowManager.AddTexture(typeof(Cow), Content.Load<Texture2D>("art//Cow_Piece"));
+            cowTexture = Content.Load<Texture2D>("art//Cow_Piece");
+            cowManager.AddTexture(typeof(Cow), cowTexture);
             cowManager.AddTexture(typeof(Bull), Content.Load<Texture2D>("art//Cow_Piece_bull"));
             cowManager.AddTexture(typeof(Meat), Content.Load<Texture2D>("art//meat"));
 
@@ -191,9 +192,14 @@ namespace CowShooter
 
                 case Screens.startScreen:
                     {
-                        spriteBatch.DrawString(font, "Mad stacking attacking cow defender 3!!!", Vector2.Zero, Color.Blue, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None,0.0f);
-                        spriteBatch.DrawString(font, "Made by Mark Fearnley, Kim Barrett, Thomas Kiley", new Vector2(0, 100), Color.Blue);
-                        spriteBatch.DrawString(font, "Press enter to start", new Vector2(0, 150), Color.Blue);
+                        spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
+                        spriteBatch.DrawString(font, "Mad Stacking Attacking Cow Defender", Vector2.Zero, Color.Blue, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None,0.0f);
+                        spriteBatch.DrawString(font, "Made by Mark Fearnley, Kim Barrett & Thomas Kiley", new Vector2(0, 50), Color.Blue);
+                        spriteBatch.DrawString(font, "Press Enter to Start", new Vector2(0, 100), Color.Blue);
+                        spriteBatch.DrawString(font, "Controls:", new Vector2(0, 200), Color.White);
+                        spriteBatch.DrawString(font, "Space - Send Out A Villager", new Vector2(0, 250), Color.White);
+                        spriteBatch.DrawString(font, "Enter - Recalls All Villagers", new Vector2(0, 300), Color.White);
+                        spriteBatch.DrawString(font, "S - Opens/Closes the Shop", new Vector2(0, 350), Color.White);
                         break;
                     }
 
