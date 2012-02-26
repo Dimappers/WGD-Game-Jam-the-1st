@@ -103,6 +103,11 @@ namespace CowShooter
             }
         }
 
+        public bool PlayerHasLost()
+        {
+            return villagers.Count + outVillagers.Count <= 0;
+        }
+
         public void notifyReturn(Villager villager)
         {
             justReturnedVillagers.Add(villager);
@@ -127,3 +132,4 @@ namespace CowShooter
         }
     }
 }
+;

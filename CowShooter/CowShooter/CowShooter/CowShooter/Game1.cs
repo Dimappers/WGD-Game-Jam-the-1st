@@ -126,6 +126,13 @@ namespace CowShooter
             oldKeyboardState = currentKeyboardState;
             oldMouseState = currentMouseState;
 
+            if (villagerManager.PlayerHasLost())
+            {
+                //TODO: Player has lost - go to some death screen
+                Console.WriteLine("Lost");
+                this.Exit();
+            }
+
             base.Update(gameTime);
 
         }
