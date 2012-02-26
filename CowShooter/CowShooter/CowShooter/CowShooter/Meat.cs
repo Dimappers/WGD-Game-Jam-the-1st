@@ -15,13 +15,15 @@ namespace CowShooter
         Texture2D texture;
         Vector2 position;
         Color colour = Color.White;
+        bool meatPickedUp;
 
         public Meat(CowManager manager, Texture2D texture, Vector2 position)
         {
             this.manager = manager;
             this.texture = texture;
             this.position = position;
-            age = 0; 
+            age = 0;
+            meatPickedUp = false;
         }
 
         public bool getIsOff()
@@ -50,6 +52,12 @@ namespace CowShooter
         public void pickupMeat()
         {
             manager.RemoveMeat(this);
+            meatPickedUp = true;
+        }
+
+        public bool isGone()
+        {
+            return meatPickedUp;
         }
 
         public Rectangle getCollisionRectangle()

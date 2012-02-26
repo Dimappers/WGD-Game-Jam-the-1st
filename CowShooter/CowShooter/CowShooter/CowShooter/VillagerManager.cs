@@ -15,30 +15,30 @@ namespace CowShooter
 
         bool areVillagersRetreating;
 
-        List<Villager> villagers;
+        Queue<Villager> villagers;
+        List<Villager> outVillagers;
+        List<Villager> justReturnedVillagers;
         CowManager cowManager;
         CollisionManager collisionManager;
 
         KeyboardState oldState, newState;
-        int villagersOut = 10; //work around should at least be length of arry
 
         public VillagerManager(Texture2D villagerTexture, CowManager cowManager, CollisionManager collisionManager)
         {
             this.villagerTexture = villagerTexture;
-            villagers = new List<Villager>();
-
+            villagers = new Queue<Villager>();
+            outVillagers = new List<Villager>();
+            justReturnedVillagers = new List<Villager>();
             for (int i = 0; i < 10; ++i)
             {
-                Villager newVillager = new Villager(villagerTexture, cowManager, this, new Vector2(650 + i * 32, 400));
-                villagers.Add(newVillager);
+                Villager newVillager = new Villager(villagerTexture, cowManager, this, new Vector2(650 + i * 8, 400 + (16 *(i%2))));
+                villagers.Enqueue(newVillager);
                 collisionManager.addOther(newVillager);
             }
             this.cowManager = cowManager;
             this.collisionManager = collisionManager;
             oldState = Keyboard.GetState();
             newState = oldState;
-
-            villagersOut = 10;
         }
 
         public void Update(GameTime gameTime)
@@ -47,22 +47,23 @@ namespace CowShooter
 
             if (newState.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
             {
-                if (villagersOut < villagers.Count)
+                if (villagers.Count != 0)
                 {
-                    villagers[villagersOut].setSeekingFood(true);
-                    villagersOut++;
+                    Villager outVillager = villagers.Dequeue();
+                    outVillager.setSeekingFood(true);
+                    outVillagers.Add(outVillager);
                 }
             }
             else if (newState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
             {
-                foreach (Villager villager in villagers)
+                foreach (Villager villager in outVillagers)
                 {
                     villager.setSeekingFood(false);
                 }
             }
 
             List<Villager> deadVillagers = new List<Villager>();
-            foreach (Villager villager in villagers)
+            foreach(Villager villager in outVillagers)
             {
                 villager.Update(gameTime);
                 if (villager.getIsDead())
@@ -73,10 +74,16 @@ namespace CowShooter
 
             foreach(Villager deadVillager in deadVillagers)
             {
-                villagers.Remove(deadVillager);
+                outVillagers.Remove(deadVillager);
                 collisionManager.removeOther(deadVillager);
-                villagersOut--;
             }
+
+            foreach (Villager villager in justReturnedVillagers)
+            {
+                outVillagers.Remove(villager);
+                villagers.Enqueue(villager);
+            }
+            justReturnedVillagers.Clear();
             oldState = newState;
         }
 
@@ -86,11 +93,15 @@ namespace CowShooter
             {
                 villager.Draw(spriteBatch);
             }
+            foreach (Villager villager in outVillagers)
+            {
+                villager.Draw(spriteBatch);
+            }
         }
 
-        public void notifyReturn()
+        public void notifyReturn(Villager villager)
         {
-            --villagersOut;
+            justReturnedVillagers.Add(villager);
         }
     }
 }
