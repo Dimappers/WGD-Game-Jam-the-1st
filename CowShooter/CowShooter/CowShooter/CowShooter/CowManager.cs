@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,8 @@ namespace CowShooter
     class CowManager
     {
         public List<Cow> activeCows;
+        public List<Meat> meatsToRemove;
+        public List<Meat> activeMeats;
         Dictionary<Type, Texture2D> cowTextures;
 
         const int minSpawnTime = 5;
