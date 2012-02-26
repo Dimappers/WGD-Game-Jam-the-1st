@@ -11,9 +11,9 @@ namespace CowShooter
 {
     class VillagerManager
     {
-        Texture2D villagerTexture;
+        const int maxVillagers = 10;
 
-        bool areVillagersRetreating;
+        Texture2D villagerTexture;
 
         Queue<Villager> villagers;
         List<Villager> outVillagers;
@@ -30,14 +30,16 @@ namespace CowShooter
             villagers = new Queue<Villager>();
             outVillagers = new List<Villager>();
             justReturnedVillagers = new List<Villager>();
-            for (int i = 0; i < 10; ++i)
-            {
-                Villager newVillager = new Villager(villagerTexture, cowManager, this, new Vector2(650 + i * 8, 400 + (16 *(i%2))));
-                villagers.Enqueue(newVillager);
-                collisionManager.addOther(newVillager);
-            }
-            this.cowManager = cowManager;
+
             this.collisionManager = collisionManager;
+            this.cowManager = cowManager;
+
+            for (int i = 0; i < maxVillagers; ++i)
+            {
+                CreateVillager();                
+            }
+            
+            
             oldState = Keyboard.GetState();
             newState = oldState;
             this.meatStore = meatStore;
@@ -109,6 +111,19 @@ namespace CowShooter
         public void DropOffMeat(Meat meat)
         {
             meatStore.addMeat(meat.value);
+        }
+
+        public bool CreateVillager()
+        {
+            if (villagers.Count + outVillagers.Count < maxVillagers)
+            {
+                int villagerCount = villagers.Count + outVillagers.Count;
+                Villager newVillager = new Villager(villagerTexture, cowManager, this, new Vector2(650 + villagerCount * 8, 400 + (16 * (villagerCount % 2))));
+                villagers.Enqueue(newVillager);
+                collisionManager.addOther(newVillager);
+                return true;
+            }
+            return false;
         }
     }
 }
