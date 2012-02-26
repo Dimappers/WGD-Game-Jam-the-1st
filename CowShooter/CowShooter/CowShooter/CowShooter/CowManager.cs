@@ -27,6 +27,8 @@ namespace CowShooter
         {
             this.collisionManager = collisionManager;
             activeCows = new List<Cow>();
+            activeMeats = new List<Meat>();
+            meatsToRemove = new List<Meat>();
             cowTextures = new Dictionary<Type, Texture2D>();
             randomNumber = new Random();
             timeTillNextCow = randomNumber.Next(minSpawnTime, maxSpawnTime);
@@ -67,6 +69,15 @@ namespace CowShooter
             {
                 activeMeats.Remove(meat);
             }
+            foreach (Meat meat in activeMeats)
+            {
+                meat.Update(gameTime);
+            }
+            foreach (Meat meat in meatsToRemove)
+            {
+                activeMeats.Remove(meat);
+            }
+            meatsToRemove = new List<Meat>();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -103,13 +114,22 @@ namespace CowShooter
             activeCows.Remove(removeCow);
             activeMeats.Add(new Meat(this, GetTexture(typeof(Meat)), removeCow.cowPosition));
             collisionManager.removeCow(removeCow);
-
         }
-        
+
         public void RemoveMeat(Meat removeMeat)
         {
-            //Do some mergeing
             meatsToRemove.Add(removeMeat);
+        }
+
+        public Meat NearestMeat(float toWhere)
+        {
+            Meat nearestMeat = null;
+            foreach (Meat meat in activeMeats)
+            {
+                if(nearestMeat==null) {nearestMeat = meat;}
+                else if (Math.Abs(meat.getLocation() - toWhere) < Math.Abs(nearestMeat.getLocation() - toWhere)) { nearestMeat = meat; }
+            }
+            return nearestMeat;
         }
     }
 }

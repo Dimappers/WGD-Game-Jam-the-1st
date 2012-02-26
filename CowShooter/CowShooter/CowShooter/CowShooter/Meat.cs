@@ -36,5 +36,10 @@ namespace CowShooter
         {
             spriteBatch.Draw(texture, position, colour);
         }
+
+        public float getLocation()
+        {
+            return position.X;
+        }
     }
 }
