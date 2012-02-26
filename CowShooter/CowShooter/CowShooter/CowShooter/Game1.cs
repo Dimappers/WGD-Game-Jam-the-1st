@@ -80,14 +80,16 @@ namespace CowShooter
             catapult = new Catapult(Content.Load<Texture2D>("art//catapult"), Content.Load<Texture2D>("art//line"), Content.Load<Texture2D>("art//ammo"), collisionManager); 
             wallManager = new WallManager(wallTexture);
             cowManager.SetWallManager(wallManager);
-
-            villagerManager = new VillagerManager(Content.Load<Texture2D>("art//villager"), cowManager, collisionManager, meatStore);
+            Texture2D villagerTexture = Content.Load<Texture2D>("art//villager");
+            villagerManager = new VillagerManager(villagerTexture, cowManager, collisionManager, meatStore);
 
             meatStore.addTexture(typeof(NewTowerStoreItem), wallTexture);
+            meatStore.addTexture(typeof(NewVillagerStoreItem), villagerTexture);
             NewTowerStoreItem towerStoreItem = new NewTowerStoreItem(wallManager);
-            NewTowerStoreItem towerItem2 = new NewTowerStoreItem(wallManager);
+            NewVillagerStoreItem villagerItem = new NewVillagerStoreItem(villagerManager);
+            //NewTowerStoreItem towerItem2 = new NewTowerStoreItem(wallManager);
             meatStore.addStoreItem(towerStoreItem);
-            meatStore.addStoreItem(towerItem2);
+            meatStore.addStoreItem(villagerItem);
             // TODO: use this.Content to load your game content here
         }
 

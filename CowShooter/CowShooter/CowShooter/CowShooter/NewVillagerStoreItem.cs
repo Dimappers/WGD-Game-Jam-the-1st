@@ -7,15 +7,16 @@ namespace CowShooter
 {
     class NewVillagerStoreItem : StoreItem
     {
+        VillagerManager villagerManager;
         public NewVillagerStoreItem(VillagerManager villagerManager)
             :base(10)
         {
-
+            this.villagerManager = villagerManager;
         }
 
         public override bool onBuy()
         {
-            return true;   
+            return villagerManager.CreateVillager();
         }
     }
 }
