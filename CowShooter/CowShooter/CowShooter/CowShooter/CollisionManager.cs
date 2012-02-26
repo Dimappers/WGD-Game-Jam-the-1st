@@ -50,7 +50,6 @@ namespace CowShooter
                         if(objectA.getCollisionRectangle().Intersects(objectB.getCollisionRectangle()))
                         {
                             objectA.NotifyOfCollision(objectB);
-                            objectB.NotifyOfCollision(objectA);
                         }
                     }
                 }

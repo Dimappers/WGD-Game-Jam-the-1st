@@ -28,6 +28,7 @@ namespace CowShooter
         CollisionManager collisionManager;
         List<Ammunition> ammo;
         float lastSetAngle;
+        int damage;
 
 
         public Catapult(Texture2D catapultTexture, Texture2D lineTexture, Texture2D ammoTexture, CollisionManager collisionManager)
@@ -41,6 +42,7 @@ namespace CowShooter
             // Setup the list of shot ammo
             ammo = new List<Ammunition>();
             lastSetAngle = 0.0f;
+            damage = 1;
         }
 
         public void Update(GameTime gameTime)
@@ -118,7 +120,7 @@ namespace CowShooter
 
                 Vector2 fireTrajectory = (draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y)) * powerScale;
                 Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
-                Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture);
+                Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture, damage);
                 ammo.Add(newAmmo);
                 collisionManager.addAmmo(newAmmo);
             }

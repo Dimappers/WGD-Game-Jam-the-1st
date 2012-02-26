@@ -40,7 +40,6 @@ namespace CowShooter
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 450;
             collisionManager = new CollisionManager(400.0f);
-            cowManager = new CowManager(collisionManager);
         }
 
         /// <summary>
@@ -65,6 +64,8 @@ namespace CowShooter
         /// </summary>
         protected override void LoadContent()
         {
+            // Create cow manager
+            cowManager = new CowManager(collisionManager, Content.Load<Texture2D>("art//healthBar1"), Content.Load<Texture2D>("art//healthBar2"));
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("art//bg");

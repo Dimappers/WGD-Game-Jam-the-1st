@@ -28,6 +28,9 @@ namespace CowShooter
         bool isFalling;
         Vector2 startPoint;
 
+        int health;
+        HealthBar healthBar;
+
         WallManager wallManager;
 
         int floorLevel = 400 - 32; //32 is height of cow_piece
@@ -36,7 +39,7 @@ namespace CowShooter
 
         public bool isDead;
 
-        public Cow(CowManager manager, WallManager wallManager)
+        public Cow(CowManager manager, WallManager wallManager, Texture2D h1Texture, Texture2D h2Texture, int health)
         {
             cowPosition = new Vector2(0, floorLevel);
             this.manager = manager;
@@ -45,6 +48,8 @@ namespace CowShooter
             partOfPyramid = false;
             isJumping = false;
             isFalling = true;
+            this.health = health;
+            healthBar = new HealthBar(h1Texture, h2Texture, cowPosition, health);
         }
         public bool cowHasStopped()
         {
@@ -56,6 +61,7 @@ namespace CowShooter
             {
                 texture = manager.GetTexture(GetType());
             }
+            healthBar.Update(gameTime, cowPosition);
             this.gameTime = gameTime;
             if (!partOfPyramid||isJumping||isFalling) { Move(velocity_h, velocity_v); }
             else { PyramidMove(velocity_h, velocity_v); }
@@ -64,6 +70,7 @@ namespace CowShooter
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, cowPosition, Color.White);
+            healthBar.Draw(spriteBatch);
         }
 
         public Rectangle getCollisionRectangle()
@@ -80,7 +87,15 @@ namespace CowShooter
         {
             if (otherObject is Ammunition)
             {
-                isDead = true;
+                health -= ((Ammunition)otherObject).damage;
+                if (--health <= 0)
+                {
+                    isDead = true;
+                }
+                else
+                {
+                    healthBar.takeDamage(1, gameTime);
+                }
             }
         }
 

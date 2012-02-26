@@ -15,6 +15,9 @@ namespace CowShooter
         public List<Meat> activeMeats;
         Dictionary<Type, Texture2D> cowTextures;
 
+        Texture2D h1Texture;
+        Texture2D h2Texture;
+
         const int minSpawnTime = 5;
         const int maxSpawnTime = 10;
 
@@ -24,7 +27,7 @@ namespace CowShooter
         CollisionManager collisionManager;
         WallManager wallManager;
 
-        public CowManager(CollisionManager collisionManager)
+        public CowManager(CollisionManager collisionManager, Texture2D h1Texture, Texture2D h2Texture)
         {
             this.collisionManager = collisionManager;
             activeCows = new List<Cow>();
@@ -34,6 +37,9 @@ namespace CowShooter
             randomNumber = new Random();
             timeTillNextCow = randomNumber.Next(minSpawnTime, maxSpawnTime);
             activeMeats = new List<Meat>();
+
+            this.h1Texture = h1Texture;
+            this.h2Texture = h2Texture;
 
         }
         public void SetWallManager(WallManager wallManager)
@@ -99,8 +105,8 @@ namespace CowShooter
         private void GenerateCow()
         {
             Cow myCow;
-            if (randomNumber.Next(5) == 0) { myCow = new Bull(this, wallManager); }
-            else { myCow = new Cow(this, wallManager); }
+            if (randomNumber.Next(5) == 0) { myCow = new Bull(this, wallManager, h1Texture, h2Texture); }
+            else { myCow = new Cow(this, wallManager, h1Texture, h2Texture, 1); }
             activeCows.Add(myCow);
             collisionManager.addCow(myCow);
         }

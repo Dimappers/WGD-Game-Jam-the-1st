@@ -14,6 +14,8 @@ namespace CowShooter
         bool flying;
         Vector2 velocity;
         Vector2 position;
+        
+        public int damage;
 
         const float dampening = 0.55f;
         const float gravity = 5.0f;
@@ -25,13 +27,14 @@ namespace CowShooter
         Catapult catapult;
         float angle;
 
-        public Ammunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition, Texture2D texture)
+        public Ammunition(Catapult catapult, Vector2 startVelocity, Vector2 startPosition, Texture2D texture, int damage)
         {
             this.catapult = catapult;
             this.texture = texture;
             velocity = startVelocity;
             velocity.X = MathHelper.Clamp(velocity.X, 1.5f, 100f);
             position = startPosition;
+            this.damage = damage;
             timeTillDeath = -10f;
             isDead = false;
             flying = true;
@@ -107,7 +110,6 @@ namespace CowShooter
         {
             return true;
         }
-
 
         public void NotifyGroundCollision()
         {
