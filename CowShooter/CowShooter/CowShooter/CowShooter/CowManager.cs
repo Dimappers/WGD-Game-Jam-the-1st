@@ -110,6 +110,7 @@ namespace CowShooter
 
         public void RemoveMeat(Meat removeMeat)
         {
+            //Do some mergeing
             meatsToRemove.Add(removeMeat);
         }
     }
