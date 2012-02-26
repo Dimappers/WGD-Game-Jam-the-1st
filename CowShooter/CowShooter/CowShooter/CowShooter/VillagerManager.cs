@@ -20,6 +20,7 @@ namespace CowShooter
         CollisionManager collisionManager;
 
         KeyboardState oldState, newState;
+        int villagersOut = 10; //work around should at least be length of arry
 
         public VillagerManager(Texture2D villagerTexture, CowManager cowManager, CollisionManager collisionManager)
         {
@@ -28,7 +29,7 @@ namespace CowShooter
 
             for (int i = 0; i < 10; ++i)
             {
-                Villager newVillager = new Villager(villagerTexture, cowManager, new Vector2(650 + i * 32, 400));
+                Villager newVillager = new Villager(villagerTexture, cowManager, this, new Vector2(650 + i * 32, 400));
                 villagers.Add(newVillager);
                 collisionManager.addOther(newVillager);
             }
@@ -36,6 +37,8 @@ namespace CowShooter
             this.collisionManager = collisionManager;
             oldState = Keyboard.GetState();
             newState = oldState;
+
+            villagersOut = 10;
         }
 
         public void Update(GameTime gameTime)
@@ -44,12 +47,35 @@ namespace CowShooter
 
             if (newState.IsKeyDown(Keys.Space) && oldState.IsKeyUp(Keys.Space))
             {
-                villagers[0].setSeekingFood(true);
+                if (villagersOut < villagers.Count)
+                {
+                    villagers[villagersOut].setSeekingFood(true);
+                    villagersOut++;
+                }
+            }
+            else if (newState.IsKeyDown(Keys.Enter) && oldState.IsKeyUp(Keys.Enter))
+            {
+                foreach (Villager villager in villagers)
+                {
+                    villager.setSeekingFood(false);
+                }
             }
 
+            List<Villager> deadVillagers = new List<Villager>();
             foreach (Villager villager in villagers)
             {
                 villager.Update(gameTime);
+                if (villager.getIsDead())
+                {
+                    deadVillagers.Add(villager);
+                }
+            }
+
+            foreach(Villager deadVillager in deadVillagers)
+            {
+                villagers.Remove(deadVillager);
+                collisionManager.removeOther(deadVillager);
+                villagersOut--;
             }
             oldState = newState;
         }
@@ -60,6 +86,11 @@ namespace CowShooter
             {
                 villager.Draw(spriteBatch);
             }
+        }
+
+        public void notifyReturn()
+        {
+            --villagersOut;
         }
     }
 }
