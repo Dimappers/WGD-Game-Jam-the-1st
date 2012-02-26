@@ -76,6 +76,15 @@ namespace CowShooter
                 }
             }
 
+            foreach (Villager villager in villagers)
+            {
+                villager.Update(gameTime);
+                if (villager.getIsDead())
+                {
+                    deadVillagers.Add(villager);
+                }
+            }
+
             foreach(Villager deadVillager in deadVillagers)
             {
                 outVillagers.Remove(deadVillager);

@@ -17,8 +17,8 @@ namespace CowShooter
     public class Game1 : Microsoft.Xna.Framework.Game
     {
 
-        enum Screens { gameScreen, gameOverScreen };
-        Screens currentScreen;
+        enum Screens { startScreen, gameScreen, gameOverScreen };
+        Screens currentScreen = Screens.startScreen;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -36,12 +36,14 @@ namespace CowShooter
         MouseState currentMouseState, oldMouseState;
         KeyboardState currentKeyboardState, oldKeyboardState;
 
+        SpriteFont font;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            currentScreen = Screens.gameScreen;
+            currentScreen = Screens.startScreen;
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 450;
             collisionManager = new CollisionManager(400.0f);
@@ -76,7 +78,8 @@ namespace CowShooter
             background = Content.Load<Texture2D>("art//bg");
             Texture2D wallTexture = Content.Load<Texture2D>("art//Wall_Block");
 
-            meatStore = new MeatStore(Content.Load<SpriteFont>("ScoreFont"), Content.Load<Texture2D>("art//storebackground"));
+            font = Content.Load<SpriteFont>("ScoreFont");
+            meatStore = new MeatStore(font, Content.Load<Texture2D>("art//storebackground"));
 
 
             cowManager.AddTexture(typeof(Cow), Content.Load<Texture2D>("art//Cow_Piece"));
@@ -118,38 +121,50 @@ namespace CowShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (currentScreen == Screens.gameScreen)
+            currentKeyboardState = Keyboard.GetState();
+            currentMouseState = Mouse.GetState();
+            switch (currentScreen)
             {
-                currentKeyboardState = Keyboard.GetState();
-                currentMouseState = Mouse.GetState();
-                // TODO: Add your update logic here
+                case Screens.gameScreen:
+                    {
+                        cowManager.Update(gameTime);
+                        catapult.Update(gameTime);
+                        collisionManager.checkCollision();
+                        villagerManager.Update(gameTime);
 
-                cowManager.Update(gameTime);
-                catapult.Update(gameTime);
-                collisionManager.checkCollision();
-                villagerManager.Update(gameTime);
+                        if (currentKeyboardState.IsKeyDown(Keys.S) && oldKeyboardState.IsKeyUp(Keys.S))
+                        {
+                            meatStore.toggleStore();
+                        }
+                        meatStore.Update(currentMouseState, oldMouseState);
+                        
 
-                if (currentKeyboardState.IsKeyDown(Keys.S) && oldKeyboardState.IsKeyUp(Keys.S))
-                {
-                    meatStore.toggleStore();
-                }
-                meatStore.Update(currentMouseState, oldMouseState);
-                oldKeyboardState = currentKeyboardState;
-                oldMouseState = currentMouseState;
+                        if (villagerManager.PlayerHasLost())
+                        {
+                            //TODO: Player has lost - go to some death screen
+                            currentScreen = Screens.gameOverScreen;
+                        }
+                    }
+                    break;
 
-            if (villagerManager.PlayerHasLost())
-            {
-                //TODO: Player has lost - go to some death screen
-                Console.WriteLine("Lost");
-                this.Exit();
+                case Screens.startScreen:
+                    if (currentKeyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
+                    {
+                        currentScreen = Screens.gameScreen;
+                    }
+                    break;
+
+                case Screens.gameOverScreen:
+                    if (currentKeyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
+                    {
+                        currentScreen = Screens.gameScreen;
+                    }
+                    break;
             }
 
-                base.Update(gameTime);
-            }
-            else
-            {
-                //Do stuff for the gameover screen
-            }
+            oldKeyboardState = currentKeyboardState;
+            oldMouseState = currentMouseState;
+            base.Update(gameTime);
 
         }
 
@@ -161,13 +176,34 @@ namespace CowShooter
         {
             GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin();
+            switch (currentScreen)
+            {
+                case Screens.gameScreen:
+                    {
+                        spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
+                        cowManager.Draw(spriteBatch);
+                        catapult.Draw(gameTime, spriteBatch);
+                        wallManager.Draw(spriteBatch);
+                        villagerManager.Draw(spriteBatch);
+                        meatStore.Draw(spriteBatch);
+                        break;
+                    }
 
-            spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
-            cowManager.Draw(spriteBatch);
-            catapult.Draw(gameTime, spriteBatch);
-            wallManager.Draw(spriteBatch);
-            villagerManager.Draw(spriteBatch);
-            meatStore.Draw(spriteBatch);
+                case Screens.startScreen:
+                    {
+                        spriteBatch.DrawString(font, "Mad stacking attacking cow defender 3!!!", Vector2.Zero, Color.Blue, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None,0.0f);
+                        spriteBatch.DrawString(font, "Made by Mark Fearnley, Kim Barrett, Thomas Kiley", new Vector2(0, 100), Color.Blue);
+                        spriteBatch.DrawString(font, "Press enter to start", new Vector2(0, 150), Color.Blue);
+                        break;
+                    }
+
+                case Screens.gameOverScreen:
+                    {
+                        spriteBatch.DrawString(font, "Game Over - Press enter to restart", new Vector2(200,200), Color.Blue);
+                        spriteBatch.DrawString(font, "Score: " + meatStore.getMeatCount(), new Vector2(200, 250), Color.Blue);
+                        break;
+                    }
+            }
             spriteBatch.End();
             // TODO: Add your drawing code here
 
