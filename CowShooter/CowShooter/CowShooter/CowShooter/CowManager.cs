@@ -69,14 +69,6 @@ namespace CowShooter
             {
                 activeMeats.Remove(meat);
             }
-            foreach (Meat meat in activeMeats)
-            {
-                meat.Update(gameTime);
-            }
-            foreach (Meat meat in meatsToRemove)
-            {
-                activeMeats.Remove(meat);
-            }
             meatsToRemove = new List<Meat>();
         }
 
@@ -104,7 +96,9 @@ namespace CowShooter
 
         private void GenerateCow()
         {
-            Cow myCow = new Cow(this);
+            Cow myCow;
+            if (randomNumber.Next(5) == 0) { myCow = new Bull(this); }
+            else { myCow = new Cow(this); }
             activeCows.Add(myCow);
             collisionManager.addCow(myCow);
         }
