@@ -11,7 +11,7 @@ namespace CowShooter
     {
         const int floorLevel = 400;
         const int startingNumberOfBlocks = 5;
-        const float wallLocation = 600;
+        public const float wallLocation = 600;
 
         WallBlock[] blocks;
         Texture2D wallTexture;
