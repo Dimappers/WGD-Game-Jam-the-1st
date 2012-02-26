@@ -9,12 +9,12 @@ namespace CowShooter
 {
     class Meat
     {
-        const int maxAge = 15000;
         double age;
 
         CowManager manager;
         Texture2D texture;
         Vector2 position;
+        Color colour = Color.White;
 
         public Meat(CowManager manager, Texture2D texture, Vector2 position)
         {
@@ -27,12 +27,14 @@ namespace CowShooter
         public void Update(GameTime gameTime)
         {
             age+=gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (age >= maxAge) { manager.RemoveMeat(this); }
+            if (age >= 15000) { manager.RemoveMeat(this); }
+            else if (age >= 10000) { colour = Color.Green; }
+            else if (age >= 5000) {colour = Color.LightGreen;}
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, position, colour);
         }
     }
 }
