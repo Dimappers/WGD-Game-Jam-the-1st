@@ -76,7 +76,7 @@ namespace CowShooter
                 Cow otherCow = otherCowObject as Cow;
                 if(otherCow != null)
                 {
-                    if (!otherCow.Equals(cow)&&otherCow.partOfPyramid)
+                    if (!otherCow.Equals(cow) && otherCow.partOfPyramid)
                     {
                         if (notStoodOnGround
                             && new Rectangle(
@@ -86,7 +86,7 @@ namespace CowShooter
                                     cowRectangle.Height/2)
                                 .Intersects(otherCow.getCollisionRectangle()))
                         {
-                            hasCowBelow = true;
+                            //hasCowBelow = true;
                         }
                         if (new Rectangle(
                                     cowRectangle.X + cowRectangle.Width/2, 
@@ -113,7 +113,7 @@ namespace CowShooter
             }
             if(notStoodOnGround&&!hasCowBelow)
             {
-                return OtherCowLocations.ThereIsNoCowBelowCurrentCow;
+                //return OtherCowLocations.ThereIsNoCowBelowCurrentCow;
             }
             if(hasCowInJumpToPosition)
             {

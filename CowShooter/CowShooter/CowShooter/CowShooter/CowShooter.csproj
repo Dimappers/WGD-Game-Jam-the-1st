@@ -113,6 +113,7 @@
     <Compile Include="Ammunition.cs" />
     <Compile Include="Catapult.cs" />
     <Compile Include="Bull.cs" />
+    <Compile Include="CowStack.cs" />
     <Compile Include="Meat.cs" />
     <Compile Include="CollisionManager.cs" />
     <Compile Include="ICollisionObject.cs" />

@@ -7,39 +7,75 @@ using Microsoft.Xna.Framework;
 
 namespace CowShooter
 {
-    class CowStack
+    public class CowStack
     {
+        Cow[,] Stack;
 
-        Cow[,] cowstack;
+        WallManager wallManager;
+        readonly Point startPoint = new Point(0, 10);
 
-        CowStack()
+        public CowStack(WallManager wallManager)
         {
-            cowstack = new Cow[10,10];
-            //TODO THE COW STACK
+            Stack = new Cow[12, 11];
+            this.wallManager = wallManager;
         }
 
-        public Point addCow(Cow cow)
+        public Point AddCowToCowStack(Cow newCow)
         {
-            int cowHeight = 0;
-            Point position = new Point();
-            for (int i = 0; i < 10; i++)
+            Stack[startPoint.X, startPoint.Y] = newCow;
+            return GetMove(startPoint);
+        }
+
+        public Point FinishedMove(Cow cow, Point reached, Point last)
+        {
+            Stack[last.X, last.Y] = null;
+            Stack[reached.X, reached.Y] = cow;
+            return GetMove(reached);
+        }
+
+        public Point GetMove(Point position)
+        {
+            Point returnPoint;
+            if (position.Y + 1 < 11 && Stack[position.X, position.Y + 1] == null)
             {
-                if (cowstack[i, cowHeight] == null)
+                returnPoint = new Point(position.X, position.Y + 1); //move down move
+            }
+                //Precondition: it is either on the ground or on a cow
+            else if (position.X + 1 < 12 && Stack[position.X + 1, position.Y] == null)
+            {
+                returnPoint = new Point(position.X + 1, position.Y); //move foward move
+            }
+                //Precondition: (either on the ground or on a cow) & space to the right is full or the space to the right is the wall
+            else if (position.X + 1 < 12)
+            {
+                //Precondition: The space to the right is full of cow (crucially not wall)//Shouldn't ever go to high
+                if (Stack[position.X + 1, position.Y - 1] == null)
                 {
-                    continue;
+                    returnPoint = new Point(position.X + 1, position.Y - 1); //move up and across move
                 }
-                else if (cowstack[i, cowHeight + 1] == null)
+                else //two cows on top 
                 {
-                    cowHeight++;
-                    continue;
-                }
-                else
-                {
-                    cowstack[i - 1, cowHeight] = cow;
-                    position = new Point(i - 1, cowHeight);
+                    returnPoint = position; //stop move
                 }
             }
-            return position;
+            else //at the wall & (either on the ground or on a cow) 
+            {
+                if (position.Y <= 10 - wallManager.wallHeight) //then we are above the wall
+                {
+                    returnPoint = new Point(-1, -1); //climb over wall move TODO
+                }
+                else //we are stuck behind the wall
+                {
+                    returnPoint = position; //At wall move
+                }
+            }
+
+            return returnPoint;
+        }
+
+        public void removeDeadCow(Point p)
+        {
+            Stack[p.X, p.Y] = null;
         }
     }
 }

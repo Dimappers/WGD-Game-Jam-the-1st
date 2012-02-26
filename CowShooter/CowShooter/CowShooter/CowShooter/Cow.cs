@@ -18,7 +18,7 @@ namespace CowShooter
         public CollisionManager.OtherCowLocations otherCows;
 
         const int sizeOfJump = 50;
-        float velocity_v = 0.0f;
+        const float velocity_v = -100.0f;
 
         public bool partOfPyramid;
 
@@ -34,8 +34,11 @@ namespace CowShooter
         Texture2D texture;
 
         public bool isDead;
+        Point nextStackPoint;
+        Point lastStackPoint;
+        CowStack cowStack;
 
-        public Cow(CowManager manager, WallManager wallManager)
+        public Cow(CowManager manager, WallManager wallManager, CowStack cowStack)
         {
             cowPosition = new Vector2(0, floorLevel);
             this.manager = manager;
@@ -44,20 +47,45 @@ namespace CowShooter
             partOfPyramid = false;
             isJumping = false;
             isFalling = true;
+            this.cowStack = cowStack;
         }
-        public bool cowHasStopped()
+        /*public bool cowHasStopped()
         {
             return partOfPyramid && !(isFalling || isJumping);
-        }
+        }*/
         public virtual void Update(GameTime gameTime)
         {
             if (texture == null)
             {
                 texture = manager.GetTexture(GetType());
             }
+
+
             this.gameTime = gameTime;
-            if (!partOfPyramid||isJumping||isFalling||justFinishedJumping) { Move(velocity_h, velocity_v); }
-            else { PyramidMove(velocity_h, velocity_v); }
+
+            if (!partOfPyramid)
+            {
+                if (cowPosition.X >= (600 - (12 * frameSize.Width)))
+                {
+                    //Part of pyramid
+                    partOfPyramid = true;
+                    nextStackPoint = cowStack.AddCowToCowStack(this);
+                    lastStackPoint = new Point(0, 10);
+
+                    takePyramidMove();
+                }
+                else
+                {
+                    Move(velocity_h, 0);
+                }
+            }
+            else
+            {
+                takePyramidMove();
+            }
+
+            /*if (!partOfPyramid||isJumping||isFalling||justFinishedJumping) { Move(velocity_h, velocity_v); }
+            else { PyramidMove(velocity_h, velocity_v); }*/
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -68,6 +96,62 @@ namespace CowShooter
         public Rectangle getCollisionRectangle()
         {
             return new Rectangle((int)cowPosition.X, (int)cowPosition.Y, frameSize.Width, frameSize.Height);
+        }
+
+        public Point getStackPosition()
+        {
+            return lastStackPoint;
+        }
+
+        public void takePyramidMove()
+        {
+            if (lastStackPoint != nextStackPoint)
+            {
+                Vector2 targetPosition = VectorFromStackPoint(nextStackPoint);
+                if (nextStackPoint.Y == lastStackPoint.Y) //is horizontal move
+                {
+                    Move(velocity_h, 0);
+                    if (cowPosition.X >= targetPosition.X)
+                    {
+                        //We have reached our destination
+                        Point temp = lastStackPoint;
+                        lastStackPoint = nextStackPoint;
+                        nextStackPoint = cowStack.FinishedMove(this, nextStackPoint, temp);
+                    } //else still going
+                }
+                //The move is an up and across
+                else if (nextStackPoint.Y < lastStackPoint.Y)
+                {
+                    
+                    if (targetPosition.Y < cowPosition.Y) //still going up
+                    {
+                        Move(0, velocity_v);
+
+                    }
+                    else
+                    {
+                        Move(velocity_h, 0);
+                        if (cowPosition.X >= targetPosition.X)
+                        {
+                            //We have reached our destination
+                            Point temp = lastStackPoint;
+                            lastStackPoint = nextStackPoint;
+                            nextStackPoint = cowStack.FinishedMove(this, nextStackPoint, temp);
+                        } //else still going
+                    }
+                }
+                else
+                {
+                    //This is a down move
+                    Move(0, -velocity_v);
+                }
+            }
+            else
+            {
+                nextStackPoint = cowStack.GetMove(nextStackPoint);
+            }
+            //else do no moving
+
         }
 
         public bool listenForGround()
@@ -87,7 +171,7 @@ namespace CowShooter
         {
             isFalling = false;
         }
-        public void JumpUp()
+        /*public void JumpUp()
         {
             if (cowPosition.Y + frameSize.Height > startPoint.Y)
             {
@@ -101,14 +185,14 @@ namespace CowShooter
                 justFinishedJumping = true;
                 velocity_v = 0.0f;
             }
-        }
-        private void gravity()
+        }*/
+        /*private void gravity()
         {
             velocity_v -= 1.0f;
-        }
+        }*/
         private void Move(float xd, float yd)
         {
-            if (partOfPyramid)
+            /*if (partOfPyramid)
             {
                 if (isJumping)
                 {
@@ -136,9 +220,11 @@ namespace CowShooter
                 {
                     cowPosition += new Vector2(xd, yd) * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
-            }
+            }*/
+
+            cowPosition += new Vector2(xd, yd) * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-        private void Fall() {
+        /*private void Fall() {
             isFalling = false;
             /*if (startPoint.Y < getCollisionRectangle().Top - getCollisionRectangle().Height)
             {
@@ -151,8 +237,8 @@ namespace CowShooter
                 isFalling = false;
                 velocity_v = 0.0f;
             }*/
-        }
-        private void PyramidMove(float xd, float yd)
+        //}*/
+        /*private void PyramidMove(float xd, float yd)
         {
             switch (otherCows)
             {
@@ -188,16 +274,24 @@ namespace CowShooter
         {
             return (belowWallHeight() && toRightOfWall());
         }
-        private bool belowWallHeight() { return getCollisionRectangle().Bottom >= 400 - wallManager.wallHeight; }
+        private bool belowWallHeight() { return getCollisionRectangle().Bottom >= 400 - wallManager.wallHeight; } //TODO: Broken wall height - not using pixels
         private bool toRightOfWall() 
         {
             partOfPyramid = true;
             return getCollisionRectangle().Right >= WallManager.wallLocation; 
         }
-
+        */
         public override string ToString()
         {
             return getCollisionRectangle().ToString();
+        }
+
+        public Vector2 VectorFromStackPoint(Point p)
+        {
+            float xPos = 600 - ((12 -p.X) * frameSize.Width);
+            float yPos = 400 - ((11 - p.Y) * frameSize.Height);
+
+            return new Vector2(xPos, yPos);
         }
     }
 }

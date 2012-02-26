@@ -13,7 +13,7 @@ namespace CowShooter
         const int startingNumberOfBlocks = 5;
         public const float wallLocation = 600;
 
-        public float wallHeight = 0;
+        public int wallHeight = 0;
 
         WallBlock[] blocks;
         Texture2D wallTexture;
@@ -25,7 +25,7 @@ namespace CowShooter
             for (int i = 0; i < blocks.Length; i++)
             {
                 blocks[i] = new WallBlock(wallTexture, createPositionVector(i));
-                wallHeight += wallTexture.Height;
+                wallHeight += 1;
             }
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -49,7 +49,7 @@ namespace CowShooter
                     temp[i] = blocks[i];
                 }
                 temp[blocks.Length] = new WallBlock(wallTexture, createPositionVector(blocks.Length));
-                wallHeight += wallTexture.Height;
+                wallHeight += 1;
                 blocks = temp;
                 return true;
             }
@@ -62,7 +62,7 @@ namespace CowShooter
             {
                 temp[i] = blocks[i];
             }
-            wallHeight -= wallTexture.Height;
+            wallHeight -= 1;
             blocks = temp;
         }
     }

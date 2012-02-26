@@ -24,6 +24,8 @@ namespace CowShooter
         CollisionManager collisionManager;
         WallManager wallManager;
 
+        CowStack cowStack;
+
         public CowManager(CollisionManager collisionManager)
         {
             this.collisionManager = collisionManager;
@@ -34,11 +36,13 @@ namespace CowShooter
             randomNumber = new Random();
             timeTillNextCow = randomNumber.Next(minSpawnTime, maxSpawnTime);
             activeMeats = new List<Meat>();
+            
 
         }
         public void SetWallManager(WallManager wallManager)
         {
             this.wallManager = wallManager;
+            cowStack = new CowStack(wallManager);
         }
         public void Update(GameTime gameTime)
         {
@@ -60,6 +64,7 @@ namespace CowShooter
             }
             foreach (Cow cow in cowsToRemove)
             {
+                cowStack.removeDeadCow(cow.getStackPosition());
                 RemoveCow(cow);
             }
             foreach (Meat meat in activeMeats)
@@ -99,8 +104,8 @@ namespace CowShooter
         private void GenerateCow()
         {
             Cow myCow;
-            if (randomNumber.Next(5) == 0) { myCow = new Bull(this, wallManager); }
-            else { myCow = new Cow(this, wallManager); }
+            if (randomNumber.Next(5) == 0) { myCow = new Bull(this, wallManager, cowStack); }
+            else { myCow = new Cow(this, wallManager, cowStack); }
             activeCows.Add(myCow);
             collisionManager.addCow(myCow);
         }
