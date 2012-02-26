@@ -22,8 +22,9 @@ namespace CowShooter
         CollisionManager collisionManager;
 
         KeyboardState oldState, newState;
+        MeatStore meatStore;
 
-        public VillagerManager(Texture2D villagerTexture, CowManager cowManager, CollisionManager collisionManager)
+        public VillagerManager(Texture2D villagerTexture, CowManager cowManager, CollisionManager collisionManager, MeatStore meatStore)
         {
             this.villagerTexture = villagerTexture;
             villagers = new Queue<Villager>();
@@ -39,6 +40,7 @@ namespace CowShooter
             this.collisionManager = collisionManager;
             oldState = Keyboard.GetState();
             newState = oldState;
+            this.meatStore = meatStore;
         }
 
         public void Update(GameTime gameTime)
@@ -102,6 +104,11 @@ namespace CowShooter
         public void notifyReturn(Villager villager)
         {
             justReturnedVillagers.Add(villager);
+        }
+
+        public void DropOffMeat()
+        {
+            meatStore.addMeat(1);
         }
     }
 }
