@@ -108,7 +108,7 @@ namespace CowShooter
 
         public Point getStackPosition()
         {
-            return lastStackPoint;
+            return nextStackPoint;
         }
 
         public void takePyramidMove()

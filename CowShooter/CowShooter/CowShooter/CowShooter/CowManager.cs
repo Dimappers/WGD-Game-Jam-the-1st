@@ -29,7 +29,7 @@ namespace CowShooter
 
         CowStack cowStack;
 
-        public CowManager(CollisionManager collisionManager)
+        public CowManager(CollisionManager collisionManager, Texture2D h1Texture, Texture2D h2Texture)
         {
             this.collisionManager = collisionManager;
             activeCows = new List<Cow>();
@@ -109,8 +109,8 @@ namespace CowShooter
         private void GenerateCow()
         {
             Cow myCow;
-            if (randomNumber.Next(5) == 0) { myCow = new Bull(this, wallManager, cowStack); }
-            else { myCow = new Cow(this, wallManager, cowStack); }
+            if (randomNumber.Next(5) == 0) { myCow = new Bull(this, wallManager, cowStack, h1Texture, h2Texture); }
+            else { myCow = new Cow(this, wallManager, cowStack, h1Texture, h2Texture, 1); }
             activeCows.Add(myCow);
             collisionManager.addCow(myCow);
         }
