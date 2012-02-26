@@ -10,11 +10,9 @@ namespace CowShooter
 {
     class Villager : ICollisionObject
     {
-        Vector2 heading;
         Meat targetMeat;
         Vector2 position;
         Vector2 wheredYouComeFrom;
-
         Texture2D texture;
 
         private bool hasMeat;
@@ -24,7 +22,7 @@ namespace CowShooter
         bool isDead;
         bool isHome;
 
-        bool movingLeft;
+        bool movingLeft; //For patrolling
 
         CowManager cowManager;
         VillagerManager villagerManager;
@@ -39,8 +37,10 @@ namespace CowShooter
 
             this.cowManager = cowManager;
             isDead = false;
-            isHome = false;
+            isHome = true;
             movingLeft = true;
+
+            position = startingPosition;
         }
 
         public bool getIsDead()
@@ -54,18 +54,21 @@ namespace CowShooter
             if (seekFood)
             {
                 targetMeat = cowManager.NearestMeat(position.X);
+                isHome = false;
             }
-
         }
 
         public void Update(GameTime gameTime)
         {
             Vector2 target = AquireTarget();
             Vector2 directionToMove = target - position;
-            directionToMove.Normalize();
-            directionToMove *= speed;
-
-            if (position.X > wheredYouComeFrom.X)
+            if (directionToMove != Vector2.Zero)
+            {
+                directionToMove.Normalize();
+                directionToMove *= speed;
+            }
+            
+            if (position.X >= wheredYouComeFrom.X)
             {
                 if (hasMeat)
                 {
@@ -79,10 +82,9 @@ namespace CowShooter
                     if (!isHome)
                     {
                         isHome = true;
-                        villagerManager.notifyReturn();
+                        villagerManager.notifyReturn(this);
                     }
-                    directionToMove = Vector2.Zero;
-                    
+                    directionToMove = Vector2.Zero;   
                 }
             }
             if (directionToMove != Vector2.Zero)
@@ -91,7 +93,6 @@ namespace CowShooter
                 {
                     isHome = false;
                 }
-                
             }
             position += directionToMove;
         }
@@ -107,7 +108,7 @@ namespace CowShooter
                 }
                 else
                 {
-                    if (targetMeat == null || targetMeat.getIsOff())
+                    if (targetMeat == null || targetMeat.getIsOff() || targetMeat.isGone())
                     {
                         //aquire new target
                         targetMeat = cowManager.NearestMeat(position.X);
@@ -116,10 +117,10 @@ namespace CowShooter
                             //wander round aimlessly
                             if (movingLeft)
                             {
-                                if (position.X < 100)
+                                if (position.X <= 100)
                                 {
                                     movingLeft = false;
-                                    return new Vector2(600, position.Y);
+                                    return new Vector2(500, position.Y);
                                 }
                                 else
                                 {
@@ -128,14 +129,14 @@ namespace CowShooter
                             }
                             else
                             {
-                                if (position.X > 600)
+                                if (position.X >= 500)
                                 {
                                     movingLeft = true;
                                     return new Vector2(100, position.Y);
                                 }
                                 else
                                 {
-                                    return new Vector2(600, position.Y);
+                                    return new Vector2(500, position.Y);
                                 }
                             }
                         }
@@ -166,7 +167,7 @@ namespace CowShooter
 
         public Rectangle getCollisionRectangle()
         {
-            return new Rectangle((int)position.X, (int)position.Y, frame.Width, frame.Height);
+            return new Rectangle((int)position.X, (int)position.Y - 100, frame.Width, frame.Height + 100);//add 100 so even villagers on bottom row get killed by wild bull
         }
 
         public bool listenForGround()
