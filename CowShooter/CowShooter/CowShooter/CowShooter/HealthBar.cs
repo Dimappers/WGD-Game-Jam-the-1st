@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CowShooter
 {
-    class HealthBar
+    public class HealthBar
     {
 
         Texture2D bar1Texture;

@@ -62,6 +62,15 @@ namespace CowShooter
             {
                 cow.otherCows = collisionManager.findCowCollisions(cow);
                 cow.Update(gameTime);
+
+                if (cow is KamikazeCow)
+                {
+                    if (((KamikazeCow)cow).checkWallCollision())
+                    {
+                        cow.isDead = true;
+                        wallManager.removeBlock();
+                    }
+                }
                 if (cow.isDead)
                 {
                     cowsToRemove.Add(cow);
@@ -118,8 +127,16 @@ namespace CowShooter
         private void GenerateCow()
         {
             Cow myCow;
-            if (randomNumber.Next(5) == 0) { myCow = new Bull(this, wallManager, cowStack, h1Texture, h2Texture); }
-            else { myCow = new Cow(this, wallManager, cowStack, h1Texture, h2Texture, 1); }
+            int ran = randomNumber.Next(10);
+            switch (ran) {
+                case 1:
+                case 2:
+                case 3: myCow = new KamikazeCow(this, wallManager, cowStack, h1Texture, h2Texture); break;
+                case 4:
+                case 5:
+                case 6: myCow = new Bull(this, wallManager, cowStack, h1Texture, h2Texture); break;
+                default: myCow =  new Cow(this, wallManager, cowStack, h1Texture, h2Texture, 2); break;
+            }
             activeCows.Add(myCow);
             collisionManager.addCow(myCow);
         }

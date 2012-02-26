@@ -10,11 +10,11 @@ namespace CowShooter
 {
     public class Cow : ICollisionObject
     {
-        const float velocity_h = 100.0f;
+        protected const float velocity_h = 100.0f;
         public Vector2 cowPosition;
-        CowManager manager;
-        GameTime gameTime;
-        Rectangle frameSize = new Rectangle(0, 0, 46, 36); //TODO: Make this the actual size of a cow
+        protected CowManager manager;
+        protected GameTime gameTime;
+        protected Rectangle frameSize = new Rectangle(0, 0, 46, 36); //TODO: Make this the actual size of a cow
         public CollisionManager.OtherCowLocations otherCows;
 
         const int sizeOfJump = 50;
@@ -23,7 +23,8 @@ namespace CowShooter
         public bool partOfPyramid;
 
         int health;
-        HealthBar healthBar;
+
+        public HealthBar healthBar;
         bool inVillage = false;
 
 
@@ -31,7 +32,7 @@ namespace CowShooter
 
         int floorLevel = 400 - 32; //32 is height of cow_piece
 
-        Texture2D texture;
+        protected Texture2D texture;
 
         public bool isDead;
         Point nextStackPoint;
@@ -195,7 +196,7 @@ namespace CowShooter
         {
         }
 
-        private void Move(float xd, float yd)
+        protected void Move(float xd, float yd)
         {
             cowPosition += new Vector2(xd, yd) * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }

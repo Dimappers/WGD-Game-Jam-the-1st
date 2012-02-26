@@ -9,7 +9,7 @@ namespace CowShooter
     {
         Catapult catapult;
         public DamageUpgrade(Catapult catapult)
-            : base(3)
+            : base(30)
         {
             this.catapult = catapult;
         }

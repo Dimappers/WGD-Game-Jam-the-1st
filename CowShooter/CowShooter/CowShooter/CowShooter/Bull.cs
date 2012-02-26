@@ -10,6 +10,7 @@ namespace CowShooter
 {
     class Bull : Cow
     {
-        public Bull(CowManager manager, WallManager wallManager, CowStack cowStack, Texture2D h1Texture, Texture2D h2Texture) : base(manager, wallManager, cowStack, h1Texture, h2Texture, 3){ }
+        const int health = 5;
+        public Bull(CowManager manager, WallManager wallManager, CowStack cowStack, Texture2D h1Texture, Texture2D h2Texture) : base(manager, wallManager, cowStack, h1Texture, h2Texture, health){ }
     }
 }
