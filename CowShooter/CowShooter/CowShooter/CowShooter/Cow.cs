@@ -8,19 +8,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CowShooter
 {
-    class Cow : ICollisionObject
+    public class Cow : ICollisionObject
     {
         const float velocity_h = 10.0f;
         public Vector2 cowPosition;
         CowManager manager;
         GameTime gameTime;
         Rectangle frameSize = new Rectangle(0, 0, 48, 36); //TODO: Make this the actual size of a cow
+        public CollisionManager.OtherCowLocations otherCows;
 
         const int sizeOfJump = 50;
         float velocity_v = 0.0f;
 
-        public bool cowIsInFront;
+        public bool partOfPyramid;
         public bool cowHasStopped;
+        public Cow jumpTo = null;
+        public Cow nextTo = null;
 
         bool isJumping;
         Vector2 startPoint;
@@ -36,7 +39,7 @@ namespace CowShooter
             cowPosition = new Vector2(0, floorLevel);
             this.manager = manager;
             isDead = false;
-            cowIsInFront = false;
+            partOfPyramid = false;
             cowHasStopped = false;
             isJumping = false;
             
@@ -48,8 +51,8 @@ namespace CowShooter
                 texture = manager.GetTexture(GetType());
             }
             this.gameTime = gameTime;
-            Move(velocity_h, velocity_v);
-            if(velocity_v!=0)Console.WriteLine("h: " + velocity_h + " v: " + velocity_v);
+            if (!partOfPyramid||isJumping) { Move(velocity_h, velocity_v); }
+            else { PyramidMove(velocity_h, velocity_v); }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -100,7 +103,6 @@ namespace CowShooter
                     cowPosition.X += frameSize.Width/20;
                 }
             }
-            // velocity_v = (float)(Math.Sqrt((double)(2.0f * 9.8f * sizeOfJump)));
         }
         private void gravity()
         {
@@ -108,7 +110,7 @@ namespace CowShooter
         }
         private void Move(float xd, float yd)
         {
-            if (cowIsInFront && !cowHasStopped)
+            if (partOfPyramid && !cowHasStopped)
             {
                 if (!isJumping)
                 {
@@ -117,10 +119,6 @@ namespace CowShooter
                 }
                 JumpUp();
             }
-            /*
-             * Unnecessary Gravity?
-            if (cowPosition.Y - yd * (float)gameTime.ElapsedGameTime.TotalSeconds >= floorLevel) { gravity(); }
-            else { velocity_v = 0; } */
             if (cowPosition.X + xd + manager.GetTexture(GetType()).Width / 2 >= 600) 
             {
                 cowHasStopped = true;
@@ -128,6 +126,17 @@ namespace CowShooter
             if (!cowHasStopped)
             {
                 cowPosition += new Vector2(xd, yd) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+        private void Fall() { /*TODO: write this*/}
+        private void PyramidMove(float xd, float yd)
+        {
+            switch (otherCows)
+            {
+                case CollisionManager.OtherCowLocations.notBelow: { Fall(); break; }
+                case CollisionManager.OtherCowLocations.alsoJumpTo: { cowHasStopped = true; break; }
+                case CollisionManager.OtherCowLocations.onlyNextTo: { isJumping = true; JumpUp(); break; }
+                case CollisionManager.OtherCowLocations.noCows: { Move(1.0f, 0); break; }
             }
         }
     }

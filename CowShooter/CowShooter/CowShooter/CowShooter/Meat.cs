@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CowShooter
 {
-    class Meat
+    public class Meat
     {
         double age;
 

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CowShooter
 {
-    class Ammunition : ICollisionObject
+    public class Ammunition : ICollisionObject
     {
         Texture2D texture;
         bool flying;

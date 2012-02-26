@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace CowShooter
 {
-    class CollisionManager
+    public class CollisionManager
     {
         List<Ammunition> ammo;
         List<Cow> cows;
@@ -64,6 +67,36 @@ namespace CowShooter
             return false;
         }
 
+        public OtherCowLocations findCowCollisions(Cow cow)
+        {
+            Rectangle cowRectangle = cow.getCollisionRectangle(); 
+            bool below = false;
+            bool jumpTo = false;
+            bool nextTo = false;
+            foreach (Cow otherCow in cows)
+            {
+                if (!otherCow.Equals(cow)&&otherCow.GetType()==typeof(Cow))
+                {
+                    if (!new Rectangle(cowRectangle.X, cowRectangle.Y+cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                    {
+                        below = true;
+                    }
+                    else if (new Rectangle(cowRectangle.X + cowRectangle.Width, cowRectangle.Y - cowRectangle.Height, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                    {
+                        jumpTo = true;
+                    }
+                    else if(new Rectangle(cowRectangle.X + cowRectangle.Width, cowRectangle.Y, cowRectangle.Width, cowRectangle.Height).Intersects(otherCow.getCollisionRectangle()))
+                    {
+                        nextTo = true;
+                    }
+                }
+            }
+            if(below) {return OtherCowLocations.notBelow;}
+            if(jumpTo) {return OtherCowLocations.alsoJumpTo; }
+            if(nextTo) {return OtherCowLocations.onlyNextTo;}
+            return OtherCowLocations.noCows;
+        }
+
         public void removeCow(Cow cow)
         {
             cows.Remove(cow);
@@ -74,6 +107,12 @@ namespace CowShooter
             ammo.Remove(ammoToRemove);
         }
 
-
+        public enum OtherCowLocations
+        {
+            onlyNextTo,
+            alsoJumpTo,
+            notBelow,
+            noCows
+        }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace CowShooter
 {
-    interface ICollisionObject
+    public interface ICollisionObject
     {
         Rectangle getCollisionRectangle();
 
