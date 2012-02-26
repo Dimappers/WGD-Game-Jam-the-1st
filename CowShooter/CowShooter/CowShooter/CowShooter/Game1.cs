@@ -194,13 +194,18 @@ namespace CowShooter
                 case Screens.startScreen:
                     {
                         spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
-                        spriteBatch.DrawString(font, "Mad Stacking Attacking Cow Defender", Vector2.Zero, Color.Blue, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None,0.0f);
+                        spriteBatch.DrawString(font, "Mad Stacking Attacking Cow Defender", new Vector2(220,0), Color.Blue, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None,0.0f);
                         spriteBatch.DrawString(font, "Made by Mark Fearnley, Kim Barrett & Thomas Kiley", new Vector2(0, 50), Color.Blue);
                         spriteBatch.DrawString(font, "Press Enter to Start", new Vector2(0, 100), Color.Blue);
                         spriteBatch.DrawString(font, "Controls:", new Vector2(0, 200), Color.White);
                         spriteBatch.DrawString(font, "Space - Send Out A Villager", new Vector2(0, 250), Color.White);
                         spriteBatch.DrawString(font, "Enter - Recalls All Villagers", new Vector2(0, 300), Color.White);
                         spriteBatch.DrawString(font, "S - Opens/Closes the Shop", new Vector2(0, 350), Color.White);
+                        spriteBatch.DrawString(font, "Instructions:", new Vector2(350, 150), Color.Blue);
+                        spriteBatch.DrawString(font, "Stop the cows climbing over the wall by", new Vector2(350, 200), Color.Blue);
+                        spriteBatch.DrawString(font, "shooting them with your cannon, send out", new Vector2(350, 250), Color.Blue);
+                        spriteBatch.DrawString(font, "the villagers to collect meat from dead cows,", new Vector2(350, 300), Color.Blue);
+                        spriteBatch.DrawString(font, "but make sure they avoid the bull!", new Vector2(350, 350), Color.Blue);
                         break;
                     }
 
