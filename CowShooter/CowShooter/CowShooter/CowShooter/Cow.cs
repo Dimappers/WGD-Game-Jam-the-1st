@@ -88,14 +88,15 @@ namespace CowShooter
         {
             if (otherObject is Ammunition)
             {
-                health -= ((Ammunition)otherObject).damage;
+                int d = ((Ammunition)otherObject).damage;
+                health -= d;
                 if (health <= 0)
                 {
                     isDead = true;
                 }
                 else
                 {
-                    healthBar.takeDamage(1, gameTime);
+                    healthBar.takeDamage(d, gameTime);
                 }
             }
         }

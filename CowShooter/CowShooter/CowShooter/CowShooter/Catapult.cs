@@ -146,5 +146,10 @@ namespace CowShooter
             spriteBatch.Draw(catapultTexture, positionToSpawn, null, Color.White, (3.0f * (float)Math.PI) / 2.0f + ((float)Math.PI / 2.0f) + (float)Math.Atan(yDist / xDist), /*Vector2.Zero*/new Vector2(68,34f), 1.0f, SpriteEffects.None, 0.0f);
             lastSetAngle = (float)Math.Atan(yDist / xDist);
         }
+
+        public void upgradeDamage(int upgradeAmount)
+        {
+            damage += upgradeAmount;
+        }
     }
 }

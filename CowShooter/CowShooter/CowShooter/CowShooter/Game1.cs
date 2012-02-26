@@ -16,6 +16,10 @@ namespace CowShooter
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+
+        enum Screens { gameScreen, gameOverScreen };
+        Screens currentScreen;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -37,6 +41,7 @@ namespace CowShooter
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            currentScreen = Screens.gameScreen;
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 450;
             collisionManager = new CollisionManager(400.0f);
@@ -86,11 +91,14 @@ namespace CowShooter
 
             meatStore.addTexture(typeof(NewTowerStoreItem), wallTexture);
             meatStore.addTexture(typeof(NewVillagerStoreItem), villagerTexture);
+            meatStore.addTexture(typeof(DamageUpgrade), Content.Load<Texture2D>("art//DamageUpgrade"));
             NewTowerStoreItem towerStoreItem = new NewTowerStoreItem(wallManager);
             NewVillagerStoreItem villagerItem = new NewVillagerStoreItem(villagerManager);
+            DamageUpgrade damageUpgrade = new DamageUpgrade(catapult);
             //NewTowerStoreItem towerItem2 = new NewTowerStoreItem(wallManager);
             meatStore.addStoreItem(towerStoreItem);
             meatStore.addStoreItem(villagerItem);
+            meatStore.addStoreItem(damageUpgrade);
             // TODO: use this.Content to load your game content here
         }
 
@@ -110,24 +118,31 @@ namespace CowShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            currentKeyboardState = Keyboard.GetState();
-            currentMouseState = Mouse.GetState();
-            // TODO: Add your update logic here
-
-            cowManager.Update(gameTime);
-            catapult.Update(gameTime);
-            collisionManager.checkCollision();
-            villagerManager.Update(gameTime);
-
-            if (currentKeyboardState.IsKeyDown(Keys.S) && oldKeyboardState.IsKeyUp(Keys.S))
+            if (currentScreen == Screens.gameScreen)
             {
-                meatStore.toggleStore();
-            }
-            meatStore.Update(currentMouseState, oldMouseState);
-            oldKeyboardState = currentKeyboardState;
-            oldMouseState = currentMouseState;
+                currentKeyboardState = Keyboard.GetState();
+                currentMouseState = Mouse.GetState();
+                // TODO: Add your update logic here
 
-            base.Update(gameTime);
+                cowManager.Update(gameTime);
+                catapult.Update(gameTime);
+                collisionManager.checkCollision();
+                villagerManager.Update(gameTime);
+
+                if (currentKeyboardState.IsKeyDown(Keys.S) && oldKeyboardState.IsKeyUp(Keys.S))
+                {
+                    meatStore.toggleStore();
+                }
+                meatStore.Update(currentMouseState, oldMouseState);
+                oldKeyboardState = currentKeyboardState;
+                oldMouseState = currentMouseState;
+
+                base.Update(gameTime);
+            }
+            else
+            {
+                //Do stuff for the gameover screen
+            }
 
         }
 
