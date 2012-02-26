@@ -9,7 +9,7 @@ namespace CowShooter
     {
         WallManager wallManager;
         public NewTowerStoreItem(WallManager wallManager)
-            : base(5)
+            : base(15)
         {
             this.wallManager = wallManager;
         }
