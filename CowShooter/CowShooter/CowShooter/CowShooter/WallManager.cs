@@ -68,13 +68,16 @@ namespace CowShooter
         }
         public void removeBlock()
         {
-            WallBlock[] temp = new WallBlock[blocks.Length - 1];
-            for (int i = 0; i < temp.Length; i++)
+            if (blocks.Length > 0)
             {
-                temp[i] = blocks[i];
+                WallBlock[] temp = new WallBlock[blocks.Length - 1];
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    temp[i] = blocks[i];
+                }
+                wallHeight -= 1;
+                blocks = temp;
             }
-            wallHeight -= 1;
-            blocks = temp;
         }
     }
 }
