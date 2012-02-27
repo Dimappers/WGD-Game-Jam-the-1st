@@ -78,7 +78,7 @@ namespace CowShooter
 
         public void removeDeadCow(Point p)
         {
-            Stack[p.X, p.Y] = null;
+            if (p.X != -1 || p.Y != -1) { Stack[p.X, p.Y] = null; }
         }
 
         public void Reset()

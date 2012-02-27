@@ -39,6 +39,8 @@ namespace CowShooter
         SpriteFont font;
         Texture2D cowTexture;
 
+        float timeSurvived;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -64,6 +66,7 @@ namespace CowShooter
             oldMouseState = currentMouseState;
             oldKeyboardState = currentKeyboardState;
             base.Initialize();
+            timeSurvived = 0.0f;
         }
 
         /// <summary>
@@ -140,7 +143,8 @@ namespace CowShooter
                             meatStore.toggleStore();
                         }
                         meatStore.Update(currentMouseState, oldMouseState);
-                        
+
+                        timeSurvived += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                         if (villagerManager.PlayerHasLost())
                         {
@@ -210,7 +214,7 @@ namespace CowShooter
                     {
                         spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, Color.White);
                         spriteBatch.DrawString(font, "Game Over - Press Enter to Restart", new Vector2(200,200), Color.Blue);
-                        spriteBatch.DrawString(font, "Score: " + meatStore.getMeatCount(), new Vector2(200,250), Color.Blue);
+                        spriteBatch.DrawString(font, "Score: " + (int)timeSurvived, new Vector2(200,250), Color.Blue);
                         break;
                     }
             }
@@ -228,6 +232,7 @@ namespace CowShooter
             meatStore.Reset();
             villagerManager.Reset();
             wallManager.Reset();
+            timeSurvived = 0.0f;
 
         }
     }
