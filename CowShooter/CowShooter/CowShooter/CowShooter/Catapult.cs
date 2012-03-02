@@ -18,6 +18,7 @@ namespace CowShooter
         const float maxDistance = 150;
         const float sharpestDownAngle = (9.0f * (float)Math.PI) / 8.0f;
         const float powerScale = 0.05f;
+        const int minPower = 1;
         
         Texture2D catapultTexture;
         Texture2D lineTexture;
@@ -125,9 +126,12 @@ namespace CowShooter
 
                 Vector2 fireTrajectory = (draggedToPoint - new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y)) * powerScale;
                 Console.WriteLine("Fire trajectory: " + fireTrajectory.ToString());
-                Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture, damage);
-                ammo.Add(newAmmo);
-                collisionManager.addAmmo(newAmmo);
+                if (Math.Pow(fireTrajectory.X, 2) + Math.Pow(fireTrajectory.Y, 2) >= Math.Pow(minPower, 2))
+                {
+                    Ammunition newAmmo = new Ammunition(this, fireTrajectory, new Vector2(draggablePosition.Center.X, draggablePosition.Center.Y), ammoTexture, damage);
+                    ammo.Add(newAmmo);
+                    collisionManager.addAmmo(newAmmo);
+                }
             }
         }
 

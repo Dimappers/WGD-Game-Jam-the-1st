@@ -20,6 +20,7 @@ namespace CowShooter
 
         const int minSpawnTime = 1;
         const int maxSpawnTime = 4;
+        const int cowHealth = 1;
 
         float timeTillNextCow;
         Random randomNumber;
@@ -128,14 +129,12 @@ namespace CowShooter
         {
             Cow myCow;
             int ran = randomNumber.Next(10);
-            switch (ran) {
-                case 1:
+            switch (ran) {  
                 case 2:
                 case 3: myCow = new KamikazeCow(this, wallManager, cowStack, h1Texture, h2Texture); break;
-                case 4:
                 case 5:
                 case 6: myCow = new Bull(this, wallManager, cowStack, h1Texture, h2Texture); break;
-                default: myCow =  new Cow(this, wallManager, cowStack, h1Texture, h2Texture, 2); break;
+                default: myCow =  new Cow(this, wallManager, cowStack, h1Texture, h2Texture, cowHealth); break;
             }
             activeCows.Add(myCow);
             collisionManager.addCow(myCow);
